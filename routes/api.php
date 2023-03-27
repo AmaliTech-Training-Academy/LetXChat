@@ -21,6 +21,5 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('v1')->controller(AuthController::class)->group(function(){
-    Route::post('/register', 'store');
-    Route::post('/login', 'show');
+    Route::post('/register', 'register');
 });
