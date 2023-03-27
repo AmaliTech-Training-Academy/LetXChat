@@ -1,10 +1,14 @@
-import React from 'react'
-import Navbar from '../components/Landing-Page/Navbar'
+import React from "react";
+import HomeBanner from "../components/Landing-Page/HomeBanner";
+import Navbar from "../components/Landing-Page/Navbar";
 
 function Home() {
   return (
-    <div><Navbar /></div>
-  )
+    <div>
+      <Navbar />
+      <HomeBanner />
+    </div>
+  );
 }
 
-export default Home
+export default Home;
