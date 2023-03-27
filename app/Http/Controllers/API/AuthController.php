@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -16,33 +18,30 @@ class AuthController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+        // $request->validated($request->all());
+
+        $user = User::create($request->all());
+        $request->merge([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'user' => $user,
+            'message' => 'Resgistration Success',
+            'token' => $user->createToken($user->fullname)->plainTextToken,
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
     {
         //
     }
