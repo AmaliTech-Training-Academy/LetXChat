@@ -27,7 +27,8 @@ class RegisterRequest extends FormRequest
             'username' => ['required','string','max:50','regex:/^[a-zA-Z0-9]/i'],
             'employee_id' => ['required','string','max:50','regex:/^[a-zA-Z0-9]/i'],
             'email' => ['required', 'email'],
-            'password' => ['required'],
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required|min:8'
         ];
     }
 }
