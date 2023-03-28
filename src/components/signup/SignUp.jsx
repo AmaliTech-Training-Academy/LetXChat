@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import CameraIcon from "../../assets/camera.png";
+import ProfilePhoto from '../../assets/profile-picture.png'
 import styled from "@emotion/styled";
 
 const ContainerStyle = {
@@ -50,6 +51,11 @@ const ProfileStyle = {
   width: "max-content",
   position: "relative",
   marginBottom: "27px",
+  height: "70px",
+  width: "70px",
+  background: `url(${ProfilePhoto})`,
+    backgroundSize: 'cover',
+  borderRadius: '50%',
 };
 
 const FormStyles = {
@@ -94,15 +100,30 @@ const SignUp = () => {
   const handleShowConfirmPassword = () =>
     setShowConfirmPassword((show) => !show);
 
+  // Upload Image
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageUpload = (event) => {
+    setSelectedImage(event.target.files[0]);
+  };
+
+  // Submit Form
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <Box component="main" sx={ContainerStyle}>
-      <Box component="section" sx={FormContainer}>
+      <Box component="form" sx={FormContainer} onSubmit={handleSubmit}>
         <Box component="h2" sx={TitleStyle}>
           Sign up
         </Box>
 
         <Box sx={ProfileStyle}>
-          <Avatar sx={{ height: "70px", width: "70px" }} />
+          {selectedImage && (
+   
+               <Avatar sx={{ height: "70px", width: "70px" }} src={URL.createObjectURL(selectedImage)} alt="Image Upload" /> 
+          )}
           <Box
             sx={{
               position: "absolute",
@@ -113,7 +134,7 @@ const SignUp = () => {
             }}
           >
             <IconButton aria-label="upload picture" component="label">
-              <input hidden accept="image/*" type="file" />
+              <input hidden accept="image/*" type="file" required onChange={handleImageUpload} />
 
               <img
                 style={{ width: "1rem", height: "1rem" }}
@@ -124,7 +145,7 @@ const SignUp = () => {
           </Box>
         </Box>
 
-        <Box component="form" sx={FormStyles}>
+        <Box component="section" sx={FormStyles}>
           <Box component="section" sx={FieldsContainer}>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="name">
@@ -140,13 +161,18 @@ const SignUp = () => {
               <Box component="label" htmlFor="id">
                 Employee ID
               </Box>
-              <TextField required id="id" label="Enter your ID" sx={{}} />
+              <TextField required id="id" placeholder="Enter your ID" sx={{}} />
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="username">
                 Username
               </Box>
-              <TextField required id="username" label="@Ekowsmith" sx={{}} />
+              <TextField
+                required
+                id="username"
+                placeholder="@Ekowsmith"
+                sx={{}}
+              />
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="mail">
@@ -157,7 +183,7 @@ const SignUp = () => {
                 id="mail"
                 type="email"
                 inputMode="email"
-                label="Example@amalitech.com"
+                placeholder="Example@amalitech.com"
                 sx={{}}
               />
             </Box>
@@ -209,6 +235,7 @@ const SignUp = () => {
 
           <Box component="section" sx={SignUpLogin}>
             <Box
+              type="submit"
               component="button"
               sx={{
                 background: "#53352D",
