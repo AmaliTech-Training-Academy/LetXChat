@@ -20,7 +20,16 @@ function Footer() {
                     {linkedin_icon}
                 </div>
             </div>
-
+            <div className='flex gap-32 text-2xl'>
+                <div className='flex flex-col gap-5'>
+                    <span className='font-semibold'>Contact</span>
+                    <span className='opacity-60'>Email us</span>
+                    <span className='opacity-60'>Company</span>
+                    <span className='opacity-60'>Chat rooms</span>
+                    <span className='opacity-60'>How it works</span>
+                </div>
+                
+            </div>
         </div>
     </div>
   )
