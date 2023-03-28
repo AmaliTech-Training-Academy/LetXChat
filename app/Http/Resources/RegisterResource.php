@@ -20,6 +20,7 @@ class RegisterResource extends JsonResource
             'username' => $this->username,
             'employee_id' => $this->employee_id,
             'email' => $this->email,
+            'image' => $this->image,
         ];
     }
 }
