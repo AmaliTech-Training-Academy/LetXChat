@@ -3,30 +3,32 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterRequest;
-use App\Http\Resources\RegisterResource;
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request)
+    public function login(Request $request)
     {
-        $request->validated($request->all());
+        // $request->validated($request->all());
+        // dd($request);
+        if(!Auth::attempt($request->only(['email','password']))){
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid Credentials'
+            ],403);
+        }
 
-        $image = $request->file('image');
-        $path = Storage::disk('public')->put('images', $image);
+        $user = User::firstWhere('email', Auth::user()->email);
+        dd($user);
+            // return response()->json([
+            //     'status' => true,
+            //     'user' => $user,
+            //     'message' => 'Logged in Successful',
+            //     'token' => $user->createToken($user->name)->plainTextToken
+            // ]);
 
-        $user = User::create([
-            'fullname' => $request->fullname,
-            'username' => $request->username,
-            'employee_id' => $request->employee_id,
-            'email' => $request->email,
-            'image' => $path,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return new RegisterResource($user);
     }
 }
