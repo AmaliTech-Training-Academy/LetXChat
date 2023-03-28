@@ -142,6 +142,7 @@ const SignUpLogin = {
 };
 
 const ButtonStyles = styled(Button)({
+  textTransform: 'capitalize',
   background: "#53352D",
   color: "#FFFFFF",
   width: "15rem",

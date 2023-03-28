@@ -1,24 +1,35 @@
-import { Box, FormControl, IconButton, InputAdornment, OutlinedInput, TextField, styled } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  TextField,
+  styled,
+} from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
 
 const Container = styled(Box)({
-  width: '100vw',
-  height: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-})
+  width: "100vw",
+  height: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
 
-const FormContainer = styled('form')({
-  width: '530px',
-  height: '602px',
-  background: 'rgba(255, 255, 255, 0.6)',
-  boxShadow: '0px 0px 12px rgba(0, 0, 0, 0.2)',
-  borderRadius: '15px',
-  padding: '68px'
-})
+const FormContainer = styled("form")({
+  width: "min(530px, 90vw)",
+  height: "602px",
+  background: "rgba(255, 255, 255, 0.6)",
+  boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
+  borderRadius: "15px",
+  // padding: { xs: "20px", sm: "68px" },
+  paddingInline: 'min(68px, 20px)',
+  paddingTop: '68px'
+});
 
 const TitleStyle = {
   fontFamily: "Inter",
@@ -28,13 +39,12 @@ const TitleStyle = {
   color: "#53352D",
   textAlign: "center",
   textTransform: "uppercase",
-  marginTop: "54px",
   marginBottom: "20px",
 };
 
 const FieldsContainer = {
   display: "flex",
-  flexDirection: 'column',
+  flexDirection: "column",
   gap: { xs: "20px", sm: "30px" },
 };
 
@@ -96,10 +106,21 @@ const PasswordField = styled(FormControl)({
   },
 });
 
+const SignUpLogin = {
+  width: "100%",
+  marginInline: "auto",
+  display: "flex",
+  flexDirection: "column",
+  textAlign: "center",
+  gap: "1rem",
+  marginBottom: "2rem",
+};
+
 const ButtonStyles = styled(Button)({
+  textTransform: "capitalize",
   background: "#53352D",
   color: "#FFFFFF",
-  width: "15rem",
+  width: "min(20rem, 15rem)",
   marginInline: "auto",
   height: "3rem",
   marginTop: "3rem",
@@ -118,67 +139,90 @@ const ButtonStyles = styled(Button)({
 });
 
 const Login = () => {
-
   // Show Password
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
 
-  return <Container>
-    <FormContainer>
-    <Box component="h2" sx={TitleStyle}>
+  return (
+    <Container>
+      <FormContainer autoComplete="off">
+        <Box component="h2" sx={TitleStyle}>
           Log In
         </Box>
 
         <Box component="section" sx={FieldsContainer}>
-        <Box sx={TextComponent}>
-              <Box component="label" htmlFor="emailID">
-                Name*
-              </Box>
-              <TextFieldStyle
-                id="emailID"
-                placeholder="Enter your email or ID"
-                // value={values.name}
+          <Box sx={TextComponent}>
+            <Box component="label" htmlFor="emailID">
+              Email/ Employee ID*
+            </Box>
+            <TextFieldStyle
+              id="emailID"
+              placeholder="Enter your email or ID"
+              // value={values.name}
+              // onBlur={handleBlur}
+              // onChange={handleChange}
+              // error={touched.name && Boolean(errors.name)}
+              // helperText={touched.name && errors.name}
+            />
+          </Box>
+          <Box sx={TextComponent}>
+            <Box component="label" htmlFor="password">
+              Password*
+            </Box>
+            <PasswordField variant="outlined">
+              <OutlinedInput
+                id="password"
+                // value={values.password}
                 // onBlur={handleBlur}
                 // onChange={handleChange}
-                // error={touched.name && Boolean(errors.name)}
-                // helperText={touched.name && errors.name}
+                // error={touched.password && Boolean(errors.password)}
+                // helperText={touched.password && errors.password}
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter password"
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="password"
+                      onClick={handleShowPassword}
+                    >
+                      {showPassword ? <BsEye /> : <BsEyeSlash />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
-            </Box>
-            <Box sx={TextComponent}>
-              <Box component="label" htmlFor="password">
-                Password*
-              </Box>
-              <PasswordField variant="outlined">
-                <OutlinedInput
-                  id="password"
-                  // value={values.password}
-                  // onBlur={handleBlur}
-                  // onChange={handleChange}
-                  // error={touched.password && Boolean(errors.password)}
-                  // helperText={touched.password && errors.password}
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter password"
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="password"
-                        onClick={handleShowPassword}
-                      >
-                        {showPassword ? <BsEye /> : <BsEyeSlash />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-                {/* <FormHelperText sx={{ color: "#d32f2f" }}>
+              {/* <FormHelperText sx={{ color: "#d32f2f" }}>
                   {" "}
                   {touched.password && errors.password}
                 </FormHelperText> */}
-                <p style={{justifySelf: 'flex-end', width: 'max-content', position: 'absolute', bottom: '-30px', right: '0', color: '#3683F5', cursor: 'pointer`'}}>Forgot password?</p>
-              </PasswordField>
-            </Box>
+              <p
+                style={{
+                  justifySelf: "flex-end",
+                  width: "max-content",
+                  position: "absolute",
+                  bottom: "-30px",
+                  right: "0",
+                  color: "#3683F5",
+                  cursor: "pointer`",
+                }}
+              >
+                Forgot password?
+              </p>
+            </PasswordField>
+          </Box>
+          <Box component="section" sx={SignUpLogin}>
+            <ButtonStyles type="submit">Log In</ButtonStyles>
+            <p>
+              Don't have an account?{" "}
+              <span style={{ color: "#3683F5", cursor: "pointer" }}>
+                Sign Up
+              </span>
+              {/* <Link to="/">Login</Link> */}
+            </p>
+          </Box>
         </Box>
-    </FormContainer>
-  </Container>;
+      </FormContainer>
+    </Container>
+  );
 };
 
 export default Login;
