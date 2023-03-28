@@ -3,7 +3,7 @@ import React from 'react'
 function Newsletter() {
   return (
     <div className='w-full h-44 bg-[#D9D9D9] px-24 flex items-center justify-center'>
-        <div className='w-full max-w-[1263px] h-20 flex justify-between'>
+        <div className='w-full max-w-[1440px] h-16 flex justify-between'>
             <div className='font-semibold flex flex-col'>
                 <span className='text-3xl'>Newsletter</span>
                 <span className='text-2xl opacity-50'>Join to get free updates everyweek</span>

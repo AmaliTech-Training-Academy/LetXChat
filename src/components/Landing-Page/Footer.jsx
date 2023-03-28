@@ -11,7 +11,7 @@ function Footer() {
   return (
     <>
     <div className='w-full h-[455px] bg-[#755D57E5] px-24 flex items-center justify-center text-white'>
-        <div className='w-full flex justify-between'>
+        <div className='w-full max-w-[1440px] flex justify-between'>
             <div>
                 <div className='font-semibold text-5xl mb-2'>Logo</div>
                 {/* <div className='font-black text-3xl w-48 h-11'>
