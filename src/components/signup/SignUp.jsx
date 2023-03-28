@@ -15,6 +15,7 @@ import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import CameraIcon from "../../assets/camera.png";
 import ProfilePhoto from "../../assets/profile-picture.png";
+import { useFormik } from "formik";
 
 const ContainerStyle = {
   width: "100vw",
@@ -81,48 +82,48 @@ const TextComponent = {
 const TextFieldStyle = styled(TextField)({
   "& .MuiOutlinedInput-root": {
     borderRadius: "9px",
- 
-  '& fieldset': {
-    borderColor: 'rgba(83, 53, 45, 0.9)',
-  },
 
-  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-    border: '1px solid #1570EF',
-  },
+    "& fieldset": {
+      borderColor: "rgba(83, 53, 45, 0.9)",
+    },
 
-  '& ::placeholder': {
-    color: 'rgba(0, 0, 0, 0.8)'
-  },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      border: "1px solid #1570EF",
+    },
 
-  '&:hover fieldset': {
-    borderColor: '#1570EF',
+    "& ::placeholder": {
+      color: "rgba(0, 0, 0, 0.8)",
+    },
+
+    "&:hover fieldset": {
+      borderColor: "#1570EF",
+    },
   },
-}
-})
+});
 
 const PasswordField = styled(FormControl)({
-    "& .MuiOutlinedInput-root": {
-        borderRadius: "9px",
-      
-      '& fieldset': {
-        borderColor: 'rgba(83, 53, 45, 0.9)',
-      },
-      '& input::placeholder': {
-        color: 'rgba(0, 0, 0, 0.8)', 
-      },
-      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        border: '1px solid #1570EF',
-      },
-    
-      '& ::placeholder': {
-        color: 'rgba(0, 0, 0, 0.8)'
-      },
-    
-      '&:hover fieldset': {
-        borderColor: '#1570EF',
-      },
-    }
-})
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "9px",
+
+    "& fieldset": {
+      borderColor: "rgba(83, 53, 45, 0.9)",
+    },
+    "& input::placeholder": {
+      color: "rgba(0, 0, 0, 0.8)",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      border: "1px solid #1570EF",
+    },
+
+    "& ::placeholder": {
+      color: "rgba(0, 0, 0, 0.8)",
+    },
+
+    "&:hover fieldset": {
+      borderColor: "#1570EF",
+    },
+  },
+});
 
 const SignUpLogin = {
   width: "100%",
@@ -135,18 +136,17 @@ const SignUpLogin = {
 };
 
 const ButtonStyles = styled(Button)({
-    background: "#53352D",
-    color: "#FFFFFF",
-    width: "15rem",
-    marginInline: "auto",
-    height: "3rem",
-    marginTop: "3rem",
-    borderRadius: "9px",
-    '&:hover': {
-        background: "rgba(83, 53, 45, 0.7)",
-    }    
-  
-})
+  background: "#53352D",
+  color: "#FFFFFF",
+  width: "15rem",
+  marginInline: "auto",
+  height: "3rem",
+  marginTop: "3rem",
+  borderRadius: "9px",
+  "&:hover": {
+    background: "rgba(83, 53, 45, 0.7)",
+  },
+});
 
 const SignUp = () => {
   // Show Password
@@ -169,9 +169,23 @@ const SignUp = () => {
     event.preventDefault();
   };
 
+  //   Formik Validation
+  const {values, handleBlur, handleChange} = useFormik({
+    initialValues: {
+      image: "",
+      name: "",
+      employeeID: "",
+      username: "",
+      mail: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+
   return (
     <Box component="main" sx={ContainerStyle}>
-      <Box component="form" sx={FormContainer} onSubmit={handleSubmit}>
+      <Box component="form" autoComplete="off" sx={FormContainer} onSubmit={handleSubmit}>
         <Box component="h2" sx={TitleStyle}>
           Sign up
         </Box>
@@ -199,7 +213,9 @@ const SignUp = () => {
                 accept="image/*"
                 type="file"
                 required
+                value={values.image}
                 onChange={handleImageUpload}
+                onBlur={handleBlur}
               />
 
               <img
@@ -221,13 +237,23 @@ const SignUp = () => {
                 required
                 id="name"
                 placeholder="Enter your full name"
+                value={values.name}
+                onBlur={handleBlur}
+                onChange={handleChange}
               />
             </Box>
             <Box sx={TextComponent}>
-              <Box component="label" htmlFor="id">
+              <Box component="label" htmlFor="employeeID">
                 Employee ID*
               </Box>
-              <TextFieldStyle required id="id" placeholder="Enter your ID" sx={{}} />
+              <TextFieldStyle
+                required
+                id="employeeID"
+                placeholder="Enter your ID"
+                value={values.employeeID}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="username">
@@ -237,7 +263,9 @@ const SignUp = () => {
                 required
                 id="username"
                 placeholder="@Ekowsmith"
-                sx={{}}
+                value={values.username}
+                onBlur={handleBlur}
+                onChange={handleChange}
               />
             </Box>
             <Box sx={TextComponent}>
@@ -250,7 +278,9 @@ const SignUp = () => {
                 type="email"
                 inputMode="email"
                 placeholder="Example@amalitech.com"
-                sx={{}}
+                value={values.mail}
+                onBlur={handleBlur}
+                onChange={handleChange}
               />
             </Box>
             <Box sx={TextComponent}>
@@ -260,6 +290,9 @@ const SignUp = () => {
               <PasswordField variant="outlined" required>
                 <OutlinedInput
                   id="password"
+                  value={values.password}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter password"
                   endAdornment={
@@ -276,12 +309,15 @@ const SignUp = () => {
               </PasswordField>
             </Box>
             <Box sx={TextComponent}>
-              <Box component="label" htmlFor="confirm-password">
+              <Box component="label" htmlFor="confirmPassword">
                 Confirm Password*
               </Box>
               <PasswordField variant="outlined" required>
                 <OutlinedInput
-                  id="confirm-password"
+                  id="confirmPassword"
+                  value={values.confirmPassword}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Repeat your password"
                   endAdornment={
@@ -302,7 +338,7 @@ const SignUp = () => {
           <Box component="section" sx={SignUpLogin}>
             <ButtonStyles
               type="submit"
-            //   sx={ButtonStyles}
+              //   sx={ButtonStyles}
             >
               Sign Up
             </ButtonStyles>
