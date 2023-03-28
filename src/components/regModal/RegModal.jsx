@@ -44,7 +44,7 @@ const RegModal = () => {
             Account created
             </Box>
             <Box component='p' sx={{width: 'max-content'}}>
-            Successful
+            Successfully
             </Box>
             </Box>
         </Modal>
