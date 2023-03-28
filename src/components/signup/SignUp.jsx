@@ -3,7 +3,9 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   IconButton,
+  Input,
   InputAdornment,
   InputLabel,
   OutlinedInput,
@@ -15,26 +17,27 @@ import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import CameraIcon from "../../assets/camera.png";
 import ProfilePhoto from "../../assets/profile-picture.png";
-import { useFormik } from "formik";
+import { Field, useFormik } from "formik";
+import { basicSchema } from "../../schemas";
 
 const ContainerStyle = {
   width: "100vw",
   height: "100vh",
   background: "#FFFFFF",
   display: "flex",
-  alignItems: "center",
   justifyContent: "center",
   overflowX: "hidden",
+  padding: "5rem",
 };
 
-const FormContainer = {
+const FormContainer = styled("form")({
   width: "min(900px, 90vw)",
-  //   height: "650px",
-  height: "min(max-content, 90vh)",
+  //   height: "min(max-content, 90vh)",
+  height: "max-content",
   background: "#FFFFFF",
   boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
   borderRadius: "15px",
-};
+});
 
 const TitleStyle = {
   fontFamily: "Inter",
@@ -45,7 +48,7 @@ const TitleStyle = {
   textAlign: "center",
   textTransform: "uppercase",
   marginTop: "54px",
-  marginBottom: "27px",
+  marginBottom: "20px",
 };
 
 const ProfileStyle = {
@@ -61,16 +64,13 @@ const ProfileStyle = {
 };
 
 const FormStyles = {
-  paddingInline: "44px",
+  paddingInline: { xs: "20px", sm: "44px" },
 };
 
 const FieldsContainer = {
   display: "grid",
-  gridTemplateColumns: {
-    xs: "1fr",
-    sm: "repeat(2, 1fr)",
-  },
-  gap: "30px",
+  gridTemplateColumns: "repeat(2, 1fr)",
+  gap: { xs: "20px", sm: "30px" },
 };
 
 const TextComponent = {
@@ -98,6 +98,9 @@ const TextFieldStyle = styled(TextField)({
     "&:hover fieldset": {
       borderColor: "#1570EF",
     },
+    "&.Mui-error fieldset": {
+      borderColor: "#FDA29B",
+    },
   },
 });
 
@@ -115,12 +118,15 @@ const PasswordField = styled(FormControl)({
       border: "1px solid #1570EF",
     },
 
-    "& ::placeholder": {
+    "&::placeholder": {
       color: "rgba(0, 0, 0, 0.8)",
     },
 
     "&:hover fieldset": {
       borderColor: "#1570EF",
+    },
+    "&.Mui-error fieldset": {
+      borderColor: "#FDA29B",
     },
   },
 });
@@ -145,6 +151,14 @@ const ButtonStyles = styled(Button)({
   borderRadius: "9px",
   "&:hover": {
     background: "rgba(83, 53, 45, 0.7)",
+    // cursor: disabled ? "not-allowed" : "pointer",
+  },
+
+  "&.MuiInput-underline::before": {
+    display: "none",
+    background: "blue",
+    height: "2rem",
+    width: "4rem",
   },
 });
 
@@ -157,21 +171,46 @@ const SignUp = () => {
   const handleShowConfirmPassword = () =>
     setShowConfirmPassword((show) => !show);
 
-  // Upload Image
-  const [selectedImage, setSelectedImage] = useState(null);
+    // Upload Image 
+    const [previewImage, setPreviewImage] = useState(null);
 
-  const handleImageUpload = (event) => {
-    setSelectedImage(event.target.files[0]);
-  };
+    const handleFileSelection = (event) => {
+        const file = event.target.files[0];
+        setFieldValue('image', file);
+        setPreviewImage(URL.createObjectURL(file));
+      };
 
-  // Submit Form
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  //   Submit Form
+  const onSubmit = async (values, actions) => {
+    // Upload Image
+    const reader = new FileReader();
+    reader.onload = () => {
+      document
+        .getElementById("image-preview")
+        .setAttribute("src", reader.result);
+    };
 
-  //   Formik Validation
-  const {values, handleBlur, handleChange} = useFormik({
-    initialValues: {
+    console.log("picture", values.image);
+
+    if (values.image) {
+        reader.readAsDataURL(values.image);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    actions.resetForm();
+};
+
+//   Formik Validation
+const {
+    values,
+    errors,
+    isSubmitting,
+    touched,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+  } = useFormik({
+      initialValues: {
       image: "",
       name: "",
       employeeID: "",
@@ -180,51 +219,66 @@ const SignUp = () => {
       password: "",
       confirmPassword: "",
     },
+    validationSchema: basicSchema,
+    onSubmit,
   });
+  
 
-
+  
+  
   return (
-    <Box component="main" sx={ContainerStyle}>
-      <Box component="form" autoComplete="off" sx={FormContainer} onSubmit={handleSubmit}>
+      <Box component="main" sx={ContainerStyle}>
+      <FormContainer autoComplete="off" onSubmit={handleSubmit}>
         <Box component="h2" sx={TitleStyle}>
           Sign up
         </Box>
+        <Box sx={{ width: "100%", height: "max-content", textAlign: "center" }}>
+          <Box sx={ProfileStyle}>
+            <Avatar sx={{ height: "70px", width: "70px" }} src={previewImage} alt="Image Upload" />
+            <Box
+              sx={{
+                position: "absolute",
+                right: "-12px",
+                bottom: "0",
+                background: "#FFFFFF",
+                borderRadius: "50%",
+              }}
+            >
+              <IconButton aria-label="upload picture" component="label">
+                <input
+                  hidden
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  type="file"
+                  value={undefined}
 
-        <Box sx={ProfileStyle}>
-          {selectedImage && (
-            <Avatar
-              sx={{ height: "70px", width: "70px" }}
-              src={URL.createObjectURL(selectedImage)}
-              alt="Image Upload"
-            />
-          )}
-          <Box
-            sx={{
-              position: "absolute",
-              right: "-12px",
-              bottom: "0",
-              background: "#FFFFFF",
-              borderRadius: "50%",
-            }}
-          >
-            <IconButton aria-label="upload picture" component="label">
-              <input
-                hidden
-                accept="image/*"
-                type="file"
-                required
-                value={values.image}
-                onChange={handleImageUpload}
-                onBlur={handleBlur}
-              />
+                onChange={handleFileSelection}
+                  onBlur={handleBlur}
+                />
 
-              <img
-                style={{ width: "1rem", height: "1rem" }}
-                src={CameraIcon}
-                alt="camera"
-              />
-            </IconButton>
+                <img
+                  style={{ width: "1rem", height: "1rem" }}
+                  src={CameraIcon}
+                  alt="camera"
+                />
+              </IconButton>
+            </Box>
           </Box>
+
+          {errors.image && touched.image && (
+            <Box
+              sx={{
+                color: "#d32f2f",
+                fontSize: "0.75rem",
+                fontWeight: "400",
+                marginBottom: "1rem",
+                marginTop: "-1rem",
+              }}
+            >
+              {errors.image}
+            </Box>
+          )}
         </Box>
 
         <Box component="section" sx={FormStyles}>
@@ -234,12 +288,13 @@ const SignUp = () => {
                 Name*
               </Box>
               <TextFieldStyle
-                required
                 id="name"
                 placeholder="Enter your full name"
                 value={values.name}
                 onBlur={handleBlur}
                 onChange={handleChange}
+                error={touched.name && Boolean(errors.name)}
+                helperText={touched.name && errors.name}
               />
             </Box>
             <Box sx={TextComponent}>
@@ -247,12 +302,13 @@ const SignUp = () => {
                 Employee ID*
               </Box>
               <TextFieldStyle
-                required
                 id="employeeID"
                 placeholder="Enter your ID"
                 value={values.employeeID}
                 onBlur={handleBlur}
                 onChange={handleChange}
+                error={touched.employeeID && Boolean(errors.employeeID)}
+                helperText={touched.employeeID && errors.employeeID}
               />
             </Box>
             <Box sx={TextComponent}>
@@ -260,12 +316,13 @@ const SignUp = () => {
                 Username*
               </Box>
               <TextFieldStyle
-                required
                 id="username"
                 placeholder="@Ekowsmith"
                 value={values.username}
                 onBlur={handleBlur}
                 onChange={handleChange}
+                error={touched.username && Boolean(errors.username)}
+                helperText={touched.username && errors.username}
               />
             </Box>
             <Box sx={TextComponent}>
@@ -273,7 +330,6 @@ const SignUp = () => {
                 Work Mail*
               </Box>
               <TextFieldStyle
-                required
                 id="mail"
                 type="email"
                 inputMode="email"
@@ -281,18 +337,22 @@ const SignUp = () => {
                 value={values.mail}
                 onBlur={handleBlur}
                 onChange={handleChange}
+                error={touched.mail && Boolean(errors.mail)}
+                helperText={touched.mail && errors.mail}
               />
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="password">
                 Password*
               </Box>
-              <PasswordField variant="outlined" required>
+              <PasswordField variant="outlined">
                 <OutlinedInput
                   id="password"
                   value={values.password}
                   onBlur={handleBlur}
                   onChange={handleChange}
+                  error={touched.password && Boolean(errors.password)}
+                  helperText={touched.password && errors.password}
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter password"
                   endAdornment={
@@ -306,18 +366,25 @@ const SignUp = () => {
                     </InputAdornment>
                   }
                 />
+                <FormHelperText sx={{ color: "#d32f2f" }}>
+                  {" "}
+                  {touched.password && errors.password}
+                </FormHelperText>
               </PasswordField>
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="confirmPassword">
                 Confirm Password*
               </Box>
-              <PasswordField variant="outlined" required>
+              <PasswordField variant="outlined">
                 <OutlinedInput
                   id="confirmPassword"
                   value={values.confirmPassword}
                   onBlur={handleBlur}
                   onChange={handleChange}
+                  error={
+                    touched.confirmPassword && Boolean(errors.confirmPassword)
+                  }
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Repeat your password"
                   endAdornment={
@@ -331,15 +398,16 @@ const SignUp = () => {
                     </InputAdornment>
                   }
                 />
+                <FormHelperText sx={{ color: "#d32f2f" }}>
+                  {" "}
+                  {touched.confirmPassword && errors.confirmPassword}
+                </FormHelperText>
               </PasswordField>
             </Box>
           </Box>
 
           <Box component="section" sx={SignUpLogin}>
-            <ButtonStyles
-              type="submit"
-              //   sx={ButtonStyles}
-            >
+            <ButtonStyles type="submit">
               Sign Up
             </ButtonStyles>
             <p>
@@ -349,7 +417,7 @@ const SignUp = () => {
             </p>
           </Box>
         </Box>
-      </Box>
+      </FormContainer>
     </Box>
   );
 };
