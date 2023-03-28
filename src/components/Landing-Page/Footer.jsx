@@ -8,6 +8,7 @@ import {
 
 function Footer() {
   return (
+    <>
     <div className='w-full h-[455px] bg-[#755D57E5] px-24 flex items-center justify-center text-white'>
         <div className='w-full flex justify-between'>
             <div>
@@ -42,6 +43,11 @@ function Footer() {
             </div>
         </div>
     </div>
+    <div className='h-20 bg-[#755D57] flex justify-center items-center
+     text-white'>
+        <span>Copyright &copy; Amalitech 2023.All rights reserved.</span>
+    </div>
+    </>
   )
 }
 
