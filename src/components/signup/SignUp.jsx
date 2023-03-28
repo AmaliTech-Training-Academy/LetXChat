@@ -1,19 +1,20 @@
 import {
   Avatar,
   Box,
+  Button,
   FormControl,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
   TextField,
+  styled,
 } from "@mui/material";
 import React, { useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import CameraIcon from "../../assets/camera.png";
-import ProfilePhoto from '../../assets/profile-picture.png'
-import styled from "@emotion/styled";
+import ProfilePhoto from "../../assets/profile-picture.png";
 
 const ContainerStyle = {
   width: "100vw",
@@ -54,8 +55,8 @@ const ProfileStyle = {
   height: "70px",
   width: "70px",
   background: `url(${ProfilePhoto})`,
-    backgroundSize: 'cover',
-  borderRadius: '50%',
+  backgroundSize: "cover",
+  borderRadius: "50%",
 };
 
 const FormStyles = {
@@ -77,9 +78,51 @@ const TextComponent = {
   gap: "8px",
 };
 
-const TextFieldStyle = styled(TextField)`
-  color: "green";
-`;
+const TextFieldStyle = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "9px",
+ 
+  '& fieldset': {
+    borderColor: 'rgba(83, 53, 45, 0.9)',
+  },
+
+  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    border: '1px solid #1570EF',
+  },
+
+  '& ::placeholder': {
+    color: 'rgba(0, 0, 0, 0.8)'
+  },
+
+  '&:hover fieldset': {
+    borderColor: '#1570EF',
+  },
+}
+})
+
+const PasswordField = styled(FormControl)({
+    "& .MuiOutlinedInput-root": {
+        borderRadius: "9px",
+      
+      '& fieldset': {
+        borderColor: 'rgba(83, 53, 45, 0.9)',
+      },
+      '& input::placeholder': {
+        color: 'rgba(0, 0, 0, 0.8)', 
+      },
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        border: '1px solid #1570EF',
+      },
+    
+      '& ::placeholder': {
+        color: 'rgba(0, 0, 0, 0.8)'
+      },
+    
+      '&:hover fieldset': {
+        borderColor: '#1570EF',
+      },
+    }
+})
 
 const SignUpLogin = {
   width: "100%",
@@ -90,6 +133,20 @@ const SignUpLogin = {
   gap: "1rem",
   marginBottom: "2rem",
 };
+
+const ButtonStyles = styled(Button)({
+    background: "#53352D",
+    color: "#FFFFFF",
+    width: "15rem",
+    marginInline: "auto",
+    height: "3rem",
+    marginTop: "3rem",
+    borderRadius: "9px",
+    '&:hover': {
+        background: "rgba(83, 53, 45, 0.7)",
+    }    
+  
+})
 
 const SignUp = () => {
   // Show Password
@@ -121,8 +178,11 @@ const SignUp = () => {
 
         <Box sx={ProfileStyle}>
           {selectedImage && (
-   
-               <Avatar sx={{ height: "70px", width: "70px" }} src={URL.createObjectURL(selectedImage)} alt="Image Upload" /> 
+            <Avatar
+              sx={{ height: "70px", width: "70px" }}
+              src={URL.createObjectURL(selectedImage)}
+              alt="Image Upload"
+            />
           )}
           <Box
             sx={{
@@ -134,7 +194,13 @@ const SignUp = () => {
             }}
           >
             <IconButton aria-label="upload picture" component="label">
-              <input hidden accept="image/*" type="file" required onChange={handleImageUpload} />
+              <input
+                hidden
+                accept="image/*"
+                type="file"
+                required
+                onChange={handleImageUpload}
+              />
 
               <img
                 style={{ width: "1rem", height: "1rem" }}
@@ -149,7 +215,7 @@ const SignUp = () => {
           <Box component="section" sx={FieldsContainer}>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="name">
-                Name
+                Name*
               </Box>
               <TextFieldStyle
                 required
@@ -159,15 +225,15 @@ const SignUp = () => {
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="id">
-                Employee ID
+                Employee ID*
               </Box>
-              <TextField required id="id" placeholder="Enter your ID" sx={{}} />
+              <TextFieldStyle required id="id" placeholder="Enter your ID" sx={{}} />
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="username">
-                Username
+                Username*
               </Box>
-              <TextField
+              <TextFieldStyle
                 required
                 id="username"
                 placeholder="@Ekowsmith"
@@ -176,9 +242,9 @@ const SignUp = () => {
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="mail">
-                Work Mail
+                Work Mail*
               </Box>
-              <TextField
+              <TextFieldStyle
                 required
                 id="mail"
                 type="email"
@@ -189,9 +255,9 @@ const SignUp = () => {
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="password">
-                Password
+                Password*
               </Box>
-              <FormControl variant="outlined" required>
+              <PasswordField variant="outlined" required>
                 <OutlinedInput
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -207,13 +273,13 @@ const SignUp = () => {
                     </InputAdornment>
                   }
                 />
-              </FormControl>
+              </PasswordField>
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="confirm-password">
-                Confirm Password
+                Confirm Password*
               </Box>
-              <FormControl variant="outlined" required>
+              <PasswordField variant="outlined" required>
                 <OutlinedInput
                   id="confirm-password"
                   type={showConfirmPassword ? "text" : "password"}
@@ -229,27 +295,17 @@ const SignUp = () => {
                     </InputAdornment>
                   }
                 />
-              </FormControl>
+              </PasswordField>
             </Box>
           </Box>
 
           <Box component="section" sx={SignUpLogin}>
-            <Box
+            <ButtonStyles
               type="submit"
-              component="button"
-              sx={{
-                background: "#53352D",
-                color: "#FFFFFF",
-                // padding: ".8rem 4.5rem",
-                width: "15rem",
-                marginInline: "auto",
-                height: "3rem",
-                marginTop: "3rem",
-                borderRadius: "9px",
-              }}
+            //   sx={ButtonStyles}
             >
               Sign Up
-            </Box>
+            </ButtonStyles>
             <p>
               Already have an account?{" "}
               <span style={{ color: "#3683F5", cursor: "pointer" }}>Login</span>
