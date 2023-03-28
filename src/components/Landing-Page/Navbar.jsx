@@ -1,9 +1,12 @@
 import React from 'react'
+import logo from '../../assets/logo.png'
 
 function Navbar() {
   return (
     <nav className='w-full h-20 bg-[#FDF4F4] flex justify-between items-center px-24'>
-        <span className='font-black text-3xl'>LOGO</span>
+        <div className='font-black text-3xl w-48 h-11'>
+          <img src={logo} alt="LOGO" className='w-full h-full object-cover'/>
+        </div>
         <ul className='flex gap-11'>
             <li className='text-xl cursor-pointer'>Home</li>
             <li className='text-xl cursor-pointer'>About</li>
