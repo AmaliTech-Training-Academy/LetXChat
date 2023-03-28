@@ -28,6 +28,12 @@ function Footer() {
                     <span className='opacity-60'>Chat rooms</span>
                     <span className='opacity-60'>How it works</span>
                 </div>
+                <div className='flex flex-col gap-5'>
+                    <span className='font-semibold'>Support</span>
+                    <span className='opacity-60'>FAQ’s</span>
+                    <span className='opacity-60'>Help center</span>
+                    <span className='opacity-60'>Consult</span>
+                </div>
                 
             </div>
         </div>
