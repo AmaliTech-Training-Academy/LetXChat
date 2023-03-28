@@ -34,7 +34,11 @@ function Footer() {
                     <span className='opacity-60'>Help center</span>
                     <span className='opacity-60'>Consult</span>
                 </div>
-                
+                <div className='flex flex-col gap-5'>
+                    <span className='font-semibold'>Get in touch</span>
+                    <span className='opacity-60'>hello@amalitech.com</span>
+                    <span className='opacity-60'>+2334567876</span>
+                </div>
             </div>
         </div>
     </div>
