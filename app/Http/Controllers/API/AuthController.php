@@ -16,37 +16,16 @@ class AuthController extends Controller
     {
         $request->validated($request->all());
 
-        // $user = User::where('email', $request->email)->first();
-        // // dd($user->password);
-
-        // $password = Hash::check($request->password, $user->password);
-        // dd($request->password);
-
-        // if (!$password) {
-        //     return 'Invalid password';
-        //     }
-
-        // if (!$user) {
-        //     throw 'Invalid email';
-        //     }
-
-        // Auth::login($user->id);
-
-        // return $user;
-
         if(!Auth::attempt($request->only(['email', 'password']))){
-            return response()->json([
-                'status' => false,
-                'message' => 'Invalid Credentials'
-            ],403);
+            return response()->json(['message' => 'Invalid Credentials'],403);
         }
-        $user = User::where('email', $request->email)->first();
 
+        $user = User::where('email', Auth::user()->email)->first();
+        if(!$user) return;
+        // $response->header('access-token');
         return response()->json([
-            'status' => true,
-            'user' => $user,
+            // 'user' => $user,
             'message' => 'Logged in Successful',
-            'token' => $user->createToken($user->name)->plainTextToken
         ]);
     }
 
