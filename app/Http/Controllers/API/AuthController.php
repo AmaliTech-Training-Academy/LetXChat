@@ -16,37 +16,38 @@ class AuthController extends Controller
     {
         $request->validated($request->all());
 
-        $user = User::where('email', $request->email)->first();
-        // dd($user);"
-
-        $password = Hash::check($request->password, $user->password);
-
-        if (!$password) {
-            return 'Invalid password';
-            }
-
-        if (!$user) {
-            throw 'Invalid email';
-            }
-
-        Auth::login($user->id);
-
-        return $user;
-
-        // if(!Auth::attempt($request->only(['email', 'password']))){
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => 'Invalid Credentials'
-        //     ],403);
-        // }
         // $user = User::where('email', $request->email)->first();
+        // // dd($user->password);
 
-        // return response()->json([
-        //     'status' => true,
-        //     'user' => $user,
-        //     'message' => 'Logged in Successful',
-        //     'token' => $user->createToken($user->name)->plainTextToken
-        // ]);
+        // $password = Hash::check($request->password, $user->password);
+        // dd($request->password);
+
+        // if (!$password) {
+        //     return 'Invalid password';
+        //     }
+
+        // if (!$user) {
+        //     throw 'Invalid email';
+        //     }
+
+        // Auth::login($user->id);
+
+        // return $user;
+
+        if(!Auth::attempt($request->only(['email', 'password']))){
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid Credentials'
+            ],403);
+        }
+        $user = User::where('email', $request->email)->first();
+
+        return response()->json([
+            'status' => true,
+            'user' => $user,
+            'message' => 'Logged in Successful',
+            'token' => $user->createToken($user->name)->plainTextToken
+        ]);
     }
 
 }
