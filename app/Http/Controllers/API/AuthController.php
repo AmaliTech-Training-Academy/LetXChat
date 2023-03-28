@@ -17,7 +17,7 @@ class AuthController extends Controller
         $request->validated($request->all());
 
         $user = User::where('email', $request->email)->first();
-        // dd($user);
+        // dd($user);"
 
         $password = Hash::check($request->password, $user->password);
 
