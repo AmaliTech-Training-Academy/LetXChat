@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
         return [
             // 'employee_id' => 'required|string|max:50|regex:/^[a-zA-Z0-9]/i',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8',
         ];
     }
 }

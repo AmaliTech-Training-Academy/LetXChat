@@ -7,28 +7,46 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        // $request->validated($request->all());
-        // dd($request);
-        if(!Auth::attempt($request->only(['email','password']))){
-            return response()->json([
-                'status' => false,
-                'message' => 'Invalid Credentials'
-            ],403);
-        }
+        $request->validated($request->all());
 
-        $user = User::firstWhere('email', Auth::user()->email);
-        dd($user);
-            // return response()->json([
-            //     'status' => true,
-            //     'user' => $user,
-            //     'message' => 'Logged in Successful',
-            //     'token' => $user->createToken($user->name)->plainTextToken
-            // ]);
+        $user = User::where('email', $request->email)->first();
+        // dd($user);
 
+        $password = Hash::check($request->password, $user->password);
+
+        if (!$password) {
+            return 'Invalid password';
+            }
+
+        if (!$user) {
+            throw 'Invalid email';
+            }
+
+        Auth::login($user->id);
+
+        return $user;
+
+        // if(!Auth::attempt($request->only(['email', 'password']))){
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Invalid Credentials'
+        //     ],403);
+        // }
+        // $user = User::where('email', $request->email)->first();
+
+        // return response()->json([
+        //     'status' => true,
+        //     'user' => $user,
+        //     'message' => 'Logged in Successful',
+        //     'token' => $user->createToken($user->name)->plainTextToken
+        // ]);
     }
+
 }
