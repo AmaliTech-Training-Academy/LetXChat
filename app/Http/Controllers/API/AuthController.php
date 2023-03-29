@@ -21,8 +21,8 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', Auth::user()->email)->first();
-        $token = Hash::make(env('HASH_SECRET'), [$user->_id]);
- 
+        $token = Hash::make(env('TOKEN_SECRET'), [$user->_id]);
+
         return response()->json([
             'message' => 'Logged in Successful',
         ])->header('access-token', $token);
