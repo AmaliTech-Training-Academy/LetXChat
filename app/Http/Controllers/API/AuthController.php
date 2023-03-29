@@ -21,12 +21,10 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', Auth::user()->email)->first();
-        if(!$user) return;
-        // $response->header('access-token');
-        return response()->json([
-            // 'user' => $user,
-            'message' => 'Logged in Successful',
-        ]);
-    }
+        $token = Hash::make(env('HASH_SECRET'), [$user->_id]);
 
+        return response()->json([
+            'message' => 'Logged in Successful',
+        ])->header('access-token', $token);
+    }
 }
