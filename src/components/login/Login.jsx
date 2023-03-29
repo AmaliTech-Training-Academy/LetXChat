@@ -2,15 +2,18 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   OutlinedInput,
   TextField,
   styled,
 } from "@mui/material";
+import { useFormik } from "formik";
 import React from "react";
 import { useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
+import { loginSchema } from "../../schemas";
 
 const Container = styled(Box)({
   width: "100vw",
@@ -27,8 +30,8 @@ const FormContainer = styled("form")({
   boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
   borderRadius: "15px",
   // padding: { xs: "20px", sm: "68px" },
-  paddingInline: 'min(68px, 20px)',
-  paddingTop: '68px'
+  paddingInline: "min(68px, 20px)",
+  paddingTop: "68px",
 });
 
 const TitleStyle = {
@@ -143,9 +146,27 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
 
+  // Submit Form
+  const onSubmit = async (values, actions) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    console.log(values);
+    actions.resetForm();
+  };
+
+  // Formik Validation
+  const { values, errors, touched, handleBlur, handleSubmit, handleChange } =
+    useFormik({
+      initialValues: {
+        emailID: "",
+        password: "",
+      },
+      validationSchema: loginSchema,
+      onSubmit,
+    });
+
   return (
-    <Container>
-      <FormContainer autoComplete="off">
+    <Container component="main">
+      <FormContainer autoComplete="off" onSubmit={handleSubmit}>
         <Box component="h2" sx={TitleStyle}>
           Log In
         </Box>
@@ -158,11 +179,11 @@ const Login = () => {
             <TextFieldStyle
               id="emailID"
               placeholder="Enter your email or ID"
-              // value={values.name}
-              // onBlur={handleBlur}
-              // onChange={handleChange}
-              // error={touched.name && Boolean(errors.name)}
-              // helperText={touched.name && errors.name}
+              value={values.emailID}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              error={touched.emailID && Boolean(errors.emailID)}
+              helperText={touched.emailID && errors.emailID}
             />
           </Box>
           <Box sx={TextComponent}>
@@ -172,11 +193,11 @@ const Login = () => {
             <PasswordField variant="outlined">
               <OutlinedInput
                 id="password"
-                // value={values.password}
-                // onBlur={handleBlur}
-                // onChange={handleChange}
-                // error={touched.password && Boolean(errors.password)}
-                // helperText={touched.password && errors.password}
+                value={values.password}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                error={touched.password && Boolean(errors.password)}
+                helperText={touched.password && errors.password}
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter password"
                 endAdornment={
@@ -190,10 +211,10 @@ const Login = () => {
                   </InputAdornment>
                 }
               />
-              {/* <FormHelperText sx={{ color: "#d32f2f" }}>
+              <FormHelperText sx={{ color: "#d32f2f" }}>
                   {" "}
                   {touched.password && errors.password}
-                </FormHelperText> */}
+                </FormHelperText>
               <p
                 style={{
                   justifySelf: "flex-end",

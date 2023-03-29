@@ -19,3 +19,9 @@ export const basicSchema = yup.object().shape({
     confirmPassword: yup.string().oneOf([yup.ref('password'), null], "Passwords must match").required('This field is required')
 
 })
+
+
+export const loginSchema = yup.object().shape({
+  emailID: yup.string().required('Invalid email or ID. Try again!'),
+  password: yup.string().required('Incorrect password. Try again!'),
+})

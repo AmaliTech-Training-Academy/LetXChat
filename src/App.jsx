@@ -7,8 +7,8 @@ import RegModal from "./components/regModal/RegModal";
 function App() {
   return (
     <div className="App">
-      {/* <RegModal />
-      <SignUp /> */}
+      {/* <RegModal /> */}
+      {/* <SignUp /> */}
       <Login />
     </div>
   );
