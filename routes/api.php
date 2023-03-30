@@ -16,6 +16,15 @@ use Illuminate\Support\Facades\Route;
 */
 Route::prefix('v1')->group(function(){
     Route::middleware('auth:sanctum')->group(function (){
+        Route::get('/profile', function(Request $request){
+            return response()->json([
+                'profile' => [
+                    'name' => $request->user()->fullname,
+                    'email' => $request->user()->email,
+                    'picture' => $request->user()->image
+                ]
+            ]);
+        });
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 
