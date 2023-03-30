@@ -14,12 +14,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::prefix('v1')->group(function(){
+    Route::middleware('auth:sanctum')->group(function (){
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
 
-Route::middleware('auth:sanctum')->get('v1/profile', function (Request $request) {
-    return $request->user();
-});
-
-
-Route::prefix('v1')->controller(AuthController::class)->group(function(){
-    Route::post('/login', 'login');
+    Route::controller(AuthController::class)->group(function(){
+        Route::post('/login', 'login');
+    });
 });
