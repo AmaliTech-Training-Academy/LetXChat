@@ -7,13 +7,13 @@ import Newsletter from "../components/Landing-Page/Newsletter";
 
 function Home() {
   return (
-    <div>
-      <Navbar />
-      <HomeBanner />
-      <BodyContent />
-      <Newsletter />
-      <Footer />
-    </div>
+      <div>
+        <Navbar />
+        <HomeBanner />
+        <BodyContent />
+        <Newsletter />
+        <Footer />
+      </div>
   );
 }
 

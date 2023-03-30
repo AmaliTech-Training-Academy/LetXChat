@@ -9,7 +9,12 @@ function HomeBanner() {
         <div className='w-full px-24 flex flex-col text-center'>
             <h1 className='w-full font-semibold text-7xl mt-32'>Connect, <span className='text-white'>Grow</span> and Inspire.</h1>
             <span className='w-[969px] font-semibold text-3xl mt-5 mx-auto text-[#0000007f]'>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.</span>
-            <button className='border border-[#53352D] rounded-lg flex items-center justify-between p-3 font-semibold text-[#53352D] text-xl w-48 mx-auto mt-5'>watch video <div className='text-bold w-6 h-6 bg-white flex items-center justify-center rounded-full'><img src={playBtn} alt="" /></div> </button>
+            <button className='border border-[#53352D] hover:bg-[#53352D] hover:text-white rounded-lg flex items-center justify-between p-3 font-semibold text-[#53352D] text-xl w-48 mx-auto mt-5'>
+              watch video 
+              <div className='text-bold w-6 h-6 bg-white flex items-center justify-center rounded-full'>
+                <img src={playBtn} alt="" />
+              </div> 
+            </button>
         </div>
         <div className='w-7/12 max-w-[748px] w- h-80 mx-auto mt-5 flex justify-between'>
             <div className='w-[48%] h-60 relative'>

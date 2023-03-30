@@ -10,7 +10,7 @@ function Newsletter() {
             </div>
             <div className='w-[622px] h-full text-2xl flex relative rounded-xl bg-white'>
                 <input type="text" className='w-[409px] rounded-l-xl h-full px-12'placeholder='Enter email address'/>
-                <button className='w-[213px] h-full text-white bg-[#755D57E5] rounded-xl absolute right-0'>Join Now</button>
+                <button className='w-[213px] h-full text-white bg-[#755D57E5] hover:bg-[#53352D] rounded-xl absolute right-0'>Join Now</button>
             </div>
         </div>
     </div>

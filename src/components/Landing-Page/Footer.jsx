@@ -28,21 +28,21 @@ function Footer() {
             <div className='flex gap-32 text-2xl'>
                 <div className='flex flex-col gap-5'>
                     <span className='font-semibold'>Contact</span>
-                    <span className='opacity-60'>Email us</span>
-                    <span className='opacity-60'>Company</span>
-                    <span className='opacity-60'>Chat rooms</span>
-                    <span className='opacity-60'>How it works</span>
+                    <span className='opacity-60 hover:underline'>Email us</span>
+                    <span className='opacity-60 hover:underline'>Company</span>
+                    <span className='opacity-60 hover:underline'>Chat rooms</span>
+                    <span className='opacity-60 hover:underline'>How it works</span>
                 </div>
                 <div className='flex flex-col gap-5'>
                     <span className='font-semibold'>Support</span>
-                    <span className='opacity-60'>FAQ’s</span>
-                    <span className='opacity-60'>Help center</span>
-                    <span className='opacity-60'>Consult</span>
+                    <span className='opacity-60 hover:underline'>FAQ’s</span>
+                    <span className='opacity-60 hover:underline'>Help center</span>
+                    <span className='opacity-60 hover:underline'>Consult</span>
                 </div>
                 <div className='flex flex-col gap-5'>
                     <span className='font-semibold'>Get in touch</span>
-                    <span className='opacity-60'>hello@amalitech.com</span>
-                    <span className='opacity-60'>+2334567876</span>
+                    <span className='opacity-60 hover:underline'>hello@amalitech.com</span>
+                    <span className='opacity-60 hover:underline'>+2334567876</span>
                 </div>
             </div>
         </div>
