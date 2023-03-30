@@ -21,5 +21,10 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('v1')->controller(AuthController::class)->group(function(){
+<<<<<<< HEAD
     Route::post('/register', 'register');
+=======
+    Route::post('/register', 'store');
+    Route::post('/login', 'show');
+>>>>>>> dbd5509 (signup: added controller method to register users)
 });
