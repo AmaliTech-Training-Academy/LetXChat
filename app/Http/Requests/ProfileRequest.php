@@ -23,8 +23,8 @@ class ProfileRequest extends FormRequest
     {
         return [
             'email' => ['regex:/[a-z]+\.+[a-z]+@amalitech\.(com|org)$/m'],
-            'password' => 'required|min:8|confirmed',
-            'password_confirmation' => 'required|min:8'
+            'password' => 'min:8|confirmed',
+            'password_confirmation' => 'min:8'
         ];
     }
 }

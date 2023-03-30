@@ -7,6 +7,7 @@ use App\Http\Resources\ProfileResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -16,14 +17,15 @@ class ProfileController extends Controller
 
     public function update(ProfileRequest $request) {
 
-    $user = User::find(auth()->user()->id);
+        $user = User::find(auth()->user()->id);
 
-    $user->update([
-        'fullname' => $request->fullname,
-        'email' => $request->email,
-        'password' => $request->password
-    ]);
-    return new ProfileResource($user);
+        $user->update([
+            'fullname' => $request->fullname,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+
+        return $user;
 
     }
 
