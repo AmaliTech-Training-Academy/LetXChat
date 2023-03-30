@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserContrller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,15 +18,12 @@ use Illuminate\Support\Facades\Route;
 */
 Route::prefix('v1')->group(function(){
     Route::middleware('auth:sanctum')->group(function (){
-        Route::get('/profile', function(Request $request){
-            return response()->json([
-                'profile' => [
-                    'name' => $request->user()->fullname,
-                    'email' => $request->user()->email,
-                    'picture' => $request->user()->image
-                ]
-            ]);
+
+        Route::controller(ProfileController::class)->group(function(){
+            Route::get('/profile', 'index');
+            Route::patch('/profile/edit', 'update');
         });
+        // Route::apiResource('/profile', UserContrller::class)
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 
