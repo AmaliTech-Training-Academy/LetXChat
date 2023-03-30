@@ -26,7 +26,7 @@ class AuthController extends Controller
         ->orWhere('employee_id', Auth::user()->employee_id)
         ->first();
 
-        $token = $user->createToken($user->_id)->plainTextToken;
+        $token = $user->createToken($user->fullname)->plainTextToken;
 
         return response()
             ->json([
