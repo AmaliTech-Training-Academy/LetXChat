@@ -15,10 +15,14 @@ class ProfileController extends Controller
     }
 
     public function update(ProfileRequest $request) {
-        
-    $user = User::find(auth()->user()->_id);
 
-    $user->update($request->only(['fullname','email','passowrd']));
+    $user = User::find(auth()->user()->id);
+
+    $user->update([
+        'fullname' => $request->fullname,
+        'email' => $request->email,
+        'password' => $request->password
+    ]);
     return new ProfileResource($user);
 
     }
