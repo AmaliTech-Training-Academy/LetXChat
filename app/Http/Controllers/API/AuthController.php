@@ -17,10 +17,15 @@ class AuthController extends Controller
         $request->validated($request->all());
 
         if (!Auth::attempt($request->only(['email', 'password']))) {
-            return response()->json(['message' => 'Invalid Credentials'], 403);
+            if (!Auth::attempt($request->only(['employee_id', 'password']))) {
+                return response()->json(['message' => 'Invalid Credentials'], 403);
+            }
         }
 
-        $user = User::where('email', Auth::user()->email)->first();
+        $user = User::where('email', Auth::user()->email)
+        ->orWhere('employee_id', Auth::user()->employee_id)
+        ->first();
+
         $token = $user->createToken($user->_id)->plainTextToken;
 
         return response()
@@ -33,7 +38,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->user()->currentAccessToken()->delete();
-        
+
         return response()->json(['message' => 'Logged out Successful'], 200);
     }
 }
