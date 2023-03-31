@@ -53,7 +53,7 @@ const TitleStyle = {
 
 const ProfileStyle = {
   marginInline: "auto",
-  width: "max-content",
+  // width: "max-content",
   position: "relative",
   marginBottom: "27px",
   height: "70px",
@@ -142,6 +142,7 @@ const SignUpLogin = {
 };
 
 const ButtonStyles = styled(Button)({
+  textTransform: 'capitalize',
   background: "#53352D",
   color: "#FFFFFF",
   width: "15rem",
@@ -331,7 +332,7 @@ const {
               </Box>
               <TextFieldStyle
                 id="mail"
-                type="email"
+                type="text"
                 inputMode="email"
                 placeholder="Example@amalitech.com"
                 value={values.mail}
