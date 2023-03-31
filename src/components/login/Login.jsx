@@ -14,6 +14,7 @@ import React from "react";
 import { useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { loginSchema } from "../../schemas";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const Container = styled(Box)({
   width: "100vw",
@@ -130,9 +131,18 @@ const ButtonStyles = styled(Button)({
   borderRadius: "9px",
   "&:hover": {
     background: "rgba(83, 53, 45, 0.7)",
-    // cursor: disabled ? "not-allowed" : "pointer",
   },
+});
 
+const LoadingButtonStyles = styled(LoadingButton)({
+  textTransform: "capitalize",
+  background: "#FFFFFF",
+  border: "2px solid #53352D",
+  width: "min(20rem, 15rem)",
+  marginInline: "auto",
+  height: "3rem",
+  marginTop: "3rem",
+  borderRadius: "9px",
   "&.MuiInput-underline::before": {
     display: "none",
     background: "blue",
@@ -154,15 +164,22 @@ const Login = () => {
   };
 
   // Formik Validation
-  const { values, errors, touched, handleBlur, handleSubmit, handleChange } =
-    useFormik({
-      initialValues: {
-        emailID: "",
-        password: "",
-      },
-      validationSchema: loginSchema,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleSubmit,
+    handleChange,
+    isSubmitting,
+  } = useFormik({
+    initialValues: {
+      emailID: "",
+      password: "",
+    },
+    validationSchema: loginSchema,
+    onSubmit,
+  });
 
   return (
     <Container component="main">
@@ -212,9 +229,9 @@ const Login = () => {
                 }
               />
               <FormHelperText sx={{ color: "#d32f2f" }}>
-                  {" "}
-                  {touched.password && errors.password}
-                </FormHelperText>
+                {" "}
+                {touched.password && errors.password}
+              </FormHelperText>
               <p
                 style={{
                   justifySelf: "flex-end",
@@ -231,7 +248,15 @@ const Login = () => {
             </PasswordField>
           </Box>
           <Box component="section" sx={SignUpLogin}>
-            <ButtonStyles type="submit">Log In</ButtonStyles>
+            {isSubmitting ? (
+              <LoadingButtonStyles
+                loading
+                variant="outlined"
+              ></LoadingButtonStyles>
+            ) : (
+              <ButtonStyles type="submit">Log In</ButtonStyles>
+            )}
+
             <p>
               Don't have an account?{" "}
               <span style={{ color: "#3683F5", cursor: "pointer" }}>
