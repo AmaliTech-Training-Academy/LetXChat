@@ -32,9 +32,6 @@ class AuthController extends Controller
         ]);
 
         return new RegisterResource($user);
-        // return response()->json([
-        //     'user' => $user
-        // ]);
     }
 
     public function login(LoginRequest $request)
