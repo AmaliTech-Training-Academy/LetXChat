@@ -5,16 +5,17 @@ import SignUp from '../components/signup/SignUp'
 import Login from '../components/login/Login'
 import About from '../components/about/About'
 import Contact from '../components/contact/Contact'
+import Layout from '../components/layout/Layout'
 function Router() {
   return (
     <Routes>
-        <Route path='/'>
+        <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path='/sign-up' element={<SignUp />}/>
+          <Route path='/sign-in' element={<Login />}/>
+          <Route path='/about' element={<About />}/>
+          <Route path='/contact' element={<Contact />}/>
         </Route>
-        <Route path='/sign-up' element={<SignUp />}/>
-        <Route path='/sign-in' element={<Login />}/>
-        <Route path='/about' element={<About />}/>
-        <Route path='/contact' element={<Contact />}/>
     </Routes>
   )
 }
