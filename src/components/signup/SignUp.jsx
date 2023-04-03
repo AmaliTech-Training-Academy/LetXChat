@@ -204,7 +204,6 @@ const SignUp = () => {
 const {
     values,
     errors,
-    isSubmitting,
     touched,
     handleBlur,
     handleChange,
