@@ -175,12 +175,18 @@ const SignUp = () => {
     setShowpassword_confirmation((show) => !show);
 
   // Upload Image
-  const [previewImage, setPreviewImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
 
   const handleFileSelection = (event) => {
-    const file = event.target.files[0];
-    setFieldValue("image", file);
-    setPreviewImage(URL.createObjectURL(file));
+    let reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setFieldValue("image", reader.result);
+        setImagePreview(reader.result);
+      }
+    };
+    reader.readAsDataURL(event.target.files[0]);
+    console.log(event.target.files[0]);
   };
 
   const dispatch = useDispatch();
@@ -189,30 +195,18 @@ const SignUp = () => {
     (state) => state.auth
   );
 
+
   //   Submit Form
   const onSubmit = async (values, actions) => {
-    // Upload Image
-    const reader = new FileReader();
-    reader.onload = () => {
-      const object = document
-        .getElementById("image-preview")
-
-        if (object !== null) {
-          
-          object.setAttribute("src", reader.result);
-        }
-    };
-
-    if (values.image) {
-      reader.readAsDataURL(values.image);
-    }
-
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // transform email string to lowercase to avoid case sensitivity issues in login
     values.email = values.email.toLowerCase();
 
     dispatch(registerUser(values));
+    if (success) {
+      console.log("Account Created");
+    }
 
     // actions.resetForm();
     console.log(values);
@@ -256,7 +250,7 @@ const SignUp = () => {
           <Box sx={ProfileStyle}>
             <Avatar
               sx={{ height: "70px", width: "70px" }}
-              src={previewImage}
+              src={imagePreview}
               alt="Image Upload"
             />
             <Box

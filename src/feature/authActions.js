@@ -5,21 +5,23 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const registerUser = createAsyncThunk(
   "auth/register",
   async (
-    { image, fullname, employee_id, username, email, password },
-    { rejectWith }
+    { image, fullname, employee_id, username, email, password, password_confirmation },
+    { rejectWithValue }
   ) => {
     try {
       const config = {
         header: {
+          Accept: "application/json",
           "Content-Type": "application/json",
         },
       };
 
       await axios.post(
         `${BASE_URL}/register`,
-        { image, fullname, employee_id, username, email, password },
+        { image, fullname, employee_id, username, email, password, password_confirmation },
         config
       );
+
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
