@@ -40,13 +40,15 @@ class AuthController extends Controller
 
         if (!Auth::attempt($request->only(['email', 'password']))) {
             if (!Auth::attempt($request->only(['employee_id', 'password']))) {
-                return response()->json(['message' => 'Invalid Credentials'], 403);
+                return response()->json(['message' => 'Invalid Credentials'], 404);
             }
         }
 
         $user = User::where('email', Auth::user()->email)
         ->orWhere('employee_id', Auth::user()->employee_id)
         ->first();
+
+        if(!$user) return response()->json(['not found']);
 
         $token = $user->createToken($user->fullname)->plainTextToken;
 

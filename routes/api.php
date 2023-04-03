@@ -16,18 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::prefix('v1')->group(function(){
-    Route::middleware('auth:sanctum')->group(function (){
+    Route::controller(AuthController::class)->group(function(){
+        Route::post('/register', 'register');
+        Route::post('/login', 'login');
+    });
 
+    Route::middleware('auth:sanctum')->group(function (){
         Route::controller(ProfileController::class)->group(function(){
             Route::get('/profile', 'index');
             Route::patch('/profile/edit', 'update');
         });
         Route::post('/logout', [AuthController::class, 'logout']);
-    });
-
-    Route::controller(AuthController::class)->group(function(){
-        Route::post('/register', 'register');
-        Route::post('/login', 'login');
     });
 });
 
