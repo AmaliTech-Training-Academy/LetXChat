@@ -6,6 +6,7 @@ import Login from '../components/login/Login'
 import About from '../components/about/About'
 import Contact from '../components/contact/Contact'
 import Layout from '../components/layout/Layout'
+import Sidebar from '../components/sidebar/Sidebar'
 function Router() {
   return (
     <Routes>
@@ -16,6 +17,7 @@ function Router() {
           <Route path='/about' element={<About />}/>
           <Route path='/contact' element={<Contact />}/>
         </Route>
+        <Route path='/sidebar' element={<Sidebar />}/>
     </Routes>
   )
 }
