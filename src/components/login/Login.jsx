@@ -174,7 +174,7 @@ const Login = () => {
     isSubmitting,
   } = useFormik({
     initialValues: {
-      emailID: "",
+      email: "",
       password: "",
     },
     validationSchema: loginSchema,
@@ -190,17 +190,17 @@ const Login = () => {
 
         <Box component="section" sx={FieldsContainer}>
           <Box sx={TextComponent}>
-            <Box component="label" htmlFor="emailID">
-              Email/ Employee ID*
+            <Box component="label" htmlFor="email">
+              email/ Employee ID*
             </Box>
             <TextFieldStyle
-              id="emailID"
+              id="email"
               placeholder="Enter your email or ID"
-              value={values.emailID}
+              value={values.email}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={touched.emailID && Boolean(errors.emailID)}
-              helperText={touched.emailID && errors.emailID}
+              error={touched.email && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
             />
           </Box>
           <Box sx={TextComponent}>

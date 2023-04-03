@@ -14,11 +14,12 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import CameraIcon from "../../assets/camera.png";
 import ProfilePhoto from "../../assets/profile-picture.png";
 import { Field, useFormik } from "formik";
 import { basicSchema } from "../../schemas";
+import RegModal from "../regModal/RegModal";
 
 const ContainerStyle = {
   width: "100vw",
@@ -142,7 +143,7 @@ const SignUpLogin = {
 };
 
 const ButtonStyles = styled(Button)({
-  textTransform: 'capitalize',
+  textTransform: "capitalize",
   background: "#53352D",
   color: "#FFFFFF",
   width: "15rem",
@@ -168,18 +169,19 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
 
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const handleShowConfirmPassword = () =>
-    setShowConfirmPassword((show) => !show);
+  const [showpassword_confirmation, setShowpassword_confirmation] =
+    useState(false);
+  const handleShowpassword_confirmation = () =>
+    setShowpassword_confirmation((show) => !show);
 
-    // Upload Image 
-    const [previewImage, setPreviewImage] = useState(null);
+  // Upload Image
+  const [previewImage, setPreviewImage] = useState(null);
 
-    const handleFileSelection = (event) => {
-        const file = event.target.files[0];
-        setFieldValue('image', file);
-        setPreviewImage(URL.createObjectURL(file));
-      };
+  const handleFileSelection = (event) => {
+    const file = event.target.files[0];
+    setFieldValue("image", file);
+    setPreviewImage(URL.createObjectURL(file));
+  };
 
   //   Submit Form
   const onSubmit = async (values, actions) => {
@@ -194,14 +196,16 @@ const SignUp = () => {
     console.log("picture", values.image);
 
     if (values.image) {
-        reader.readAsDataURL(values.image);
+      reader.readAsDataURL(values.image);
     }
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    console.log(values);
+    // setTimeout(Navigate(RegModal), 2000);
     actions.resetForm();
-};
+  };
 
-//   Formik Validation
-const {
+  //   Formik Validation
+  const {
     values,
     errors,
     touched,
@@ -210,31 +214,32 @@ const {
     handleSubmit,
     setFieldValue,
   } = useFormik({
-      initialValues: {
+    initialValues: {
       image: "",
-      name: "",
-      employeeID: "",
+      fullname: "",
+      employee_id: "",
       username: "",
-      mail: "",
+      email: "",
       password: "",
-      confirmPassword: "",
+      password_confirmation: "",
     },
     validationSchema: basicSchema,
     onSubmit,
   });
-  
 
-  
-  
   return (
-      <Box component="main" sx={ContainerStyle}>
+    <Box component="main" sx={ContainerStyle}>
       <FormContainer autoComplete="off" onSubmit={handleSubmit}>
         <Box component="h2" sx={TitleStyle}>
           Sign up
         </Box>
         <Box sx={{ width: "100%", height: "max-content", textAlign: "center" }}>
           <Box sx={ProfileStyle}>
-            <Avatar sx={{ height: "70px", width: "70px" }} src={previewImage} alt="Image Upload" />
+            <Avatar
+              sx={{ height: "70px", width: "70px" }}
+              src={previewImage}
+              alt="Image Upload"
+            />
             <Box
               sx={{
                 position: "absolute",
@@ -252,8 +257,7 @@ const {
                   accept="image/*"
                   type="file"
                   value={undefined}
-
-                onChange={handleFileSelection}
+                  onChange={handleFileSelection}
                   onBlur={handleBlur}
                 />
 
@@ -284,36 +288,36 @@ const {
         <Box component="section" sx={FormStyles}>
           <Box component="section" sx={FieldsContainer}>
             <Box sx={TextComponent}>
-              <Box component="label" htmlFor="name">
-                Name*
+              <Box component="label" htmlFor="fullname">
+                fullname*
               </Box>
               <TextFieldStyle
-                id="name"
-                placeholder="Enter your full name"
-                value={values.name}
+                id="fullname"
+                placeholder="Enter your full full name"
+                value={values.fullname}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                error={touched.name && Boolean(errors.name)}
-                helperText={touched.name && errors.name}
+                error={touched.fullname && Boolean(errors.fullname)}
+                helperText={touched.fullname && errors.fullname}
               />
             </Box>
             <Box sx={TextComponent}>
-              <Box component="label" htmlFor="employeeID">
+              <Box component="label" htmlFor="employee_id">
                 Employee ID*
               </Box>
               <TextFieldStyle
-                id="employeeID"
+                id="employee_id"
                 placeholder="Enter your ID"
-                value={values.employeeID}
+                value={values.employee_id}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                error={touched.employeeID && Boolean(errors.employeeID)}
-                helperText={touched.employeeID && errors.employeeID}
+                error={touched.employee_id && Boolean(errors.employee_id)}
+                helperText={touched.employee_id && errors.employee_id}
               />
             </Box>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="username">
-                Username*
+                username*
               </Box>
               <TextFieldStyle
                 id="username"
@@ -326,19 +330,19 @@ const {
               />
             </Box>
             <Box sx={TextComponent}>
-              <Box component="label" htmlFor="mail">
-                Work Mail*
+              <Box component="label" htmlFor="email">
+                Work email*
               </Box>
               <TextFieldStyle
-                id="mail"
+                id="email"
                 type="text"
                 inputMode="email"
                 placeholder="Example@amalitech.com"
-                value={values.mail}
+                value={values.email}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                error={touched.mail && Boolean(errors.mail)}
-                helperText={touched.mail && errors.mail}
+                error={touched.email && Boolean(errors.email)}
+                helperText={touched.email && errors.email}
               />
             </Box>
             <Box sx={TextComponent}>
@@ -373,43 +377,43 @@ const {
               </PasswordField>
             </Box>
             <Box sx={TextComponent}>
-              <Box component="label" htmlFor="confirmPassword">
+              <Box component="label" htmlFor="password_confirmation">
                 Confirm Password*
               </Box>
               <PasswordField variant="outlined">
                 <OutlinedInput
-                  id="confirmPassword"
-                  value={values.confirmPassword}
+                  id="password_confirmation"
+                  value={values.password_confirmation}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   error={
-                    touched.confirmPassword && Boolean(errors.confirmPassword)
+                    touched.password_confirmation &&
+                    Boolean(errors.password_confirmation)
                   }
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={showpassword_confirmation ? "text" : "password"}
                   placeholder="Repeat your password"
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="confirm-password"
-                        onClick={handleShowConfirmPassword}
+                        onClick={handleShowpassword_confirmation}
                       >
-                        {showConfirmPassword ? <BsEye /> : <BsEyeSlash />}
+                        {showpassword_confirmation ? <BsEye /> : <BsEyeSlash />}
                       </IconButton>
                     </InputAdornment>
                   }
                 />
                 <FormHelperText sx={{ color: "#d32f2f" }}>
                   {" "}
-                  {touched.confirmPassword && errors.confirmPassword}
+                  {touched.password_confirmation &&
+                    errors.password_confirmation}
                 </FormHelperText>
               </PasswordField>
             </Box>
           </Box>
 
           <Box component="section" sx={SignUpLogin}>
-            <ButtonStyles type="submit">
-              Sign Up
-            </ButtonStyles>
+            <ButtonStyles type="submit">Sign Up</ButtonStyles>
             <p>
               Already have an account?{" "}
               <span style={{ color: "#3683F5", cursor: "pointer" }}>Login</span>

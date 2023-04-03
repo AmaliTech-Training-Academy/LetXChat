@@ -7,11 +7,11 @@ import Home from "./pages/Home";
 
 function App() {
   return (
-    <div className="App">
+    <div classfullname="App">
       {/* <RegModal /> */}
-      {/* <SignUp /> */}
+      <SignUp />
       {/*  <Home /> */}
-      <Login />    
+      {/* <Login />     */}
     </div>
   );
 }
