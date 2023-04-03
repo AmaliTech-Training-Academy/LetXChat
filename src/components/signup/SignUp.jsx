@@ -20,6 +20,11 @@ import ProfilePhoto from "../../assets/profile-picture.png";
 import { Field, useFormik } from "formik";
 import { basicSchema } from "../../schemas";
 import RegModal from "../regModal/RegModal";
+import axios from "axios";
+import { BASE_URL } from "../../defaultValues/DefaultValues";
+import Cookies from "js-cookie";
+import { registerSuccess, registerFailure } from "../../feature/chatSlice";
+import { useDispatch } from "react-redux";
 
 const ContainerStyle = {
   width: "100vw",
@@ -183,6 +188,9 @@ const SignUp = () => {
     setPreviewImage(URL.createObjectURL(file));
   };
 
+  const dispatch = useDispatch();
+
+
   //   Submit Form
   const onSubmit = async (values, actions) => {
     // Upload Image
@@ -198,10 +206,11 @@ const SignUp = () => {
     if (values.image) {
       reader.readAsDataURL(values.image);
     }
+
     await new Promise((resolve) => setTimeout(resolve, 2000));
+  
+    // actions.resetForm();
     console.log(values);
-    // setTimeout(Navigate(RegModal), 2000);
-    actions.resetForm();
   };
 
   //   Formik Validation
