@@ -11,6 +11,7 @@ export const registerUser = createAsyncThunk(
     try {
       const config = {
         header: {
+          Accept: "application/json",
           "Content-Type": "application/json",
         },
       };
