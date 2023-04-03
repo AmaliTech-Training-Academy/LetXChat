@@ -12,19 +12,17 @@ import {
   TextField,
   styled,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
-import { Link, Navigate } from "react-router-dom";
 import CameraIcon from "../../assets/camera.png";
 import ProfilePhoto from "../../assets/profile-picture.png";
-import { Field, useFormik } from "formik";
+import { useFormik } from "formik";
 import { basicSchema } from "../../schemas";
 import RegModal from "../regModal/RegModal";
-import axios from "axios";
-import { BASE_URL } from "../../defaultValues/DefaultValues";
-import Cookies from "js-cookie";
-import { registerSuccess, registerFailure } from "../../feature/chatSlice";
-import { useDispatch } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../feature/authActions";
+import { useNavigate } from "react-router";
 
 const ContainerStyle = {
   width: "100vw",
@@ -38,7 +36,6 @@ const ContainerStyle = {
 
 const FormContainer = styled("form")({
   width: "min(900px, 90vw)",
-  //   height: "min(max-content, 90vh)",
   height: "max-content",
   background: "#FFFFFF",
   boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
@@ -59,7 +56,6 @@ const TitleStyle = {
 
 const ProfileStyle = {
   marginInline: "auto",
-  // width: "max-content",
   position: "relative",
   marginBottom: "27px",
   height: "70px",
@@ -158,7 +154,6 @@ const ButtonStyles = styled(Button)({
   borderRadius: "9px",
   "&:hover": {
     background: "rgba(83, 53, 45, 0.7)",
-    // cursor: disabled ? "not-allowed" : "pointer",
   },
 
   "&.MuiInput-underline::before": {
@@ -189,29 +184,44 @@ const SignUp = () => {
   };
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const { loading, userInfo, error, success } = useSelector(
+    (state) => state.auth
+  );
 
   //   Submit Form
   const onSubmit = async (values, actions) => {
     // Upload Image
     const reader = new FileReader();
     reader.onload = () => {
-      document
+      const object = document
         .getElementById("image-preview")
-        .setAttribute("src", reader.result);
-    };
 
-    console.log("picture", values.image);
+        if (object !== null) {
+          
+          object.setAttribute("src", reader.result);
+        }
+    };
 
     if (values.image) {
       reader.readAsDataURL(values.image);
     }
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
-  
+
+    // transform email string to lowercase to avoid case sensitivity issues in login
+    values.email = values.email.toLowerCase();
+
+    dispatch(registerUser(values));
+
     // actions.resetForm();
     console.log(values);
   };
+
+  useEffect(() => {
+    // redirect user to confirmation modal if registration was successful
+    if (success) navigate(<RegModal />);
+  }, [navigate]);
 
   //   Formik Validation
   const {
@@ -422,7 +432,9 @@ const SignUp = () => {
           </Box>
 
           <Box component="section" sx={SignUpLogin}>
-            <ButtonStyles type="submit">Sign Up</ButtonStyles>
+            <ButtonStyles type="submit">
+              {loading ? "Loading..." : "Sign Up"}
+            </ButtonStyles>
             <p>
               Already have an account?{" "}
               <span style={{ color: "#3683F5", cursor: "pointer" }}>Login</span>
