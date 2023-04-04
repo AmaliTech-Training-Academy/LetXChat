@@ -128,8 +128,7 @@ const msgArr = [
 function Sidebar() {
   return (
     <div className='h-screen w-[25vw] bg-[#F3F3F3BF] flex flex-col'>
-      <UserCard />
-      {/* <UserCard settings={true}/> */}
+      <UserCard/>
       <Search />
       <CreateGroup />
       <div className='w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center'>

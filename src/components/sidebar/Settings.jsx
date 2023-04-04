@@ -14,6 +14,8 @@ function Settings() {
         <div className='w-full h-[77px] border-y mt-[61px] flex items-center'>
             <Search settings={true}/>
         </div>
+        <button className='bg-[#53352DE5] text-white text-xs px-3 py-2 rounded-lg w-max mt-10 ml-10'>invite a friend</button>
+        <button className='bg-[#FF0000] text-white text-xs px-3 py-2 rounded-lg w-max mt-10 ml-10'>delete account</button>
     </div>
   )
 }
