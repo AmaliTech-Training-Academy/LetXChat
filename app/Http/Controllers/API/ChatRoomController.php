@@ -24,9 +24,19 @@ class ChatRoomController extends Controller
         $request->validate([
             'name' => 'required|unique:chat_rooms|max:255',
         ]);
-        
+
+        try {
+            $imageName = $request->file('image')->getClientOriginalName();
+            $imageName = str_replace(' ', '_', $imageName);
+
+            $image = $request->file('image')->storeAs('images', $imageName);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Must be image file']);
+        }
+
         $chatroom = Chatroom::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'image' => $image
         ]);
 
         return response()->json([$chatroom]);
