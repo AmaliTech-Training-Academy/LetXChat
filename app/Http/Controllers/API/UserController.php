@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\RegisterResource;
 use App\Models\ChatRoom;
 use App\Models\User;
 use Illuminate\Http\Request;
