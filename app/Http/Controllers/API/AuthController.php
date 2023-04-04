@@ -19,9 +19,10 @@ class AuthController extends Controller
         $request->validated($request->all());
 
        try{
-        $image = $request->file('image');
-        $path =  $image->store('public/images');
+        $imageName = $request->file('image')->getClientOriginalName();
+        $image = $request->file('image')->storeAs('images', $imageName);
        }
+       
        catch (\Throwable $e){
         return response()->json(['message' => 'Must be image file']);
        }
@@ -31,7 +32,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'employee_id' => $request->employee_id,
             'email' => $request->email,
-            'image' => $path,
+            'image' => $image,
             'password' => Hash::make($request->password),
         ]);
 
