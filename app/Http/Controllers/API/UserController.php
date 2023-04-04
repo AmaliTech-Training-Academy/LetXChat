@@ -22,7 +22,7 @@ class UserController extends Controller
             'chatrooms' => $chatrooms
         ]);
     }
-    
+
     public function joinChatroom(Request $request)
     {
         $user = User::findOrFail($request->user_id);
