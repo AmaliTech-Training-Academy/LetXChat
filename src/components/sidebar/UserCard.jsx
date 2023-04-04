@@ -5,7 +5,7 @@ import upload from '../../assets/Upload.svg'
 
 function UserCard({settings}) {
   return (
-    <div className={`${settings ? `bg-[#ffffff] w-[346px] h-[100px] gap-4` : `bg-[#EDEDED] w-[300px] h-[100px] justify-between`} rounded-xl mx-auto flex items-center mt-9`}>
+    <div className={`${settings ? `bg-[#ffffff] w-[346px] h-[100px] gap-4` : `bg-[#EDEDED] w-[300px] h-[100px] justify-between`} rounded-xl mx-auto flex items-center mt-9 cursor-pointer`}>
         <div className={`${settings ? `w-[70px] h-[70px] ml-[23px] relative` : `w-[85px] h-[90px] ml-[10px]`} rounded-full`}>
             <img src={userProfile} alt="User Profile" className='w-full h-full object-contain'/>
             {settings && <div className='bg-black absolute rounded bottom-[2px] -right-[1px]'>
