@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Models\Members;
+use App\Http\Controllers\Controller;
+use App\Models\ChatRoom;
 use Illuminate\Http\Request;
 
-class MembersController extends Controller
+class ChatRoomController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,7 +27,7 @@ class MembersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Members $members)
+    public function show(ChatRoom $chatRoom)
     {
         //
     }
@@ -34,7 +35,7 @@ class MembersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Members $members)
+    public function update(Request $request, ChatRoom $chatRoom)
     {
         //
     }
@@ -42,7 +43,7 @@ class MembersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Members $members)
+    public function destroy(ChatRoom $chatRoom)
     {
         //
     }
