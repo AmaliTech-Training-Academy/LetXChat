@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return new ProfileResource(auth()->user());
     }
 
-    public function update(ProfileRequest $request) {
-
+    public function update(ProfileRequest $request)
+    {
         $user = User::find(auth()->user()->id);
 
         $user->update([
@@ -25,7 +26,5 @@ class ProfileController extends Controller
         ]);
 
         return new ProfileResource($user);
-
     }
-
 }

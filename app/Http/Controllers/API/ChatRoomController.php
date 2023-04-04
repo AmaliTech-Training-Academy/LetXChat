@@ -13,7 +13,7 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        //
+        return ChatRoom::all();
     }
 
     /**
@@ -21,7 +21,15 @@ class ChatRoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:chat_rooms|max:255',
+        ]);
+        
+        $chatroom = Chatroom::create([
+            'name' => $request->name
+        ]);
+
+        return response()->json([$chatroom]);
     }
 
     /**

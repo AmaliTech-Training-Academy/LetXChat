@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ChatRoomController;
+use App\Http\Controllers\API\UserController;
 use App\Models\User;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\API\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +30,9 @@ Route::prefix('v1')->group(function(){
         });
         Route::post('/logout', [AuthController::class, 'logout']);
     });
+
+    Route::apiResource('/chatrooms', ChatRoomController::class);
+    Route::apiResource('/user', UserController::class);
 });
 
 Route::get('/v1/users', function(){
