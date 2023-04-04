@@ -176,17 +176,19 @@ const SignUp = () => {
 
   // Upload Image
   const [imagePreview, setImagePreview] = useState("");
+  const [sendImage, setSendImage] = useState("")
 
   const handleFileSelection = (event) => {
     let reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        setFieldValue("image", reader.result);
+       
         setImagePreview(reader.result);
       }
     };
+    setImagePreview(event.target.files[0])
     reader.readAsDataURL(event.target.files[0]);
-    console.log(event.target.files[0]);
+    setFieldValue("image", event.target.files[0]);
   };
 
   const dispatch = useDispatch();
@@ -208,6 +210,8 @@ const SignUp = () => {
       console.log("Account Created");
     }
 
+    console.log(values.image, "Image File");
+  
     // actions.resetForm();
     console.log(values);
   };
@@ -273,6 +277,7 @@ const SignUp = () => {
                   onChange={handleFileSelection}
                   onBlur={handleBlur}
                 />
+
 
                 <img
                   style={{ width: "1rem", height: "1rem" }}
