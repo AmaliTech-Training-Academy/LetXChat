@@ -32,7 +32,7 @@ Route::prefix('v1')->group(function(){
     });
 
     Route::apiResource('/chatrooms', ChatRoomController::class);
-    Route::apiResource('/user', UserController::class);
+    Route::apiResource('/request', UserController::class);
 });
 
 Route::get('/v1/users', function(){

@@ -23,13 +23,14 @@ class ChatRoomController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:chat_rooms|max:255',
+            'image' => 'nullable'
         ]);
 
         try {
             $imageName = $request->file('image')->getClientOriginalName();
             $imageName = str_replace(' ', '_', $imageName);
 
-            $image = $request->file('image')->storeAs('images/chatroom', $imageName);
+            $image = $request->file('image')->storeAs('chatroom_profile', $imageName);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Must be image file']);
         }
@@ -45,9 +46,9 @@ class ChatRoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ChatRoom $chatRoom)
+    public function show($chatRoom)
     {
-        //
+        return ChatRoom::with('users')->findOrFail($chatRoom);
     }
 
     /**

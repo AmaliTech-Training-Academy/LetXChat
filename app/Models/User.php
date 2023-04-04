@@ -46,6 +46,6 @@ class User extends Authenticatable
 
     public function chatrooms()
     {
-        return $this->belongsToMany(Chatroom::class, 'memebers');
+        return $this->belongsToMany(Chatroom::class, 'members');
     }
 }

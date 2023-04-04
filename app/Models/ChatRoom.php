@@ -10,12 +10,17 @@ class ChatRoom extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'image'
     ];
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'memebers');
+        return $this->belongsToMany(User::class, 'members');
     }
 
+    public function hasUser($user)
+    {
+        return $this->users()->where('user_id', $user->id)->exists();
+    }
 }
