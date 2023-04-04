@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-
 class AuthController extends Controller
 {
     public function register(RegisterRequest $request)
@@ -19,8 +18,13 @@ class AuthController extends Controller
 
         $request->validated($request->all());
 
+       try{
         $image = $request->file('image');
-        $path = Storage::disk('public')->put('images', $image);
+        $path =  $image->store('public/images');
+       }
+       catch (\Throwable $e){
+        return response()->json(['message' => 'Must be image file']);
+       }
 
         $user = User::create([
             'fullname' => $request->fullname,

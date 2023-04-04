@@ -29,7 +29,7 @@ class RegisterRequest extends FormRequest
             'email' => ['required','unique:users,email','regex:/[a-z]+\.+[a-z]+@amalitech\.(com|org)$/m'],
             'image' => 'required',
             'password' => 'required|min:8|confirmed',
-            'password_confirmation' => 'required|min:8'
+            'password_confirmation' => 'required|min:8',
         ];
     }
 }
