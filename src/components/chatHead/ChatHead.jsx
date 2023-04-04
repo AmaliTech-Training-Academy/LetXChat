@@ -10,7 +10,7 @@ const Container = styled(Box)({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  height: "73px",
+  height: "8vh",
   borderBottom: "1px solid #D9D9D9",
 });
 
@@ -24,7 +24,6 @@ const ProfileContainer = styled(Box)({
   width: "60px",
   height: "60px",
   borderRadius: "50%",
-  background: "yellow",
 });
 
 const Email = styled("a")({
