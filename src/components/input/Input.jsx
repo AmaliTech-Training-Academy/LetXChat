@@ -12,6 +12,7 @@ const Container = styled(Box)({
   display: "flex",
   alignItems: "center",
   paddingInline: "70px",
+  borderTop: '1px solid #D9D9D9'
 });
 
 const InputCon = styled("div")({
