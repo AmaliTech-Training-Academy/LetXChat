@@ -6,7 +6,7 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (
     { image, fullname, employee_id, username, email, password },
-    { rejectWith }
+    { rejectWithValue }
   ) => {
     try {
       const config = {

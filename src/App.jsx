@@ -8,7 +8,7 @@ import ChatPage from "./pages/chatPage/ChatPage";
 
 function App() {
   return (
-    <div classfullname="App">
+    <div className="App">
       {/* <RegModal /> */}
       {/* <SignUp /> */}
       {/*  <Home /> */}
