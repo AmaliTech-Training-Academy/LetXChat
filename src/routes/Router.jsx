@@ -7,6 +7,7 @@ import About from '../components/about/About'
 import Contact from '../components/contact/Contact'
 import Layout from '../components/layout/Layout'
 import Sidebar from '../components/sidebar/Sidebar'
+import Settings from '../components/sidebar/Settings'
 function Router() {
   return (
     <Routes>
@@ -18,6 +19,7 @@ function Router() {
           <Route path='/contact' element={<Contact />}/>
         </Route>
         <Route path='/sidebar' element={<Sidebar />}/>
+        <Route path='/sidebar/settings' element={<Settings />}/>
     </Routes>
   )
 }

@@ -52,6 +52,76 @@ const msgArr = [
     message: 'Buddy, your order is ready for pickup at our office',
     tim: '16:51',
     no: '4'
+  },
+  {
+    image: mno,
+    mail: 'mno@yahoo.com',
+    message: 'Hello abc!, how are you? I hope everything is good?',
+    tim: '06:23',
+    no: '1'
+  },
+  {
+    image: kofi,
+    mail: 'kofi@gmail.com',
+    message: 'Chale! wahala dey oo',
+    tim: '07:04',
+    no: '1'
+  },
+  {
+    image: ama,
+    mail: 'ama@yahoo.com',
+    message: 'Hey you, we have a class at 1pm. Don’t forget',
+    tim: '09:17',
+    no: '2'
+  },
+  {
+    image: king,
+    mail: 'king@gmail.com',
+    message: 'I done with the design of the house.',
+    tim: '11:00',
+    no: '2'
+  },
+  {
+    image: mum,
+    mail: 'mum@yahoo.com',
+    message: 'Hello son, get me some drugs on your way home',
+    tim: '13:39',
+    no: '1'
+  },
+  {
+    image: king,
+    mail: 'king@gmail.com',
+    message: 'I done with the design of the house.',
+    tim: '11:00',
+    no: '2'
+  },
+  {
+    image: mum,
+    mail: 'mum@yahoo.com',
+    message: 'Hello son, get me some drugs on your way home',
+    tim: '13:39',
+    no: '1'
+  },
+  {
+    image: king,
+    mail: 'king@gmail.com',
+    message: 'I done with the design of the house.',
+    tim: '11:00',
+    no: '2'
+  },
+  {
+    image: mum,
+    mail: 'mum@yahoo.com',
+    message: 'Hello son, get me some drugs on your way home',
+    tim: '13:39',
+    no: '1'
+  },
+  {
+    image: chef,
+    mail: 'chef@gmail.com',
+    message: 'Buddy, your order is ready for pickup at our office',
+    tim: '16:51',
+    no: '4'
   }
 ]
 

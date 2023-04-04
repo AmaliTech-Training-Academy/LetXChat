@@ -4,10 +4,10 @@ import mno from "../../assets/mno.png";
 function ChatCard({item}) {
   return (
     <div className="relative flex items-center w-[280px] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">
-      <div className="w-[65px] h-[65px] rounded-full ml-[3px]">
+      <div className="w-[65px] h-[65px] rounded-full ml-[3px] cursor-pointer">
         <img src={item.image} alt="" className="w-full h-full object-contain" />
       </div>
-      <div className="flex flex-col gap-1 w-full h-max">
+      <div className="flex flex-col gap-1 w-full h-max cursor-pointer">
         <div className="flex items-center justify-between">
           <span className="font-medium text-sm">{item.mail}</span>
           <span className="font-medium text-[10px] mr-1">{item.time}</span>
