@@ -132,11 +132,16 @@ function Sidebar() {
       <Search />
       <CreateGroup />
       <div className='w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center'>
-        {msgArr.map(ele => {
-          return (
-            <ChatCard item={ele}/>
-          )
-        })}
+        {
+          msgArr.length ? msgArr.map(ele => {
+            return (
+              <ChatCard item={ele}/>
+            )
+          }): 
+          <div className='text-black font-bold'>
+            No chats yet...
+          </div>
+        }
       </div>
     </div>
   )
