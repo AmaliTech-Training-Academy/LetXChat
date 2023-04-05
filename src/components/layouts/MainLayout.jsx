@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '../Landing-Page/Navbar'
 import { Outlet } from 'react-router'
 
-function Layout() {
+function MainLayout() {
   return (
     <>
         <Navbar />
@@ -11,4 +11,4 @@ function Layout() {
   )
 }
 
-export default Layout
+export default MainLayout

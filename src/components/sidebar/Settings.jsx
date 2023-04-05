@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 function Settings() {
   return (
-    <div className='h-screen w-[25vw] bg-[#F3F3F3BF] flex flex-col relative'>
+    <>
         <Link to='/sidebar' className='w-8 h-8 bg-[#53352D] rounded-full absolute top-5 right-7 flex justify-center items-center cursor-pointer'>
             <img src={close} alt="" />
         </Link>
@@ -16,7 +16,7 @@ function Settings() {
         </div>
         <button className='bg-[#53352DE5] text-white text-xs px-3 py-2 rounded-lg w-max mt-10 ml-10'>invite a friend</button>
         <button className='bg-[#FF0000] text-white text-xs px-3 py-2 rounded-lg w-max mt-10 ml-10'>delete account</button>
-    </div>
+    </>
   )
 }
 

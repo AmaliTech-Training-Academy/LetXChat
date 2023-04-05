@@ -16,7 +16,7 @@ function ChatCard({item}) {
           <span className="text-[#878787] text-xs">{item.message}</span>
         </div>
       </div>
-      <div className="absolute bottom-3 right-3 w-3 h-3 bg-[#53352DE5] rounded-full font-semibold text-[9px] text-white flex justify-center items-center">
+      <div className="absolute bottom-3 right-3 min-w-max h-3 p-1 bg-[#53352DE5] rounded-full font-semibold text-[9px] text-white flex justify-center items-center">
         {item.no}
       </div>
     </div>

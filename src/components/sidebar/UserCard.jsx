@@ -28,7 +28,7 @@ function UserCard({ settings }) {
         {settings && (
           <>
             <input type="file" id="profile_photo" accept="image/*" hidden/>
-            <label for="profile_photo" className="bg-black absolute rounded bottom-[2px] -right-[1px] cursor-pointer">
+            <label htmlFor="profile_photo" className="bg-black absolute rounded bottom-[2px] -right-[1px] cursor-pointer">
               <img src={upload} alt="" className="" />
             </label>
           </>

@@ -1,7 +1,7 @@
 import React from 'react'
 import UserCard from './UserCard'
 import Search from './Search'
-import CreateGroup from './CreateGroup'
+import CreateGroupSection from './CreateGroupSection'
 import ChatCard from './ChatCard'
 import mno from '../../assets/mno.png'
 import kofi from '../../assets/kofi.png'
@@ -12,6 +12,7 @@ import chef from '../../assets/chef.png'
 
 const msgArr = [
   {
+    id: 1,
     image: mno,
     mail: 'mno@yahoo.com',
     message: 'Hello abc!, how are you? I hope everything is good?',
@@ -19,6 +20,7 @@ const msgArr = [
     no: '1'
   },
   {
+    id: 2,
     image: kofi,
     mail: 'kofi@gmail.com',
     message: 'Chale! wahala dey oo',
@@ -26,6 +28,7 @@ const msgArr = [
     no: '1'
   },
   {
+    id: 3,
     image: ama,
     mail: 'ama@yahoo.com',
     message: 'Hey you, we have a class at 1pm. Don’t forget',
@@ -33,6 +36,7 @@ const msgArr = [
     no: '2'
   },
   {
+    id: 4,
     image: king,
     mail: 'king@gmail.com',
     message: 'I done with the design of the house.',
@@ -40,6 +44,7 @@ const msgArr = [
     no: '2'
   },
   {
+    id: 5,
     image: mum,
     mail: 'mum@yahoo.com',
     message: 'Hello son, get me some drugs on your way home',
@@ -47,6 +52,7 @@ const msgArr = [
     no: '1'
   },
   {
+    id: 6,
     image: chef,
     mail: 'chef@gmail.com',
     message: 'Buddy, your order is ready for pickup at our office',
@@ -54,6 +60,7 @@ const msgArr = [
     no: '4'
   },
   {
+    id: 7,
     image: mno,
     mail: 'mno@yahoo.com',
     message: 'Hello abc!, how are you? I hope everything is good?',
@@ -61,6 +68,7 @@ const msgArr = [
     no: '1'
   },
   {
+    id: 8,
     image: kofi,
     mail: 'kofi@gmail.com',
     message: 'Chale! wahala dey oo',
@@ -68,6 +76,7 @@ const msgArr = [
     no: '1'
   },
   {
+    id: 9,
     image: ama,
     mail: 'ama@yahoo.com',
     message: 'Hey you, we have a class at 1pm. Don’t forget',
@@ -75,6 +84,7 @@ const msgArr = [
     no: '2'
   },
   {
+    id: 10,
     image: king,
     mail: 'king@gmail.com',
     message: 'I done with the design of the house.',
@@ -82,6 +92,7 @@ const msgArr = [
     no: '2'
   },
   {
+    id: 11,
     image: mum,
     mail: 'mum@yahoo.com',
     message: 'Hello son, get me some drugs on your way home',
@@ -89,6 +100,7 @@ const msgArr = [
     no: '1'
   },
   {
+    id: 12,
     image: king,
     mail: 'king@gmail.com',
     message: 'I done with the design of the house.',
@@ -96,6 +108,7 @@ const msgArr = [
     no: '2'
   },
   {
+    id: 13,
     image: mum,
     mail: 'mum@yahoo.com',
     message: 'Hello son, get me some drugs on your way home',
@@ -103,6 +116,7 @@ const msgArr = [
     no: '1'
   },
   {
+    id: 14,
     image: king,
     mail: 'king@gmail.com',
     message: 'I done with the design of the house.',
@@ -110,6 +124,7 @@ const msgArr = [
     no: '2'
   },
   {
+    id: 15,
     image: mum,
     mail: 'mum@yahoo.com',
     message: 'Hello son, get me some drugs on your way home',
@@ -117,6 +132,7 @@ const msgArr = [
     no: '1'
   },
   {
+    id: 16,
     image: chef,
     mail: 'chef@gmail.com',
     message: 'Buddy, your order is ready for pickup at our office',
@@ -127,15 +143,15 @@ const msgArr = [
 
 function Sidebar() {
   return (
-    <div className='h-screen w-[25vw] bg-[#F3F3F3BF] flex flex-col'>
+    <>
       <UserCard/>
       <Search />
-      <CreateGroup />
+      {/* <CreateGroupSection /> */}
       <div className='w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center'>
         {
           msgArr.length ? msgArr.map(ele => {
             return (
-              <ChatCard item={ele}/>
+              <ChatCard item={ele} key={ele.id}/>
             )
           }): 
           <div className='text-black font-bold'>
@@ -143,7 +159,7 @@ function Sidebar() {
           </div>
         }
       </div>
-    </div>
+    </>
   )
 }
 
