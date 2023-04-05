@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => 'sometimes|required_without:username|email',
-            'employee_id' => 'sometimes|required_without:email|string',
+            'chat_id' => 'sometimes|required_without:email|string',
             'password' => 'required|min:8',
         ];
     }

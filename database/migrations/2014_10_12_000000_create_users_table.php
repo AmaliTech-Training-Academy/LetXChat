@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('fullname');
             $table->string('username')->unique();
-            $table->string('employee_id');
+            $table->string('chat_id');
             $table->string('email')->unique();
             $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
