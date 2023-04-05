@@ -7,7 +7,7 @@ import chat_room from '../../assets/chat_room.png'
 
 function Cards() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 md:px-11">
+    <div className="w-full grid grid-cols-2 md:grid-cols-4">
       <Card title="Total Users" users="1,094" image={total_users}/>
       <Card title="Active Users" users="321" image={active_users}/>
       <Card title="Pending Request" users="98" image={pending_users}/>
