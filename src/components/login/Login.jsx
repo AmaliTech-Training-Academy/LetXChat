@@ -195,6 +195,7 @@ const Login = () => {
             </Box>
             <TextFieldStyle
               id="emailID"
+              name="emailID"
               placeholder="Enter your email or ID"
               value={values.emailID}
               onBlur={handleBlur}
