@@ -32,6 +32,7 @@ Route::prefix('v1')->group(function(){
     });
 
     Route::apiResource('/chatrooms', ChatRoomController::class);
+    Route::delete('/chatroom/{room_id}/{user_id}', [ChatRoomController::class, 'removeUser']);
     Route::apiResource('/request', RequestController::class);
 
     Route::get('/users', function(){

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ChatRoomMembersResource;
 use App\Http\Resources\ChatRoomResource;
-use App\Http\Resources\ChatRoomUsersResource;
 use App\Models\ChatRoom;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ChatRoomController extends Controller
@@ -43,7 +43,7 @@ class ChatRoomController extends Controller
      */
     public function show($chatRoom)
     {
-        $chatroomMembers = ChatRoom::with('users:fullname,email')->findOrFail($chatRoom);
+        $chatroomMembers = ChatRoom::with('users:id,fullname,email')->findOrFail($chatRoom);
         return new ChatRoomMembersResource($chatroomMembers);
     }
 
@@ -69,7 +69,23 @@ class ChatRoomController extends Controller
 
     public function destroy($chatRoom)
     {
-        return ChatRoom::whereId($chatRoom)->delete();
+        $delete = ChatRoom::whereId($chatRoom)->delete();
+
+        if (!$delete) return response()->json([
+            'message' => 'Not Found'
+        ],404);
+
+        return $delete;
+    }
+
+    public function removeUser(User $user,ChatRoom $chatRoom)
+    {
+        // $chatRoom = ChatRoom::with('users')->find($chatRoom);
+        // dd($chatRoom);
+        // if (!($chatRoom->hasUser($user)))
+        //     return response()->json(['message'=>'User is not the current chatroom'],404);
+        return $user->chatrooms()->detach($chatRoom);
+
     }
 
     public function checkImage($request)

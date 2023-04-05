@@ -15,6 +15,7 @@ class UserRoomsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+                'id' => $this->id,
                 'name' => $this->fullname,
                 'employee_id' => $this->employee_id,
                 'email' => $this->email,
