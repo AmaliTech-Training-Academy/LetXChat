@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChatRoomMembersResource;
 use App\Http\Resources\ChatRoomResource;
+use App\Http\Resources\ChatRoomUsersResource;
 use App\Models\ChatRoom;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,6 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        // $chatRooms = ;
         return ChatRoomResource::collection(ChatRoom::all());
     }
 
@@ -42,9 +43,8 @@ class ChatRoomController extends Controller
      */
     public function show($chatRoom)
     {
-        return ChatRoom::with('users')->findOrFail($chatRoom);
-        $details = ChatRoom::with('users')->findOrFail($chatRoom);
-        return new ChatRoomResource($details);
+        $chatroomMembers = ChatRoom::with('users:fullname,email')->findOrFail($chatRoom);
+        return new ChatRoomMembersResource($chatroomMembers);
     }
 
     /**
@@ -53,7 +53,7 @@ class ChatRoomController extends Controller
     public function update(Request $request, $chatRoom)
     {
         $chatRoom = ChatRoom::whereId($chatRoom)->first();
-        dd($chatRoom);
+        dd($request->all());
 
         $chatRoom->update([
             'name' => $request->name,
@@ -61,7 +61,6 @@ class ChatRoomController extends Controller
         ]);
 
         return new ChatRoomResource($chatRoom);
-        // return response()->json([$chatRoom]);
     }
 
     // /**
