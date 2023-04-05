@@ -3,30 +3,33 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChatRoomResource;
+use App\Http\Resources\RegisterResource;
+use App\Http\Resources\UserRoomsResource;
 use App\Models\ChatRoom;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class RequestController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::all();
-        $chatrooms = ChatRoom::all();
-
         return response()->json([
-            'users' => $users,
-            'chatrooms' => $chatrooms
+            'users' => RegisterResource::collection(User::all()),
+            'chatrooms' => ChatRoomResource::collection(ChatRoom::all())
         ]);
     }
 
     public function store(Request $request)
     {
-        $user = User::findOrFail($request->user_id);
-        $chatroom = Chatroom::findOrFail($request->chat_room_id);
+        $user = User::find($request->user_id);
+        $chatroom = Chatroom::find($request->chat_room_id);
+
+        if(!$user) return response()->json(['message' => 'User Not Found']);
+        if(!$chatroom) return response()->json(['message' => 'Chatroom Not Found']);
 
         if ($chatroom->hasUser($user))
             return response()->json([ 'message' => 'Already joined ' . $chatroom->name ]);
@@ -41,7 +44,8 @@ class UserController extends Controller
      */
     public function show($user)
     {
-        return User::with('chatrooms')->findOrFail($user);
+        $userRooms = User::with('chatrooms:name,image')->findOrFail($user);
+        return new UserRoomsResource($userRooms);
     }
 
     // /**

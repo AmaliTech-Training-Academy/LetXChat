@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ChatRoomController;
-use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\RequestController;
 use App\Models\User;
 use App\Http\Controllers\API\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +32,7 @@ Route::prefix('v1')->group(function(){
     });
 
     Route::apiResource('/chatrooms', ChatRoomController::class);
-    Route::apiResource('/request', UserController::class);
+    Route::apiResource('/request', RequestController::class);
 
     Route::get('/users', function(){
         return User::all();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChatRoomResource;
 use App\Models\ChatRoom;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,8 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        return ChatRoom::all();
+        // $chatRooms = ;
+        return ChatRoomResource::collection(ChatRoom::all());
     }
 
     /**
@@ -31,7 +33,8 @@ class ChatRoomController extends Controller
             'image' => $this->checkImage($request)
         ]);
 
-        return response()->json([$chatRoom]);
+        return new ChatRoomResource($chatRoom);
+
     }
 
     /**
@@ -40,6 +43,8 @@ class ChatRoomController extends Controller
     public function show($chatRoom)
     {
         return ChatRoom::with('users')->findOrFail($chatRoom);
+        $details = ChatRoom::with('users')->findOrFail($chatRoom);
+        return new ChatRoomResource($details);
     }
 
     /**
@@ -47,21 +52,22 @@ class ChatRoomController extends Controller
      */
     public function update(Request $request, $chatRoom)
     {
-        dd($chatRoom);
-
         $chatRoom = ChatRoom::whereId($chatRoom)->first();
+        dd($chatRoom);
 
         $chatRoom->update([
             'name' => $request->name,
             'image' => $this->checkImage($request)
         ]);
 
-        return response()->json([$chatRoom]);
+        return new ChatRoomResource($chatRoom);
+        // return response()->json([$chatRoom]);
     }
 
     // /**
     //  * Remove the specified resource from storage.
     //  */
+
     public function destroy($chatRoom)
     {
         return ChatRoom::whereId($chatRoom)->delete();
@@ -78,6 +84,5 @@ class ChatRoomController extends Controller
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Must be image file']);
         }
-
     }
 }
