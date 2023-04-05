@@ -63,8 +63,8 @@ class AuthController extends Controller
             ->json([
                 'message' => 'Logged in Successful',
                 'access-token' => $token
-            ])
-            ->header('access-token', $token);
+            ]);
+
     }
 
     public function logout()
