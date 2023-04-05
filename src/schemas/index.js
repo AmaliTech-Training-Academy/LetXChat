@@ -4,8 +4,7 @@ const passwordRules =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const usernameRules = /^[a-zA-Z0-9_]+$/;
 const usernameUnderscoreRules = /^[a-zA-Z0-9](?:_?[a-zA-Z0-9])*[a-zA-Z0-9]$/;
-const amalitechemail =
-  /^[a-zA-Z0-9]+([-][a-zA-Z0-9]+)?(\.[a-zA-Z0-9]+)+@amalitech\.com$/;
+const amalitechemail = /^[a-zA-Z0-9]+([-][a-zA-Z0-9]+)?(\.[a-zA-Z0-9]+)+@(amalitech\.com|amalitech\.org)$/
 
 export const basicSchema = yup.object().shape({
   image: yup.mixed().required("This field is required"),
