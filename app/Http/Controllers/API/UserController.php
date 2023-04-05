@@ -25,11 +25,11 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user = User::findOrFail($request->user_id)->withMessage('User Not found');
+        $user = User::findOrFail($request->user_id);
         $chatroom = Chatroom::findOrFail($request->chat_room_id);
 
         if ($chatroom->hasUser($user))
-            return response()->json([ 'message' => 'Already joined' ]);
+            return response()->json([ 'message' => 'Already joined ' . $chatroom->name ]);
 
         $user->chatrooms()->attach($chatroom);
 
