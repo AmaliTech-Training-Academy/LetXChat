@@ -23,6 +23,7 @@ import RegModal from "../regModal/RegModal";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../feature/authActions";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const ContainerStyle = {
   width: "100vw",
@@ -176,7 +177,6 @@ const SignUp = () => {
 
   // Upload Image
   const [imagePreview, setImagePreview] = useState("");
-  const [sendImage, setSendImage] = useState("")
 
   const handleFileSelection = (event) => {
     let reader = new FileReader();
@@ -193,7 +193,7 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, userInfo, error, success } = useSelector(
+  const { loading, success } = useSelector(
     (state) => state.auth
   );
 
@@ -206,20 +206,13 @@ const SignUp = () => {
     values.email = values.email.toLowerCase();
 
     dispatch(registerUser(values));
-    if (success) {
-      console.log("Account Created");
-    }
-
-    console.log(values.image, "Image File");
-  
-    // actions.resetForm();
-    console.log(values);
+    actions.resetForm();
   };
 
   useEffect(() => {
     // redirect user to confirmation modal if registration was successful
-    if (success) navigate(<RegModal />);
-  }, [navigate]);
+    if (success) navigate('/login');
+  }, [navigate, success]);
 
   //   Formik Validation
   const {
@@ -436,7 +429,7 @@ const SignUp = () => {
             </ButtonStyles>
             <p>
               Already have an account?{" "}
-              <span style={{ color: "#3683F5", cursor: "pointer" }}>Login</span>
+              <Link to='/login' style={{ color: "#3683F5", cursor: "pointer" }}>Login</Link>
               {/* <Link to="/">Login</Link> */}
             </p>
           </Box>
