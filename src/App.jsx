@@ -1,17 +1,12 @@
-import { createTheme } from "@mui/material";
-import Login from "./components/login/Login";
-import SignUp from "./components/signup/SignUp";
-import RegModal from "./components/regModal/RegModal";
 
-import Home from "./pages/Home";
+import Router from "./routes/Router";
 
 function App() {
   return (
     <div classfullname="App">
-      {/* <RegModal /> */}
-      <SignUp />
-      {/*  <Home /> */}
-      {/* <Login />     */}
+      {/* <SignUp /> */}
+
+    <Router />
     </div>
   );
 }

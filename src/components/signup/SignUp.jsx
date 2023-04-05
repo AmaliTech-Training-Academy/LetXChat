@@ -36,7 +36,7 @@ const ContainerStyle = {
 };
 
 const FormContainer = styled("form")({
-  width: "min(900px, 90vw)",
+  width: "min(850px, 90vw)",
   height: "max-content",
   background: "#FFFFFF",
   boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
@@ -71,8 +71,8 @@ const FormStyles = {
 };
 
 const FieldsContainer = {
-  display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
+  display: "flex",
+  flexWrap: 'wrap',
   gap: { xs: "20px", sm: "30px" },
 };
 
@@ -80,6 +80,14 @@ const TextComponent = {
   display: "flex",
   flexDirection: "column",
   gap: "8px",
+  width: '48%'
+};
+
+const EmailComponent = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "8px",
+  width: '100%'
 };
 
 const TextFieldStyle = styled(TextField)({
@@ -182,21 +190,17 @@ const SignUp = () => {
     let reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-       
         setImagePreview(reader.result);
       }
     };
-    setImagePreview(event.target.files[0])
+    setImagePreview(event.target.files[0]);
     reader.readAsDataURL(event.target.files[0]);
     setFieldValue("image", event.target.files[0]);
   };
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, success } = useSelector(
-    (state) => state.auth
-  );
-
+  const { loading, success } = useSelector((state) => state.auth);
 
   //   Submit Form
   const onSubmit = async (values, actions) => {
@@ -205,13 +209,23 @@ const SignUp = () => {
     // transform email string to lowercase to avoid case sensitivity issues in login
     values.email = values.email.toLowerCase();
 
+    sendReg()
+
+    // actions.resetForm();
+
+
     dispatch(registerUser(values));
-    actions.resetForm();
   };
 
-  useEffect(() => {
+const sendReg =   useEffect(() => {
     // redirect user to confirmation modal if registration was successful
-    if (success) navigate('/login');
+    if (success) {
+      navigate("/signup/signupmodal");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    }
   }, [navigate, success]);
 
   //   Formik Validation
@@ -227,7 +241,6 @@ const SignUp = () => {
     initialValues: {
       image: "",
       fullname: "",
-      employee_id: "",
       username: "",
       email: "",
       password: "",
@@ -271,7 +284,6 @@ const SignUp = () => {
                   onBlur={handleBlur}
                 />
 
-
                 <img
                   style={{ width: "1rem", height: "1rem" }}
                   src={CameraIcon}
@@ -300,7 +312,7 @@ const SignUp = () => {
           <Box component="section" sx={FieldsContainer}>
             <Box sx={TextComponent}>
               <Box component="label" htmlFor="fullname">
-                fullname*
+                Fullname*
               </Box>
               <TextFieldStyle
                 id="fullname"
@@ -313,22 +325,8 @@ const SignUp = () => {
               />
             </Box>
             <Box sx={TextComponent}>
-              <Box component="label" htmlFor="employee_id">
-                Employee ID*
-              </Box>
-              <TextFieldStyle
-                id="employee_id"
-                placeholder="Enter your ID"
-                value={values.employee_id}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={touched.employee_id && Boolean(errors.employee_id)}
-                helperText={touched.employee_id && errors.employee_id}
-              />
-            </Box>
-            <Box sx={TextComponent}>
               <Box component="label" htmlFor="username">
-                username*
+                Username*
               </Box>
               <TextFieldStyle
                 id="username"
@@ -340,9 +338,9 @@ const SignUp = () => {
                 helperText={touched.username && errors.username}
               />
             </Box>
-            <Box sx={TextComponent}>
+            <Box sx={EmailComponent}>
               <Box component="label" htmlFor="email">
-                Work email*
+                Work Email*
               </Box>
               <TextFieldStyle
                 id="email"
@@ -429,7 +427,9 @@ const SignUp = () => {
             </ButtonStyles>
             <p>
               Already have an account?{" "}
-              <Link to='/login' style={{ color: "#3683F5", cursor: "pointer" }}>Login</Link>
+              <Link to="/login" style={{ color: "#3683F5", cursor: "pointer" }}>
+                Login
+              </Link>
               {/* <Link to="/">Login</Link> */}
             </p>
           </Box>

@@ -16,7 +16,6 @@ export const basicSchema = yup.object().shape({
   // }),
 
   fullname: yup.string().trim().required("This field is required"),
-  employee_id: yup.string().trim().required("This field is required"),
   username: yup
     .string()
     .trim()
