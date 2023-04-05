@@ -10,11 +10,14 @@ import {
   styled,
 } from "@mui/material";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { loginSchema } from "../../schemas";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../feature/authActions";
 
 const Container = styled(Box)({
   width: "100vw",
@@ -156,30 +159,40 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
 
+  const dispatch = useDispatch();
+  const { loading, userInfo } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
   // Submit Form
   const onSubmit = async (values, actions) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log(values);
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    dispatch(loginUser(values));
+
     actions.resetForm();
+    console.log(userInfo);
   };
 
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     setTimeout(() => {
+  //       return navigate("/chats");
+  //     }, 2000)
+  //   }
+  //   console.log(userInfo, "Success Message");
+  // }, [userInfo,]);
+
   // Formik Validation
-  const {
-    values,
-    errors,
-    touched,
-    handleBlur,
-    handleSubmit,
-    handleChange,
-    isSubmitting,
-  } = useFormik({
-    initialValues: {
-      emailID: "",
-      password: "",
-    },
-    validationSchema: loginSchema,
-    onSubmit,
-  });
+  const { values, errors, touched, handleBlur, handleSubmit, handleChange } =
+    useFormik({
+      initialValues: {
+        emailID: "",
+        password: "",
+      },
+      validationSchema: loginSchema,
+      onSubmit,
+    });
 
   return (
     <Container component="main">
@@ -194,6 +207,7 @@ const Login = () => {
               Email/ Employee ID*
             </Box>
             <TextFieldStyle
+              type="text"
               id="emailID"
               name="emailID"
               placeholder="Enter your email or ID"
@@ -248,8 +262,9 @@ const Login = () => {
               </p>
             </PasswordField>
           </Box>
+
           <Box component="section" sx={SignUpLogin}>
-            {isSubmitting ? (
+            {loading ? (
               <LoadingButtonStyles
                 loading
                 variant="outlined"
@@ -260,9 +275,12 @@ const Login = () => {
 
             <p>
               Don't have an account?{" "}
-              <span style={{ color: "#3683F5", cursor: "pointer" }}>
+              <Link
+                to="/signup"
+                style={{ color: "#3683F5", cursor: "pointer" }}
+              >
                 Sign Up
-              </span>
+              </Link>
               {/* <Link to="/">Login</Link> */}
             </p>
           </Box>
