@@ -1,11 +1,12 @@
 import { Box, styled } from "@mui/material";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import MessageImage from "../../assets/user-image.png";
 import Image from "../../assets/collaboration-section.png";
+import io  from "socket.io-client";
 
 const Container = styled(Box)({
   display: "flex",
-  gap: "20px",
+  gap: "10px",
   alignItems: "center",
 });
 
@@ -25,20 +26,30 @@ const MessageContent = styled(Box)({
   gap: "10px",
 });
 
-const Text = styled("p")({
+const TextContainer = styled(Box)({
   background: "#878787",
   padding: "10px 20px",
   borderRadius: "10px",
   color: "#FFFFFF",
-  maxWidth: '50%'
+  maxWidth: "50%",
+  position: "relative",
 });
+
+const Time = styled("p")({
+  position: "absolute",
+  right: "0.4rem",
+  bottom: "0.2rem",
+  fontSize: '0.7rem',
+});
+
+const Text = styled("p")({});
 
 const OwnerContainer = styled(Box)({
   display: "flex",
-  gap: "20px",
+  gap: "10px",
   flexDirection: "row-reverse",
   alignItems: "center",
-  marginBlock: '2rem'
+  marginBlock: "2rem",
 });
 
 const OwnerMessageInfo = styled(Box)({});
@@ -55,18 +66,36 @@ const OwnerMessageContent = styled(Box)({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
-  alignItems: 'flex-end'
+  alignItems: "flex-end",
 });
 
-const OwnerText = styled("p")({
+const OwnerTextContainer = styled(Box)({
   background: "rgba(83, 53, 45, 0.9)",
   padding: "10px 20px",
   borderRadius: "10px",
   color: "#FFFFFF",
-  maxWidth: '50%'
+  maxWidth: "50%",
+  position: "relative",
 });
 
+const OwnerTime = styled("p")({
+  position: "absolute",
+  right: "0.4rem",
+  bottom: "0.2rem",
+  fontSize: '0.7rem',
+});
+
+const OwnerText = styled("p")({});
+
 const Message = () => {
+
+  const CUSTOM_URL = 'http://localhost:4000/chat'
+  const socket = io.connect(`${CUSTOM_URL}`)
+
+  const sendMessage = () => { 
+    socket.emit() 
+  } 
+
   return (
     <>
       <Container component="article">
@@ -79,8 +108,13 @@ const Message = () => {
         </MessageInfo>
         <Status></Status>
         <MessageContent>
-          <Text>Hello Michael, ddfj fjdklsjkfweoo fjslfksjdfkslfsf eojwjoe jdsklsd</Text>
-          <img src={Image} style={{width: '50%'}} alt="image" />
+          <TextContainer>
+            <Text>
+              Hello Michael, ddfj fjdklsjkfweoo fjslfksjdfkslfsf eojwjoe jdsklsd
+            </Text>
+            <Time>02:20</Time>
+          </TextContainer>
+          <img src={Image} style={{ width: "50%" }} alt="image" />
         </MessageContent>
       </Container>
       <OwnerContainer component="article">
@@ -93,8 +127,14 @@ const Message = () => {
         </OwnerMessageInfo>
         <OwnerStatus></OwnerStatus>
         <OwnerMessageContent>
-          <OwnerText>Hello Michael ouisdhfos fjlshfsdfs;lfj;s sdfisjf;skls</OwnerText>
-          <img src={Image} style={{width: '50%'}} alt="image" />
+          <OwnerTextContainer>
+
+          <OwnerText>
+            Hello Michael ouisdhfos fjlshfsdfs;lfj;s sdfisjf;skls
+          </OwnerText>
+          <OwnerTime>02:31</OwnerTime>
+          </OwnerTextContainer>
+          <img src={Image} style={{ width: "50%" }} alt="image" />
         </OwnerMessageContent>
       </OwnerContainer>
     </>
