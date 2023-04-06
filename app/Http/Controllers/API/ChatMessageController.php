@@ -19,37 +19,39 @@ class ChatMessageController extends Controller
     public function messages(Request $request, $roomId)
     {
         // dd($roomId);
-        return ChatMessage::whereId($roomId)
-        ->with('user')
-        ->orderBy('created_at', 'DESC')
-        ->get();
+        $chatMessage = ChatMessage::whereId($roomId)
+            ->with('user:id,fullname')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return response()->json([
+            'message' => $chatMessage,
+            // 'sender' => $chatMessage[1]
+        ]);
     }
 
     public function newMessage(Request $request, $roomId)
     {
-        $request->validate([
-            'message' => 'required'
-        ]);
+        $request->validate(['message' => 'required']);
 
         // check if user is part of the current chatroom
         $chatroom = ChatRoom::find($roomId);
-
         if (!($chatroom->hasUser(Auth::user())))
 
-        return response()->json([
-            'error' => 'user not in ' . $chatroom->name
-        ], 404);
+            return response()->json([
+                'error' => 'user not in ' . $chatroom->name
+            ], 404);
 
         $newMessage = ChatMessage::create([
-                'user_id' => Auth::id(),
-                'chat_room_id' =>$roomId,
-                'message' => $request->message,
+            'user_id' => Auth::id(),
+            'chat_room_id' => $roomId,
+            'message' => $request->message,
         ]);
 
         broadcast(new NewChatMessage($newMessage))->toOthers();
 
         return response()->json([
-            'user' => Auth::user()->fullname,
+            'sender' => Auth::user()->fullname,
             'message' => $newMessage->message,
         ]);
     }
