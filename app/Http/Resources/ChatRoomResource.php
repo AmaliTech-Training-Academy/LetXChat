@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RegisterResource extends JsonResource
+class ChatRoomResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,8 @@ class RegisterResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'fullname' => $this->fullname,
-            'username' => $this->username,
-            'employee_id' => $this->employee_id,
-            'email' => $this->email,
+            'id' => $this->id,
+            'name' => $this->name,
             'image' => $this->image,
         ];
     }

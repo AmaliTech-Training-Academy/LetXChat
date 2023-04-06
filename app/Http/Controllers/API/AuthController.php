@@ -24,7 +24,6 @@ class AuthController extends Controller
 
         $image = $request->file('image')->storeAs('images', $imageName);
        }
-
        catch (\Throwable $e){
         return response()->json(['message' => 'Must be image file']);
        }
