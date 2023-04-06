@@ -16,7 +16,7 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        return ChatRoomResource::collection(ChatRoom::all());
+        return ChatRoomResource::collection(ChatRoom::query()->paginate(7));
     }
 
     /**
@@ -80,12 +80,7 @@ class ChatRoomController extends Controller
 
     public function removeUser(User $user,ChatRoom $chatRoom)
     {
-        // $chatRoom = ChatRoom::with('users')->find($chatRoom);
-        // dd($chatRoom);
-        // if (!($chatRoom->hasUser($user)))
-        //     return response()->json(['message'=>'User is not the current chatroom'],404);
         return $user->chatrooms()->detach($chatRoom);
-
     }
 
     public function checkImage($request)
