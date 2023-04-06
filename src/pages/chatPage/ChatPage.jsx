@@ -14,9 +14,13 @@ const Container = styled(Box)({
     flexDirection: 'column'
 })
 
+
+
+
 const ChatPage = () => {
 
   const [username, setUsername] = useState('')
+
 
   const CUSTOM_URL = 'http://localhost:4000'
   const socket = io.connect(`${CUSTOM_URL}`)
@@ -31,6 +35,7 @@ const ChatPage = () => {
     socket.emit("send_message", {...messageObj}) 
     setText("")
   } 
+
 
   return (
     <Container component='main'>

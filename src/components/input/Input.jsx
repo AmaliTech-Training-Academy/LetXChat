@@ -8,6 +8,8 @@ import Attach from "../../assets/Attach.png";
 import io from "socket.io-client";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import vmsg from "vmsg";
+import {BsMicMute} from 'react-icons/bs'
 
 const Container = styled(Box)({
   height: "12vh",
@@ -65,11 +67,61 @@ const Input = ({ sendMessage }) => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [text, setText] = useState("");
 
+  // Record Audio
+  // const recorder = new vmsg.Recorder({
+  //   wasmURL: "https://unpkg.com/vmsg@0.3.0/vmsg.wasm",
+  // });
+  const [isRecording, setIsRecording] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [recordings, setRecordings] = useState([]);
+
+  const record = async () => {
+    setIsLoading(true);
+
+    if (isRecording) {
+      const blob = await recorder.stopRecording();
+      setIsLoading(false);
+      setIsRecording(false);
+      setRecordings.concat(URL.createObjectURL(blob));
+    } else {
+      try {
+        await recorder.initAudio();
+        await recorder.initWorker();
+        recorder.startRecording();
+        setIsLoading(false);
+        setIsRecording(true);
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+      }
+    }
+  };
+
+    // let device = navigator.mediaDevices.getUserMedia({audio: true})
+    // let chunks = []
+    // let recorder;
+
+    // device.then(stream => {
+    //   recorder = new MediaRecorder(stream)
+
+    //   recorder.ondataavailable = e => {
+    //     chunks.push(e.data)
+    //     if (recorder.state == 'inactive') {
+    //       let blob = new Blob(chunks, {type: 'audio/webm'})
+    //       setRecordings.concat(URL.createObjectURL(blob));
+    //     }
+    //   }
+
+    //   recorder.start(1000)
+    // })
+
+    // setTimeout(() => {
+    //   recorder.stop()
+    // }, 4000)
 
   const addEmoji = (e) => {
     // setCurrentEmoji(e.native)
     setText(text + e.native);
-
   };
 
   // Close Emoji Container when clicked outside
@@ -90,7 +142,6 @@ const Input = ({ sendMessage }) => {
     };
   });
 
-
   // Socket Io
   const CUSTOM_URL = "http://localhost:4000";
   const socket = io.connect(`${CUSTOM_URL}`);
@@ -105,6 +156,18 @@ const Input = ({ sendMessage }) => {
 
   return (
     <Container component="section">
+
+
+<ul>
+  {
+    recordings.map(url => (
+      <li key={url}>
+        <audio src={url} controls></audio>
+      </li>
+    ))
+  }
+</ul>
+
       {/* Show Emoji Container */}
       <div ref={emojiRef}>
         {showEmoji && (
@@ -115,14 +178,19 @@ const Input = ({ sendMessage }) => {
               emojiButtonSize={35}
               onEmojiSelect={addEmoji}
               maxFrequentRows={1}
-              // onClickOutside={(e) =>setShowEmoji(e.false)}
             />
           </EmojiContainer>
         )}
       </div>
 
       <InputCon>
-        <img style={{ cursor: "pointer" }} src={Mic} alt="Microphone" />
+        <button
+          style={{ cursor: "pointer" }}
+          disabled={isLoading}
+          onClick={record}
+        >
+          {isRecording ? <BsMicMute /> : <img src={Mic} alt="Microphone" />}
+        </button>
         <InputText
           type="text"
           placeholder="start typing..."
