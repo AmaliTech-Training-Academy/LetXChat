@@ -11,7 +11,7 @@ function Cards() {
       <Card title="Total Users" users="1,094" image={total_users}/>
       <Card title="Active Users" users="321" image={active_users}/>
       <Card title="Pending Request" users="98" image={pending_users}/>
-      <Card title="Pending Request" users="34" image={chat_room}/>
+      <Card title="Chat Room" users="34" image={chat_room}/>
     </div>
   );
 }
