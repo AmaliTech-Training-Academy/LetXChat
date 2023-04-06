@@ -11,23 +11,18 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatMessageController extends Controller
 {
-    public function rooms()
+    public function chatRoomMessages($roomId)
     {
-        return ChatRoom::query()->paginate(7);
-    }
+        $chatroom = ChatRoom::find($roomId);
+        if (!($chatroom->hasUser(Auth::user())))
+            return response()->json([
+                'error' => 'user not in ' . $chatroom->name
+            ], 404);
 
-    public function messages(Request $request, $roomId)
-    {
-        // dd($roomId);
-        $chatMessage = ChatMessage::whereId($roomId)
+        return ChatMessage::where('chat_room_id', $roomId)
             ->with('user:id,fullname')
             ->orderBy('created_at', 'DESC')
             ->get();
-
-        return response()->json([
-            'message' => $chatMessage,
-            // 'sender' => $chatMessage[1]
-        ]);
     }
 
     public function newMessage(Request $request, $roomId)
