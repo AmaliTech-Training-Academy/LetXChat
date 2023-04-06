@@ -10,6 +10,7 @@ import Sidebar from '../components/sidebar/Sidebar'
 import Settings from '../components/sidebar/Settings'
 import CreateGroup from '../components/sidebar/CreateGroup'
 import SidebarLayout from '../components/layouts/SidebarLayout'
+import Admin from '../pages/admin/Admin'
 function Router() {
   return (
     <Routes>
@@ -25,6 +26,7 @@ function Router() {
           <Route path='/sidebar/settings' element={<Settings />}/>
           <Route path='/sidebar/creategroup' element={<CreateGroup />}/>
         </Route>
+        <Route path='/admin' element={<Admin />}/>
     </Routes>
   )
 }
