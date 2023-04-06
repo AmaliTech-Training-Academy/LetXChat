@@ -3,11 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import MessageImage from "../../assets/user-image.png";
 import Image from "../../assets/collaboration-section.png";
 import { io } from "socket.io-client";
+import { format } from "date-fns";
 
 const Container = styled(Box)({
   display: "flex",
   gap: "10px",
   alignItems: "center",
+  marginBottom: "1rem",
 });
 
 const MessageInfo = styled(Box)({});
@@ -72,9 +74,10 @@ const OwnerMessageContent = styled(Box)({
 const OwnerTextContainer = styled(Box)({
   background: "rgba(83, 53, 45, 0.9)",
   padding: "10px 20px",
+  paddingBottom: "20px",
   borderRadius: "10px",
   color: "#FFFFFF",
-  maxWidth: "50%",
+  width: "50%",
   position: "relative",
 });
 
@@ -85,11 +88,11 @@ const OwnerTime = styled("p")({
   fontSize: "0.7rem",
 });
 
-const OwnerText = styled("p")({});
+const OwnerText = styled("p")({
+  whiteSpace: "break-spaces",
+});
 
-const Message = ({username}) => {
-
-
+const Message = ({ username }) => {
   const [messages, setMessages] = useState([]);
 
   // Socket Io
@@ -108,57 +111,57 @@ const Message = ({username}) => {
   return (
     <>
       {messages &&
-        messages.map((el) => (
-          <>
-            {el.author !== username && (
-              <div key={el.author}>
-              <Container component="article">
-                <MessageInfo>
-                  <img
-                    src={MessageImage}
-                    style={{ width: "2.5rem", objectFit: "cover" }}
-                    alt="User Image"
-                  />
-                  {console.log(el.author, username)}
-                </MessageInfo>
-                <Status></Status>
-                <MessageContent>
-                  <TextContainer>
-                    <Text>
-                      {el.message}
-                    </Text>
-                    <Time>{el.date}</Time>
-                  </TextContainer>
-                  <img src={Image} style={{ width: "50%" }} alt="image" />
-                </MessageContent>
-              </Container>
-              </div>
-            )}
+        messages.map((el) => {
+          const formattedTime = format(new Date(el.date), "hh:mm");
+          return (
+            <>
+              {el.author !== username && (
+                <div key={el.author}>
+                  <Container component="article">
+                    <MessageInfo>
+                      <img
+                        src={MessageImage}
+                        style={{ width: "2.5rem", objectFit: "cover" }}
+                        alt="User Image"
+                      />
+                    </MessageInfo>
+                    <Status></Status>
+                    <MessageContent>
+                      <TextContainer>
+                        <Text>{el.message}</Text>
 
-            {el.author === username && (
-              <div key={el.author}>
-              <OwnerContainer component="article">
-                <OwnerMessageInfo>
-                  <img
-                    src={MessageImage}
-                    style={{ width: "2.5rem", objectFit: "cover" }}
-                    alt="User Image"
-                  />
-                </OwnerMessageInfo>
-                <OwnerStatus></OwnerStatus>
-                <OwnerMessageContent>
-                  <OwnerTextContainer>
-                    <OwnerText>{el.message}</OwnerText>
-                    <OwnerTime>{el.date}</OwnerTime>
-                  </OwnerTextContainer>
-                  <img src={Image} style={{ width: "50%" }} alt="image" />
-                </OwnerMessageContent>
-              </OwnerContainer>
-              </div>
-            )}
-          </>
-        ))}
-        
+                        <Time>{formattedTime}</Time>
+                      </TextContainer>
+                      <img src={Image} style={{ width: "50%" }} alt="image" />
+                    </MessageContent>
+                  </Container>
+                </div>
+              )}
+
+              {el.author === username && (
+                <div key={el.author}>
+                  <OwnerContainer component="article">
+                    <OwnerMessageInfo>
+                      <img
+                        src={MessageImage}
+                        style={{ width: "2.5rem", objectFit: "cover" }}
+                        alt="User Image"
+                      />
+                    </OwnerMessageInfo>
+                    <OwnerStatus></OwnerStatus>
+                    <OwnerMessageContent>
+                      <OwnerTextContainer>
+                        <OwnerText>{el.message}</OwnerText>
+                        <OwnerTime>{formattedTime}</OwnerTime>
+                      </OwnerTextContainer>
+                      <img src={Image} style={{ width: "50%" }} alt="image" />
+                    </OwnerMessageContent>
+                  </OwnerContainer>
+                </div>
+              )}
+            </>
+          );
+        })}
     </>
   );
 };
