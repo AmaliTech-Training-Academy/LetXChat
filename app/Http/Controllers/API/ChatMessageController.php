@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\NewChatMessage;
 use App\Http\Controllers\Controller;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChatMessageController extends Controller
 {
@@ -16,6 +18,7 @@ class ChatMessageController extends Controller
 
     public function messages(Request $request, $roomId)
     {
+        dd($roomId);
         return ChatMessage::whereId($roomId)
         ->with('user')
         ->orderBy('created_at', 'DESC')
@@ -24,10 +27,17 @@ class ChatMessageController extends Controller
 
     public function newMessage(Request $request, $roomId)
     {
-        ChatMessage::create([
-            'user_id' => $request->user()->id,
-            'room_id' => $roomId,
-            'message' => $request->content,
+        // dd(Auth::id());
+        $newMessage = ChatMessage::create([
+                'user_id' => Auth::id(),
+                'chat_room_id' => $roomId,
+                'message' => $request->messages,
+        ]);
+
+        broadcast(new NewChatMessage($newMessage))->toOthers();
+
+        return response()->json([
+            'message' => $newMessage->message,
         ]);
     }
 }

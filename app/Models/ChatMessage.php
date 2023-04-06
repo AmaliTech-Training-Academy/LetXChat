@@ -10,6 +10,10 @@ class ChatMessage extends Model
 {
     use HasFactory;
 
+    protected $filable = [
+        'message'
+    ];
+
     public function chatRoom(): HasOne
     {
         return $this->hasOne(ChatRoom::class, 'id', 'chat_room_id');
@@ -17,6 +21,6 @@ class ChatMessage extends Model
 
     public function user(): HasOne
     {
-        return $this->hasOne(User::class, 'id','chat_id');
+        return $this->hasOne(User::class, 'id','user_id');
     }
 }
