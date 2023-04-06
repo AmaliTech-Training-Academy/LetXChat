@@ -22,7 +22,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'sometimes|required_without:username|email',
+            'email' => 'sometimes|required_without:chat_id|email',
             'chat_id' => 'sometimes|required_without:email|string',
             'password' => 'required|min:8',
         ];

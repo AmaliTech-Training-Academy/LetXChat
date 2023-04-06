@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RegisterResource extends JsonResource
+class ChatRoomResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,7 @@ class RegisterResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'fullname' => $this->fullname,
-            'username' => $this->username,
-            'chat_id' => $this->chat_id,
-            'email' => $this->email,
+            'name' => $this->name,
             'image' => $this->image,
         ];
     }

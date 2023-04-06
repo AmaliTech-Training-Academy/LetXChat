@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\User;
@@ -9,12 +10,13 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return new ProfileResource(auth()->user());
     }
 
-    public function update(ProfileRequest $request) {
-
+    public function update(ProfileRequest $request)
+    {
         $user = User::find(auth()->user()->id);
 
         $user->update([
@@ -24,7 +26,5 @@ class ProfileController extends Controller
         ]);
 
         return new ProfileResource($user);
-
     }
-
 }
