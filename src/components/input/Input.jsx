@@ -1,10 +1,13 @@
 import { Box, styled } from "@mui/material";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Mic from "../../assets/Microphone.png";
 import Cam from "../../assets/Camera.png";
 import Send from "../../assets/Send.png";
 import Emoji from "../../assets/Emoji.png";
 import Attach from "../../assets/Attach.png";
+
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const Container = styled(Box)({
   height: "12vh",
@@ -12,7 +15,14 @@ const Container = styled(Box)({
   display: "flex",
   alignItems: "center",
   paddingInline: "70px",
-  borderTop: '1px solid #D9D9D9'
+  borderTop: "1px solid #D9D9D9",
+  position: "relative",
+});
+
+const EmojiContainer = styled(Box)({
+  position: "absolute",
+  bottom: "85%",
+  right: "70px",
 });
 
 const InputCon = styled("div")({
@@ -24,38 +34,88 @@ const InputCon = styled("div")({
   alignItems: "center",
   gap: "14px",
   paddingLeft: "15px",
-  // overflow: 'hidden'
+  // overflowY: 'hidden'
 });
 
-const InputText = styled("input")({
+const InputText = styled("textarea")({
+  height: "50px",
   width: "75%",
   paddingLeft: "4px",
   background: "transparent",
   fontStyle: "Bold",
   color: "#FFFFFF",
+  resize: "none",
+  overflowY: "hidden",
+  paddingBlock: "0.6rem",
 
   "&::placeholder": {
     color: "#FFFFFF",
   },
 });
 
-const SendMessage = styled('button')({
+const SendMessage = styled("button")({
   background: "#53352D",
   height: "50px",
   width: "50px",
   borderRadius: "50%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
   cursor: "pointer",
+
 });
 
 const Input = () => {
+  const [showEmoji, setShowEmoji] = useState(false);
+  const [text, setText] = useState("");
+
+  const addEmoji = (e) => {
+    // setCurrentEmoji(e.native)
+    setText(text + e.native);
+  };
+
+  // Close Emoji Container when clicked outside
+
+  let emojiRef = useRef()
+
+  useEffect(() => {
+    let handler = (e) => {
+      if (!emojiRef.current.contains(e.target)) {
+        setShowEmoji(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return() => {
+      document.removeEventListener("mousedown", handler)
+    }
+  });
+
   return (
     <Container component="section">
+      {/* Show Emoji Container */}
+      <div ref={emojiRef}>
+
+      {showEmoji && (
+        <EmojiContainer>
+          <Picker
+            data={data}
+            emojiSize={20}
+            emojiButtonSize={35}
+            onEmojiSelect={addEmoji}
+            maxFrequentRows={1}
+            // onClickOutside={(e) =>setShowEmoji(e.false)}
+            />
+        </EmojiContainer>
+      )}
+      </div>
+
       <InputCon>
         <img style={{ cursor: "pointer" }} src={Mic} alt="Microphone" />
-        <InputText type="text" placeholder="start typing..." />
+        <InputText
+          type="text"
+          placeholder="start typing..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
 
         <div>
           <input type="file" id="file" style={{ display: "none" }} />
@@ -76,9 +136,14 @@ const Input = () => {
           </label>
         </div>
 
-        <img style={{ cursor: "pointer" }} src={Emoji} alt="Emoji" />
+        <img
+          style={{ cursor: "pointer" }}
+          src={Emoji}
+          alt="Emoji"
+          onClick={() => setShowEmoji(!showEmoji)}
+        />
         <SendMessage>
-          <img src={Send} alt="Send message" />
+          <img src={Send} style={{width: '90%'}} alt="Send message" />
         </SendMessage>
       </InputCon>
     </Container>
