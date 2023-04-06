@@ -18,7 +18,7 @@ class ChatMessageController extends Controller
 
     public function messages(Request $request, $roomId)
     {
-        dd($roomId);
+        // dd($roomId);
         return ChatMessage::whereId($roomId)
         ->with('user')
         ->orderBy('created_at', 'DESC')
@@ -27,16 +27,29 @@ class ChatMessageController extends Controller
 
     public function newMessage(Request $request, $roomId)
     {
-        // dd(Auth::id());
+        $request->validate([
+            'message' => 'required'
+        ]);
+
+        // check if user is part of the current chatroom
+        $chatroom = ChatRoom::find($roomId);
+
+        if (!($chatroom->hasUser(Auth::user())))
+
+        return response()->json([
+            'error' => 'user not in ' . $chatroom->name
+        ], 404);
+
         $newMessage = ChatMessage::create([
                 'user_id' => Auth::id(),
-                'chat_room_id' => $roomId,
-                'message' => $request->messages,
+                'chat_room_id' =>$roomId,
+                'message' => $request->message,
         ]);
 
         broadcast(new NewChatMessage($newMessage))->toOthers();
 
         return response()->json([
+            'user' => Auth::user()->fullname,
             'message' => $newMessage->message,
         ]);
     }
