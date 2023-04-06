@@ -5,7 +5,7 @@ import Cam from "../../assets/Camera.png";
 import Send from "../../assets/Send.png";
 import Emoji from "../../assets/Emoji.png";
 import Attach from "../../assets/Attach.png";
-
+import io from "socket.io-client";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
@@ -59,21 +59,22 @@ const SendMessage = styled("button")({
   width: "50px",
   borderRadius: "50%",
   cursor: "pointer",
-
 });
 
-const Input = () => {
+const Input = ({ sendMessage }) => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [text, setText] = useState("");
+
 
   const addEmoji = (e) => {
     // setCurrentEmoji(e.native)
     setText(text + e.native);
+
   };
 
   // Close Emoji Container when clicked outside
 
-  let emojiRef = useRef()
+  let emojiRef = useRef();
 
   useEffect(() => {
     let handler = (e) => {
@@ -84,28 +85,40 @@ const Input = () => {
 
     document.addEventListener("mousedown", handler);
 
-    return() => {
-      document.removeEventListener("mousedown", handler)
-    }
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
   });
+
+
+  // Socket Io
+  const CUSTOM_URL = "http://localhost:4000";
+  const socket = io.connect(`${CUSTOM_URL}`);
+
+  const [messageReceived, setMessageReceived] = useState("");
+
+  // useEffect(() => {
+  //   socket.on("receive_message", (data) => {
+
+  //   });
+  // }, [socket]);
 
   return (
     <Container component="section">
       {/* Show Emoji Container */}
       <div ref={emojiRef}>
-
-      {showEmoji && (
-        <EmojiContainer>
-          <Picker
-            data={data}
-            emojiSize={20}
-            emojiButtonSize={35}
-            onEmojiSelect={addEmoji}
-            maxFrequentRows={1}
-            // onClickOutside={(e) =>setShowEmoji(e.false)}
+        {showEmoji && (
+          <EmojiContainer>
+            <Picker
+              data={data}
+              emojiSize={20}
+              emojiButtonSize={35}
+              onEmojiSelect={addEmoji}
+              maxFrequentRows={1}
+              // onClickOutside={(e) =>setShowEmoji(e.false)}
             />
-        </EmojiContainer>
-      )}
+          </EmojiContainer>
+        )}
       </div>
 
       <InputCon>
@@ -143,7 +156,14 @@ const Input = () => {
           onClick={() => setShowEmoji(!showEmoji)}
         />
         <SendMessage>
-          <img src={Send} style={{width: '90%'}} alt="Send message" />
+          <img
+            src={Send}
+            style={{ width: "90%" }}
+            alt="Send message"
+            onClick={() => {
+              sendMessage(text, setText);
+            }}
+          />
         </SendMessage>
       </InputCon>
     </Container>

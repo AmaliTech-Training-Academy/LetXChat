@@ -10,20 +10,11 @@ const Content = styled(Box)({
 })
 
 
-const Messages = () => {
+const Messages = ({username}) => {
   return (
     <Content>
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
+        <Message username={username} />
+
     </Content>
   )
 }
