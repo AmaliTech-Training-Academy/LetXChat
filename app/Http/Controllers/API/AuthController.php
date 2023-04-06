@@ -15,7 +15,11 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $lastRecord = User::latest()->first();
-        $chatID = 'E' . str_pad($lastRecord->id + 1, 3, '0', STR_PAD_LEFT);
+        if(!$lastRecord) {
+            $chatID = 'E001';
+        }else{
+            $chatID = 'E' . str_pad($lastRecord->id + 1, 3, '0', STR_PAD_LEFT);
+        }
 
         $request->validated($request->all());
 
