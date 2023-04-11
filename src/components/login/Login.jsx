@@ -171,7 +171,6 @@ const Login = () => {
     dispatch(loginUser(values));
 
     actions.resetForm();
-    console.log(userInfo);
   };
 
   // useEffect(() => {
