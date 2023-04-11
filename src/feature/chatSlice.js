@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { loginUser } from "./authActions";
 
-// Initiallize userToken from Cookie
+// Initialize userToken from Cookie
 const userToken = Cookies.get("userToken") ? Cookies.get("userToken") : null;
-
+const userInfo = Cookies.get("userInfo") ? Cookies.get("userInfo") : null;
 const initialState = {
   loading: false,
-  userInfo: null,
+  userInfo,
   userToken,
   error: null,
   success: false,
@@ -28,9 +28,9 @@ const authSlice = createSlice({
 
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.userInfo = payload;
+        state.userInfo = userInfo;
         state.success = true;
-        state.userToken = payload.userToken
+        state.userToken = userToken
       })
 
       .addCase(loginUser.rejected, (state, { payload }) => {

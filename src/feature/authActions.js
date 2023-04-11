@@ -50,7 +50,7 @@ export const loginUser = createAsyncThunk("auth/login", async (values) => {
   if (values.emailID.includes("@")) {
     values.email = values.emailID;
   } else {
-    values.employee_id = values.emailID;
+    values.chat_id = values.emailID;
   }
   delete values.emailID;
 
@@ -69,8 +69,10 @@ export const loginUser = createAsyncThunk("auth/login", async (values) => {
   axios
     .request(config)
     .then((response) => {
-      Cookies.set('userToken', response.headers['access-token'])
-      console.log(response.headers['access-token']);
+      Cookies.set('userToken', response.data.token)
+      console.log(response.data.token);
+      console.log(response.data.data);
+      Cookies.set('userInfo', JSON.stringify(response.data.data))
       const SUCCESS_MESSAGE = response.data.message;
       toast.success(SUCCESS_MESSAGE, {autoClose: 1000,});
     })
