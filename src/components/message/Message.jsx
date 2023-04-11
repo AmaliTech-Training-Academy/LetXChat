@@ -29,6 +29,7 @@ const MessageContent = styled(Box)({
 });
 
 const Text = styled("p")({
+  whiteSpace: "break-spaces",
   padding: "0 20px",
   paddingBottom: "20px",
 });

@@ -34,26 +34,46 @@ const InputCon = styled("div")({
   borderRadius: "50px",
   display: "flex",
   alignItems: "center",
+  justifyContent: 'space-between',
   gap: "14px",
-  paddingLeft: "15px",
-  // overflowY: 'hidden'
+  paddingLeft: "10px",
+  position: 'relative'
 });
 
 const InputText = styled("textarea")({
-  height: "50px",
-  width: "75%",
+
+  height: '50px',
+  width: "73%",
   paddingLeft: "4px",
   background: "transparent",
   fontStyle: "Bold",
   color: "#FFFFFF",
   resize: "none",
-  overflowY: "hidden",
-  paddingBlock: "0.6rem",
-
+  overflowY: "scroll",
+  position: 'absolute',
+  left: '5%',
+  bottom: '0',
+  zIndex: '30',
+  paddingBlock: '0.5rem',
   "&::placeholder": {
     color: "#FFFFFF",
   },
+  "&::-webkit-scrollbar": {
+    width: "5px",
+    backgroundColor: "#F5F5F5",
+    // display: 'none'
+  },
+  "&::-webkit-scrollbar-thumb": {
+    borderRadius: "5px",
+    backgroundColor: "#AAA",
+  },
 });
+
+const FilesAndSend = styled('div')({
+  display: 'flex',
+  gap: "14px",
+  alignItems: 'center'
+})
 
 const SendMessage = styled("button")({
   background: "#53352D",
@@ -67,57 +87,10 @@ const Input = ({ sendMessage }) => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [text, setText] = useState("");
 
-  // Record Audio
-  // const recorder = new vmsg.Recorder({
-  //   wasmURL: "https://unpkg.com/vmsg@0.3.0/vmsg.wasm",
-  // });
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [recordings, setRecordings] = useState([]);
 
-  const record = async () => {
-    setIsLoading(true);
-
-    if (isRecording) {
-      const blob = await recorder.stopRecording();
-      setIsLoading(false);
-      setIsRecording(false);
-      setRecordings.concat(URL.createObjectURL(blob));
-    } else {
-      try {
-        await recorder.initAudio();
-        await recorder.initWorker();
-        recorder.startRecording();
-        setIsLoading(false);
-        setIsRecording(true);
-      } catch (error) {
-        console.error(error);
-        setIsLoading(false);
-      }
-    }
-  };
-
-    // let device = navigator.mediaDevices.getUserMedia({audio: true})
-    // let chunks = []
-    // let recorder;
-
-    // device.then(stream => {
-    //   recorder = new MediaRecorder(stream)
-
-    //   recorder.ondataavailable = e => {
-    //     chunks.push(e.data)
-    //     if (recorder.state == 'inactive') {
-    //       let blob = new Blob(chunks, {type: 'audio/webm'})
-    //       setRecordings.concat(URL.createObjectURL(blob));
-    //     }
-    //   }
-
-    //   recorder.start(1000)
-    // })
-
-    // setTimeout(() => {
-    //   recorder.stop()
-    // }, 4000)
 
   const addEmoji = (e) => {
     // setCurrentEmoji(e.native)
@@ -145,14 +118,6 @@ const Input = ({ sendMessage }) => {
   // Socket Io
   const CUSTOM_URL = "http://localhost:4000";
   const socket = io.connect(`${CUSTOM_URL}`);
-
-  const [messageReceived, setMessageReceived] = useState("");
-
-  // useEffect(() => {
-  //   socket.on("receive_message", (data) => {
-
-  //   });
-  // }, [socket]);
 
   return (
     <Container component="section">
@@ -187,9 +152,10 @@ const Input = ({ sendMessage }) => {
         <button
           style={{ cursor: "pointer" }}
           disabled={isLoading}
-          onClick={record}
+          // onClick={record}
         >
-          {isRecording ? <BsMicMute /> : <img src={Mic} alt="Microphone" />}
+          {/* {isRecording ? <BsMicMute /> : <img src={Mic} alt="Microphone" />} */}
+          <img src={Mic} alt="Microphone" />
         </button>
         <InputText
           type="text"
@@ -198,7 +164,8 @@ const Input = ({ sendMessage }) => {
           onChange={(e) => setText(e.target.value)}
         />
 
-        <div>
+       <FilesAndSend>
+       <div>
           <input type="file" id="file" style={{ display: "none" }} />
           <label htmlFor="file">
             <img style={{ cursor: "pointer" }} src={Attach} alt="Send FIle" />
@@ -233,6 +200,7 @@ const Input = ({ sendMessage }) => {
             }}
           />
         </SendMessage>
+       </FilesAndSend>
       </InputCon>
     </Container>
   );
