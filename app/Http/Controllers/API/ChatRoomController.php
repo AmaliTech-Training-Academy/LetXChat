@@ -52,6 +52,11 @@ class ChatRoomController extends Controller
      */
     public function update(Request $request, $chatRoom)
     {
+        $request->validate([
+            'name' => 'required',
+            'image' => 'required'
+        ]);
+
         $chatRoom = ChatRoom::whereId($chatRoom)->first();
         dd($request->all());
 

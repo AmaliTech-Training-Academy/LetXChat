@@ -17,7 +17,7 @@ class ChatRoomMembersResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => $this->image,
+            'image' => env('APP_URL').'storage/app'.$this->image,
             'memebers' => $this->users,
         ];;
     }

@@ -19,7 +19,7 @@ class UserRoomsResource extends JsonResource
                 'name' => $this->fullname,
                 'employee_id' => $this->employee_id,
                 'email' => $this->email,
-                'image' => $this->image,
+                'image' => env('APP_URL').'storage/app'.$this->image,
                 'chatrooms' => $this->chatrooms,
         ];
     }
