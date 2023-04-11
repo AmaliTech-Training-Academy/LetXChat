@@ -217,7 +217,7 @@ const SignUp = () => {
     dispatch(registerUser(values));
   };
 
-const sendReg =   useEffect(() => {
+useEffect(() => {
     // redirect user to confirmation modal if registration was successful
     if (success) {
       navigate("/signup/signupmodal");

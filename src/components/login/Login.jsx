@@ -184,6 +184,7 @@ setTimeout(() => {
 
   // Formik Validation
 <<<<<<< HEAD
+<<<<<<< HEAD
   const {
     values,
     errors,
@@ -201,6 +202,8 @@ setTimeout(() => {
     onSubmit,
   });
 =======
+=======
+>>>>>>> 1f9c599f28624041d086643f7a5298a575a526ac
   const { values, errors, touched, handleBlur, handleSubmit, handleChange } =
     useFormik({
       initialValues: {
@@ -210,7 +213,10 @@ setTimeout(() => {
       validationSchema: loginSchema,
       onSubmit,
     });
+<<<<<<< HEAD
 >>>>>>> 23a8a44 (Feature/Login: Integrating the backend with the frontend)
+=======
+>>>>>>> 1f9c599f28624041d086643f7a5298a575a526ac
 
   return (
     <Container component="main">
@@ -227,6 +233,7 @@ setTimeout(() => {
             <TextFieldStyle
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               id="email"
 =======
 =======
@@ -235,6 +242,11 @@ setTimeout(() => {
               id="emailID"
               name="emailID"
 >>>>>>> 6a0da87 (Feature/Login: Working on integrating backend with frontend)
+=======
+              type="text"
+              id="emailID"
+              name="emailID"
+>>>>>>> 1f9c599f28624041d086643f7a5298a575a526ac
               placeholder="Enter your email or ID"
               value={values.email}
               onBlur={handleBlur}
