@@ -3,13 +3,18 @@ import React from 'react'
 
 const Container = styled(Box)({
     width: '60vw',
+    height: '100vh',
     marginInline: 'auto',
-    background: 'blue'
+    background: 'blue',
+    display: 'flex',
+    flexDirection: 'column'
 })
 
 const ChatPage = () => {
   return (
-    <div>ChatPage</div>
+    <Container>
+      
+    </Container>
   )
 }
 
