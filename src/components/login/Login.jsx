@@ -18,6 +18,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../feature/authActions";
+import Cookies from "js-cookie";
 
 const Container = styled(Box)({
   width: "100vw",
@@ -160,27 +161,26 @@ const Login = () => {
   const handleShowPassword = () => setShowPassword((show) => !show);
 
   const dispatch = useDispatch();
-  const { loading, userInfo } = useSelector((state) => state.auth);
+  const { loading, userToken } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
 
   // Submit Form
   const onSubmit = async (values, actions) => {
-    // await new Promise((resolve) => setTimeout(resolve, 2000));
-
     dispatch(loginUser(values));
-
     actions.resetForm();
   };
 
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     setTimeout(() => {
-  //       return navigate("/chats");
-  //     }, 2000)
-  //   }
-  //   console.log(userInfo, "Success Message");
-  // }, [userInfo,]);
+
+  const Token = Cookies.get('userToken')
+ useEffect(() => {
+  if (Token) {
+setTimeout(() => {
+
+  navigate('/chat')
+}, 1000)
+  }
+ }, [Token])
 
   // Formik Validation
 <<<<<<< HEAD
