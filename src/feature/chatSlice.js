@@ -1,10 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser } from "./authActions";
+import Cookies from "js-cookie";
+import { loginUser } from "./authActions";
+
+// Initiallize userToken from Cookie
+const userToken = Cookies.get("userToken") ? Cookies.get("userToken") : null;
 
 const initialState = {
   loading: false,
-  userInfo: {},
-  userToken: null,
+  userInfo: null,
+  userToken,
   error: null,
   success: false,
 };
@@ -13,21 +17,27 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {},
-  extraReducers: {
-    [registerUser.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
+  extraReducers: (builder) => {
+    // Login User
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
 
-    [registerUser.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.success = true;
-    },
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.userInfo = payload;
+        state.success = true;
+        state.userToken = payload.userToken
+      })
 
-    [registerUser.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
+      .addCase(loginUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.success = false;
+        state.error = payload;
+      });
   },
 });
 

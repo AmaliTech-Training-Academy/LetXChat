@@ -38,23 +38,7 @@ export const basicSchema = Yup.object().shape({
 });
 
 export const loginSchema = Yup.object().shape({
-  emailID: Yup.string()
-    .required("Email or ID is required")
-    .transform((value, originalValue) => {
-      const [email, id] = originalValue.split(",");
-      return email;
-    })
-    .test("email-or-id", "Please enter a valid email or ID", (value) => {
-      const email = value;
+  emailID: Yup.string().required("This field is required"),
 
-      const isEmailValid = amalitechemail.test(email);
-
-      // Validate ID
-      const idRegex = /^[A-Za-z0-9]+$/;
-      const isIdValid = idRegex.test(id);
-
-      return isEmailValid || isIdValid;
-    }),
-
-  password: Yup.string().trim().min(8).required("This field is required"),
+  password: Yup.string().required("This field is required"),
 });
