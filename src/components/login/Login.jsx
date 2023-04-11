@@ -194,7 +194,12 @@ const Login = () => {
               email/ Employee ID*
             </Box>
             <TextFieldStyle
+<<<<<<< HEAD
               id="email"
+=======
+              id="emailID"
+              name="emailID"
+>>>>>>> 6a0da87 (Feature/Login: Working on integrating backend with frontend)
               placeholder="Enter your email or ID"
               value={values.email}
               onBlur={handleBlur}

@@ -3,7 +3,7 @@ import { registerUser } from "./authActions";
 
 const initialState = {
   loading: false,
-  userInfo: null,
+  userInfo: {},
   userToken: null,
   error: null,
   success: false,
