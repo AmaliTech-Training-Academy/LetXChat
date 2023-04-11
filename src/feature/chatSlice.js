@@ -4,11 +4,12 @@ import { BASE_URL } from "../defaultValues/DefaultValues";
 import { io } from "socket.io-client";
 import Cookies from "js-cookie";
 
+// Initialize userToken from Cookie
 const userToken = Cookies.get("userToken") || null;
-
+const userInfo = Cookies.get("userInfo") ? Cookies.get("userInfo") : null;
 const initialState = {
   loading: false,
-  userInfo: {},
+  userInfo,
   userToken,
   error: null,
   success: false,
@@ -37,23 +38,29 @@ const authSlice = createSlice({
       state.text;
     },
   },
-  extraReducers: {
-    [registerUser.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
 
-    [registerUser.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.success = true;
-    },
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.userInfo = userInfo;
+        state.success = true;
+        state.userToken = userToken;
+      })
 
-    [registerUser.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
+      .addCase(loginUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.success = false;
+        state.error = payload;
+      });
   },
 });
 
 // export const { sendMessage } = chatSlice.actions;
 export default authSlice.reducer;
+

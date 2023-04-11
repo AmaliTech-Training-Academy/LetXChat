@@ -1,19 +1,13 @@
-import { createTheme } from "@mui/material";
-import Login from "./components/login/Login";
-import SignUp from "./components/signup/SignUp";
-import RegModal from "./components/regModal/RegModal";
-
-import Home from "./pages/Home";
-import ChatPage from "./pages/chatPage/ChatPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Router from "./routes/Router";
 
 function App() {
   return (
+    <Router />
     <div className="App">
-      {/* <RegModal /> */}
-      {/* <SignUp /> */}
-      {/*  <Home /> */}
-      {/* <Login />     */}
-      <ChatPage />
+      <Router />
+      <ToastContainer position="top-center" />
     </div>
   );
 }
