@@ -14,37 +14,40 @@ const Container = styled(Box)({
 
 const MessageInfo = styled(Box)({});
 
-const Status = styled(Box)({
-  width: "8px",
-  height: "8px",
-  borderRadius: "50%",
-  background: "#00AC11",
-});
 
 const MessageContent = styled(Box)({
   maxWidth: "80%",
   display: "flex",
   flexDirection: "column",
   gap: "10px",
+  // background: '#ffffff',
+  width: '48%',
+  borderRadius: "10px",
+  background: "#878787",
+  position: "relative",
+  color: "#FFFFFF",
 });
 
-const TextContainer = styled(Box)({
-  background: "#878787",
-  padding: "10px 20px",
-  borderRadius: "10px",
-  color: "#FFFFFF",
-  maxWidth: "50%",
-  position: "relative",
+const Text = styled("p")({
+  padding: "0 20px",
+  paddingBottom: "20px",
 });
+
+
+const Author = styled('p') ({
+  color: '#2c2c2c',
+  fontSize: '14px',
+  margin: '5px'
+})
 
 const Time = styled("p")({
   position: "absolute",
   right: "0.4rem",
   bottom: "0.2rem",
   fontSize: "0.7rem",
+
 });
 
-const Text = styled("p")({});
 
 const OwnerContainer = styled(Box)({
   display: "flex",
@@ -56,30 +59,20 @@ const OwnerContainer = styled(Box)({
 
 const OwnerMessageInfo = styled(Box)({});
 
-const OwnerStatus = styled(Box)({
-  width: "8px",
-  height: "8px",
-  borderRadius: "50%",
-  background: "#FF0000",
-});
-
 const OwnerMessageContent = styled(Box)({
   maxWidth: "80%",
   display: "flex",
   flexDirection: "column",
   gap: "10px",
   alignItems: "flex-end",
+  background: "rgba(83, 53, 45, 0.9)",
+  position: "relative",
+  color: "#FFFFFF",
+  width: '46%',
+  borderRadius: "10px",
 });
 
-const OwnerTextContainer = styled(Box)({
-  background: "rgba(83, 53, 45, 0.9)",
-  padding: "10px 20px",
-  paddingBottom: "20px",
-  borderRadius: "10px",
-  color: "#FFFFFF",
-  width: "50%",
-  position: "relative",
-});
+
 
 const OwnerTime = styled("p")({
   position: "absolute",
@@ -90,10 +83,19 @@ const OwnerTime = styled("p")({
 
 const OwnerText = styled("p")({
   whiteSpace: "break-spaces",
+  padding: "5px 20px",
+  paddingBottom: "20px",
+  borderRadius: "10px",
 });
 
 const Message = ({ username }) => {
   const [messages, setMessages] = useState([]);
+ 
+  // The Focus should always stay at the bottom for Messages 
+  const messagesRef = useRef(null);
+  useEffect(() => {
+    messagesRef.current?.scrollIntoView();
+  }, [messages]);
 
   // Socket Io
   const CUSTOM_URL = "http://localhost:4000";
@@ -112,7 +114,7 @@ const Message = ({ username }) => {
     <>
       {messages &&
         messages.map((el) => {
-          const formattedTime = format(new Date(el.date), "hh:mm");
+          const formattedTime = format(new Date(el.date), "hh:mm a");
           return (
             <>
               {el.author !== username && (
@@ -125,14 +127,12 @@ const Message = ({ username }) => {
                         alt="User Image"
                       />
                     </MessageInfo>
-                    <Status></Status>
                     <MessageContent>
-                      <TextContainer>
+                        <Author>{el.author}</Author>
                         <Text>{el.message}</Text>
 
+                      <img src={Image} style={{marginBottom: '25px', width: '98%', marginInline: 'auto', borderRadius: '10px'}} alt="image" />
                         <Time>{formattedTime}</Time>
-                      </TextContainer>
-                      <img src={Image} style={{ width: "50%" }} alt="image" />
                     </MessageContent>
                   </Container>
                 </div>
@@ -141,20 +141,17 @@ const Message = ({ username }) => {
               {el.author === username && (
                 <div key={el.author}>
                   <OwnerContainer component="article">
-                    <OwnerMessageInfo>
+                    {/* <OwnerMessageInfo>
                       <img
                         src={MessageImage}
                         style={{ width: "2.5rem", objectFit: "cover" }}
                         alt="User Image"
                       />
-                    </OwnerMessageInfo>
-                    <OwnerStatus></OwnerStatus>
+                    </OwnerMessageInfo> */}
                     <OwnerMessageContent>
-                      <OwnerTextContainer>
                         <OwnerText>{el.message}</OwnerText>
+                        <img src={Image} style={{marginBottom: '25px', width: '98%', marginInline: 'auto', borderRadius: '10px'}} alt="image" />
                         <OwnerTime>{formattedTime}</OwnerTime>
-                      </OwnerTextContainer>
-                      <img src={Image} style={{ width: "50%" }} alt="image" />
                     </OwnerMessageContent>
                   </OwnerContainer>
                 </div>
@@ -162,6 +159,7 @@ const Message = ({ username }) => {
             </>
           );
         })}
+        <div ref={messagesRef} />
     </>
   );
 };
