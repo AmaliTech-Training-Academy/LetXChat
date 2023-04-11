@@ -34,7 +34,7 @@ export const registerUser = createAsyncThunk(
       const config = {
         header: {
           Accept: "application/json",
-          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
         },
       };
 

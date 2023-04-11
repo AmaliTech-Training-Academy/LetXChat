@@ -1,5 +1,6 @@
 import { Box, styled } from '@mui/material'
 import React from 'react'
+import ChatHead from '../../components/chatHead/ChatHead'
 
 const Container = styled(Box)({
     width: '60vw',
@@ -12,8 +13,8 @@ const Container = styled(Box)({
 
 const ChatPage = () => {
   return (
-    <Container>
-      
+    <Container component='main'>
+        <ChatHead />
     </Container>
   )
 }
