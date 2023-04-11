@@ -11,6 +11,7 @@ const Content = styled(Box)({
 
 
 const Messages = ({username}) => {
+  
   return (
     <Content>
         <Message username={username} />
