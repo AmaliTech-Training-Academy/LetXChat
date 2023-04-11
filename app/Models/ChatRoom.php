@@ -23,4 +23,8 @@ class ChatRoom extends Model
     {
         return $this->users()->where('user_id', $user->id)->exists();
     }
+
+    public function messages() {
+        return $this->hasMany(ChatMessage::class);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ChatMessageController;
 use App\Http\Controllers\API\ChatRoomController;
 use App\Http\Controllers\API\RequestController;
 use App\Models\User;
@@ -28,6 +29,12 @@ Route::prefix('v1')->group(function(){
             Route::get('/profile', 'index');
             Route::patch('/profile/edit', 'update');
         });
+
+        Route::controller(ChatMessageController::class)->group(function(){
+            Route::get('/chatroom/{roomId}/messages', 'chatRoomMessages');
+            Route::post('/chatroom/{roomId}/message', 'newMessage');
+        });
+
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 
