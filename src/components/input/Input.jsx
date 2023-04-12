@@ -115,9 +115,82 @@ const Input = ({ sendMessage }) => {
     };
   });
 
-  // Socket Io
-  const CUSTOM_URL = "http://localhost:4000";
-  const socket = io.connect(`${CUSTOM_URL}`);
+  // Send Message
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+
+    const timestamp = format(new Date(), "h:mm a");
+
+    const message = {
+      id: Date.now(),
+      time: timestamp,
+      sender: userInfo.name,
+      text: text,
+      voiceNote: audioUrl,
+      image: image,
+      video: video,
+      file: file,
+    };
+
+    const formData = new FormData()
+    formData.append("id", Date.now())
+    formData.append("time", timestamp)
+    formData.append("sender", userInfo.name)
+    formData.append("text", text)
+    formData.append("voiceNote", audioUrl)
+    formData.append("image", image)
+    formData.append("video", video)
+    formData.append("file", file)
+
+    dispatch(addMessage(message));
+    socket.emit("chat", formData);
+
+    setText("");
+    setImage(null);
+    setFile(null);
+    setVideo(null)
+    setAudioUrl(null)
+  };
+
+  const handleImageChange = (event) => {
+    setImage(event.target.files[0]);
+  };
+
+  const handleToggleRecording = () => {
+    if (recording) {
+      mediaRecorder.stop();
+    } else {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          const recorder = new MediaRecorder(stream);
+          let chunks = [];
+          recorder.addEventListener('dataavailable', event => {
+            chunks.push(event.data);
+          });
+          recorder.addEventListener('stop', () => {
+            const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
+            const url = URL.createObjectURL(blob);
+            setAudioBlob(blob);
+            setAudioUrl(url);
+          });
+          setMediaRecorder(recorder);
+          recorder.start();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+    setRecording(!recording);
+  };
+
+  const handleFileUpload = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleVideoChange = (event) => {
+    setVideo(event.target.files[0]);
+  };
 
   return (
     <Container component="section">
