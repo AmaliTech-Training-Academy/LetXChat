@@ -28,11 +28,11 @@ class RequestController extends Controller
         $user = User::find($request->user_id);
         $chatroom = ChatRoom::find($request->chat_room_id);
 
-        if (!$user) return response()->json(['message' => 'User Not Found']);
-        if (!$chatroom) return response()->json(['message' => 'ChatRoom Not Found']);
+        if (!$user) return response()->json(['message' => 'User Not Found'],404);
+        if (!$chatroom) return response()->json(['message' => 'Chatroom Not Found'],404);
 
         if ($chatroom->hasUser($user))
-            return response()->json(['message' => 'Already joined ' . $chatroom->name]);
+            return response()->json(['message' => 'Already joined ' . $chatroom->name], 409);
 
         $user->chatrooms()->attach($chatroom);
 
