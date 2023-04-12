@@ -60,7 +60,7 @@ const ChatHead = () => {
         <Email>kofi@gmail.com</Email>
         <Status></Status>
       </LeftSection>
-
+{/* 
       <RightSection>
         <div>
           <img src={Search} style={{ cursor: "pointer" }} alt="Search" />
@@ -68,7 +68,7 @@ const ChatHead = () => {
         <div>
           <img src={Favorite} style={{ cursor: "pointer" }} alt="Favorite" />
         </div>
-      </RightSection>
+      </RightSection> */}
     </Container>
   );
 };

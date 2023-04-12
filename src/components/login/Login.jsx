@@ -161,37 +161,43 @@ const Login = () => {
   const handleShowPassword = () => setShowPassword((show) => !show);
 
   const dispatch = useDispatch();
-  const { loading, userToken } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
 
   // Submit Form
   const onSubmit = async (values, actions) => {
     dispatch(loginUser(values));
-    actions.resetForm();
+    setTimeout(() => {
+      actions.resetForm();
+    }, 4000);
   };
 
-
-  const Token = Cookies.get('userToken')
- useEffect(() => {
-  if (Token) {
-setTimeout(() => {
-
-  navigate('/chat')
-}, 1000)
-  }
- }, [Token])
+  const Token = Cookies.get("userToken");
+  useEffect(() => {
+    if (Token) {
+      navigate("/chat");
+    }
+  }, [Token]);
 
   // Formik Validation
-  const { values, errors, touched, handleBlur, handleSubmit, handleChange } =
-    useFormik({
-      initialValues: {
-        emailID: "",
-        password: "",
-      },
-      validationSchema: loginSchema,
-      onSubmit,
-    });
+
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleSubmit,
+    handleChange,
+    isSubmitting,
+  } = useFormik({
+    initialValues: {
+      emailID: "",
+      password: "",
+    },
+    validationSchema: loginSchema,
+    onSubmit,
+  });
 
   return (
     <Container component="main">
@@ -210,11 +216,11 @@ setTimeout(() => {
               id="emailID"
               name="emailID"
               placeholder="Enter your email or ID"
-              value={values.email}
+              value={values.emailID}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={touched.email && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
+              error={touched.emailID && Boolean(errors.emailID)}
+              helperText={touched.emailID && errors.emailID}
             />
           </Box>
           <Box sx={TextComponent}>
@@ -263,7 +269,7 @@ setTimeout(() => {
           </Box>
 
           <Box component="section" sx={SignUpLogin}>
-            {loading ? (
+            {loading || isSubmitting ? (
               <LoadingButtonStyles
                 loading
                 variant="outlined"
