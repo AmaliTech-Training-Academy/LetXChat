@@ -27,7 +27,12 @@ class ChatMessageController extends Controller
 
     public function newMessage(Request $request, $roomId)
     {
-        $request->validate(['message' => 'required']);
+        $request->validate([
+            'message' => 'required',
+            'image' => 'nullable',
+            'video' => 'nullable',
+            'voicenote' => 'nullable'
+        ]);
 
         // check if user is part of the current chatroom
         $chatroom = ChatRoom::find($roomId);
@@ -39,10 +44,14 @@ class ChatMessageController extends Controller
             if($request->hasFile('image')) {
                 $imageName = $request->file('image')->getClientOriginalName();
                 $imageName = str_replace(' ', '_', $imageName);
-                $image = $request->file('image')->store('app/images', $imageName);
+                $image = $request->file('image')->storeAs('app/images', $imageName);
+            } else {
+                $image = null;
             }
-            $video = $request->file('video')->store('app/videos');
-            $audio = $request->file('voicenote')->store('app/voicenotes');
+
+            $video =  $request->hasFile('video') ? $request->file('video')->store('app/videos') : null;
+
+            $audio =  $request->hasFile('video') ? $request->file('voicenote')->store('app/voicenotes') : null;
 
         $newMessage = ChatMessage::create([
             'user_id' => Auth::id(),
@@ -58,6 +67,9 @@ class ChatMessageController extends Controller
         return response()->json([
             'sender' => Auth::user()->fullname,
             'message' => $newMessage->message,
+            'image' => $newMessage->image,
+            'video' => $newMessage->video,
+            'voicenote' => $newMessage->voicenote
         ]);
     }
 }
