@@ -134,14 +134,11 @@ const Input = ({ sendMessage }) => {
     };
 
     const formData = new FormData()
-    formData.append("id", Date.now())
-    formData.append("time", timestamp)
     formData.append("sender", userInfo.name)
     formData.append("text", text)
     formData.append("voiceNote", audioUrl)
     formData.append("image", image)
     formData.append("video", video)
-    formData.append("file", file)
 
     dispatch(addMessage(message));
     socket.emit("chat", formData);
