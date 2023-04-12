@@ -44,9 +44,9 @@ export const registerUser = createAsyncThunk(
         formData,
         config
       );
-      console.log(res.data);
     } catch (error) {
-      console.error(error);
+      const ERROR_MESSAGE = error.response.data.message
+      toast.error(ERROR_MESSAGE, {autoClose: 3000,})
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
@@ -85,11 +85,8 @@ export const loginUser = createAsyncThunk("auth/login", async (values) => {
     .request(config)
     .then((response) => {
       Cookies.set('userToken', response.data.token)
-      console.log(response.data.token);
-      console.log(response.data.data);
-      Cookies.set('userInfo', JSON.stringify(response.data.data))
       const SUCCESS_MESSAGE = response.data.message;
-      toast.success(SUCCESS_MESSAGE, {autoClose: 1000,});
+      toast.success(SUCCESS_MESSAGE, {autoClose: 3000,});
     })
     .catch((error) => {
       const ERROR_MESSAGE = error.response.data.message;

@@ -161,30 +161,27 @@ const Login = () => {
   const handleShowPassword = () => setShowPassword((show) => !show);
 
   const dispatch = useDispatch();
-  const { loading, userToken } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
 
   // Submit Form
   const onSubmit = async (values, actions) => {
     dispatch(loginUser(values));
-    actions.resetForm();
+    setTimeout(() => {
+      actions.resetForm();
+    }, 4000);
   };
 
-
-  const Token = Cookies.get('userToken')
- useEffect(() => {
-  if (Token) {
-setTimeout(() => {
-
-  navigate('/chat')
-}, 1000)
-  }
- }, [Token])
+  const Token = Cookies.get("userToken");
+  useEffect(() => {
+    if (Token) {
+      navigate("/chat");
+    }
+  }, [Token]);
 
   // Formik Validation
-<<<<<<< HEAD
-<<<<<<< HEAD
+
   const {
     values,
     errors,
@@ -195,28 +192,12 @@ setTimeout(() => {
     isSubmitting,
   } = useFormik({
     initialValues: {
-      email: "",
+      emailID: "",
       password: "",
     },
     validationSchema: loginSchema,
     onSubmit,
   });
-=======
-=======
->>>>>>> 1f9c599f28624041d086643f7a5298a575a526ac
-  const { values, errors, touched, handleBlur, handleSubmit, handleChange } =
-    useFormik({
-      initialValues: {
-        emailID: "",
-        password: "",
-      },
-      validationSchema: loginSchema,
-      onSubmit,
-    });
-<<<<<<< HEAD
->>>>>>> 23a8a44 (Feature/Login: Integrating the backend with the frontend)
-=======
->>>>>>> 1f9c599f28624041d086643f7a5298a575a526ac
 
   return (
     <Container component="main">
@@ -231,28 +212,15 @@ setTimeout(() => {
               email/ Employee ID*
             </Box>
             <TextFieldStyle
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-              id="email"
-=======
-=======
-              type="text"
->>>>>>> 23a8a44 (Feature/Login: Integrating the backend with the frontend)
-              id="emailID"
-              name="emailID"
->>>>>>> 6a0da87 (Feature/Login: Working on integrating backend with frontend)
-=======
               type="text"
               id="emailID"
               name="emailID"
->>>>>>> 1f9c599f28624041d086643f7a5298a575a526ac
               placeholder="Enter your email or ID"
-              value={values.email}
+              value={values.emailID}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={touched.email && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
+              error={touched.emailID && Boolean(errors.emailID)}
+              helperText={touched.emailID && errors.emailID}
             />
           </Box>
           <Box sx={TextComponent}>
@@ -301,7 +269,7 @@ setTimeout(() => {
           </Box>
 
           <Box component="section" sx={SignUpLogin}>
-            {loading ? (
+            {loading || isSubmitting ? (
               <LoadingButtonStyles
                 loading
                 variant="outlined"

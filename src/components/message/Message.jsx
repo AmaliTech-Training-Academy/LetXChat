@@ -1,9 +1,10 @@
 import { Box, styled } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
-import MessageImage from "../../assets/user-image.png";
-import Image from "../../assets/collaboration-section.png";
-import { io } from "socket.io-client";
-import { format } from "date-fns";
+import React, { useEffect, useRef } from "react";
+
+
+import { useSelector } from "react-redux";
+
+import { FiDownload } from "react-icons/fi";
 
 const Container = styled(Box)({
   display: "flex",
@@ -14,14 +15,13 @@ const Container = styled(Box)({
 
 const MessageInfo = styled(Box)({});
 
-
 const MessageContent = styled(Box)({
   maxWidth: "80%",
   display: "flex",
   flexDirection: "column",
   gap: "10px",
   // background: '#ffffff',
-  width: '48%',
+  width: "48%",
   borderRadius: "10px",
   background: "#878787",
   position: "relative",
@@ -34,21 +34,18 @@ const Text = styled("p")({
   paddingBottom: "20px",
 });
 
-
-const Author = styled('p') ({
-  color: '#2c2c2c',
-  fontSize: '14px',
-  margin: '5px'
-})
+const Author = styled("p")({
+  color: "#2c2c2c",
+  fontSize: "14px",
+  margin: "5px",
+});
 
 const Time = styled("p")({
   position: "absolute",
   right: "0.4rem",
   bottom: "0.2rem",
   fontSize: "0.7rem",
-
 });
-
 
 const OwnerContainer = styled(Box)({
   display: "flex",
@@ -65,15 +62,13 @@ const OwnerMessageContent = styled(Box)({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
-  alignItems: "flex-end",
+  alignItems: "flex-start",
   background: "rgba(83, 53, 45, 0.9)",
   position: "relative",
   color: "#FFFFFF",
-  width: '46%',
+  width: "46%",
   borderRadius: "10px",
 });
-
-
 
 const OwnerTime = styled("p")({
   position: "absolute",
@@ -89,78 +84,168 @@ const OwnerText = styled("p")({
   borderRadius: "10px",
 });
 
-const Message = ({ username }) => {
-  const [messages, setMessages] = useState([]);
- 
-  // The Focus should always stay at the bottom for Messages 
+const Message = () => {
+  const messages = useSelector((state) => state.chat.messages);
+
+  console.log(messages, "Chat messages");
+
+  // The Focus should always stay at the bottom for Messages
   const messagesRef = useRef(null);
   useEffect(() => {
     messagesRef.current?.scrollIntoView();
   }, [messages]);
 
-  // Socket Io
-  const CUSTOM_URL = "http://localhost:4000";
-  const socket = io.connect(`${CUSTOM_URL}`);
-
-  useEffect(() => {
-    socket.on("receive_message", (data) => {
-      console.log(data, "Data received");
-      setMessages(data);
-    });
-  }, [socket]);
-
-  console.log(username, "Message name");
 
   return (
     <>
       {messages &&
         messages.map((el) => {
-          const formattedTime = format(new Date(el.date), "hh:mm a");
           return (
-            <>
-              {el.author !== username && (
-                <div key={el.author}>
+            <div key={el.id}>
+              {!el.sender && (
+                <div key={el.sender}>
                   <Container component="article">
                     <MessageInfo>
                       <img
-                        src={MessageImage}
+                        // src={}
                         style={{ width: "2.5rem", objectFit: "cover" }}
                         alt="User Image"
                       />
                     </MessageInfo>
                     <MessageContent>
-                        <Author>{el.author}</Author>
-                        <Text>{el.message}</Text>
+                      <Author>{el.sender}</Author>
+                      <Text>{el.text}</Text>
+                      {el.image && (
+                        <img
+                          src={el.image}
+                          style={{
+                            marginBottom: "25px",
+                            width: "98%",
+                            marginInline: "auto",
+                            borderRadius: "10px",
+                          }}
+                          alt="image"
+                        />
+                      )}
 
-                      <img src={Image} style={{marginBottom: '25px', width: '98%', marginInline: 'auto', borderRadius: '10px'}} alt="image" />
-                        <Time>{formattedTime}</Time>
+                      {el.video && (
+                        <video controls>
+                          <source
+                            src={URL.createObjectURL(el.video)}
+                            type="video/mp4"
+                          />
+                        </video>
+                      )}
+
+                      {el.voiceNote && (
+                        <audio controls>
+                          <source
+                            src={URL.createObjectURL(el.voiceNote)}
+                            type="audio/mp3"
+                          />
+                        </audio>
+                      )}
+
+                      {el.file && (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            margin: "1rem 0.5rem",
+                            marginTop: "0",
+                            alignItems: "center",
+                          }}
+                        >
+                          <p>{el.file.name}</p>
+                          <a
+                            href={URL.createObjectURL(el.file)}
+                            download={el.file.name}
+                          >
+                            <FiDownload
+                              style={{ color: "#3683F5", fontSize: "1.5rem" }}
+                            />
+                          </a>
+                        </div>
+                      )}
+
+                      <Time>{el.time}</Time>
                     </MessageContent>
                   </Container>
                 </div>
               )}
 
-              {el.author === username && (
-                <div key={el.author}>
+              {el.sender && (
+                <div key={el.sender}>
                   <OwnerContainer component="article">
-                    {/* <OwnerMessageInfo>
-                      <img
-                        src={MessageImage}
-                        style={{ width: "2.5rem", objectFit: "cover" }}
-                        alt="User Image"
-                      />
-                    </OwnerMessageInfo> */}
                     <OwnerMessageContent>
-                        <OwnerText>{el.message}</OwnerText>
-                        <img src={Image} style={{marginBottom: '25px', width: '98%', marginInline: 'auto', borderRadius: '10px'}} alt="image" />
-                        <OwnerTime>{formattedTime}</OwnerTime>
+                      <OwnerText>{el.text}</OwnerText>
+                      {el.image && (
+                        <img
+                          src={URL.createObjectURL(el.image)}
+                          style={{
+                            marginBottom: "25px",
+                            width: "10rem",
+                            // height: '20rem',
+                            marginInline: "auto",
+                            borderRadius: "10px",
+                          }}
+                          alt="image"
+                        />
+                      )}
+
+                      {el.video && (
+                        <video controls style={{ marginBottom: "2rem" }}>
+                          <p>{el.video.name}</p>
+                          <source
+                            src={URL.createObjectURL(el.video)}
+                            type="video/mp4"
+                          />
+                        </video>
+                      )}
+
+                      {el.voiceNote && (
+                        <audio
+                          controls
+                          src={el.voiceNote}
+                          style={{ marginBottom: "2rem" }}
+                        >
+                          <a href={el.voiceNote} download="recording.ogg">
+                            Download Recording
+                          </a>
+                        </audio>
+                      )}
+
+                      {el.file && (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            margin: "1rem 0.5rem",
+                            marginTop: "0",
+                            alignItems: "center",
+                          }}
+                        >
+                          <p>{el.file.name}</p>
+                          <a
+                            href={URL.createObjectURL(el.file)}
+                            download={el.file.name}
+                          >
+                            <FiDownload
+                              style={{ color: "#3683F5", fontSize: "1.5rem" }}
+                            />
+                          </a>
+                        </div>
+                      )}
+
+                      <OwnerTime>{el.time}</OwnerTime>
                     </OwnerMessageContent>
                   </OwnerContainer>
                 </div>
               )}
-            </>
+            </div>
           );
         })}
-        <div ref={messagesRef} />
+      <div ref={messagesRef} />
     </>
   );
 };

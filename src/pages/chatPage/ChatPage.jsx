@@ -1,50 +1,54 @@
-import { Box, styled } from '@mui/material'
-import React, { useState } from 'react'
-import ChatHead from '../../components/chatHead/ChatHead'
-import ChatMessage from '../../components/chatMessage/ChatMessage'
-import Input from '../../components/input/Input'
-import { io } from 'socket.io-client'
+import { Box, Skeleton, styled } from "@mui/material";
+import ChatHead from "../../components/chatHead/ChatHead";
+import ChatMessage from "../../components/chatMessage/ChatMessage";
+import Input from "../../components/input/Input";
+import { useSelector } from "react-redux";
 
 const Container = styled(Box)({
-    // width: '50vw',
-    height: '100vh',
-    marginInline: 'auto',
-    background: 'blue',
-    display: 'flex',
-    flexDirection: 'column'
-})
-
-
-
+  height: "100vh",
+  marginInline: "auto",
+  display: "flex",
+  flexDirection: "column",
+});
 
 const ChatPage = () => {
+  const { loading } = useSelector((state) => state.user);
 
-  const [username, setUsername] = useState('')
-
-
-  const CUSTOM_URL = 'http://localhost:4000'
-  const socket = io.connect(`${CUSTOM_URL}`)
-
-  const sendMessage = (text, setText) => { 
-
-    const messageObj = {
-      message: text,
-      author: username,
-      date: new Date()
-    }
-    socket.emit("send_message", {...messageObj}) 
-    setText("")
-  } 
-
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          paddingTop: "1rem",
+        }}
+      >
+        <Skeleton
+          variant="circular"
+          width={70}
+          height={70}
+          sx={{ marginLeft: "2.5rem" }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="rounded"
+          width={"100vw"}
+          height={"77vh"}
+        />
+        <Skeleton variant="rectangular" width={"100vw"} height={"14vh"} />
+      </div>
+    );
+  }
 
   return (
-    <Container component='main'>
-        <ChatHead />
-        <ChatMessage username={username} />
-        <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-        <Input sendMessage={sendMessage}/>
-    </Container>
-  )
-}
+    <Container component="main">
+      <ChatHead />
+      <ChatMessage />
 
-export default ChatPage
+      <Input />
+    </Container>
+  );
+};
+
+export default ChatPage;

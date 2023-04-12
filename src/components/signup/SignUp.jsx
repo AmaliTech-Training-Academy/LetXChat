@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
-import CameraIcon from "../../assets/camera.png";
+import CameraIcon from "../../assets/SignUpCamera.png";
 import ProfilePhoto from "../../assets/profile-picture.png";
 import { useFormik } from "formik";
 import { basicSchema } from "../../schemas";
@@ -224,7 +224,7 @@ useEffect(() => {
 
       setTimeout(() => {
         navigate("/login");
-      }, 2000);
+      }, 4000);
     }
   }, [navigate, success]);
 
@@ -237,6 +237,7 @@ useEffect(() => {
     handleChange,
     handleSubmit,
     setFieldValue,
+    isSubmitting
   } = useFormik({
     initialValues: {
       image: "",
@@ -423,7 +424,7 @@ useEffect(() => {
 
           <Box component="section" sx={SignUpLogin}>
             <ButtonStyles type="submit">
-              {loading ? "Loading..." : "Sign Up"}
+              {loading || isSubmitting ? "Loading..." : "Sign Up"}
             </ButtonStyles>
             <p>
               Already have an account?{" "}
