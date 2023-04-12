@@ -152,7 +152,7 @@ const Input = () => {
     formData.append("voiceNote", audioUrl)
     formData.append("image", image)
     formData.append("video", video)
-
+    formData.append('file', file)
     dispatch(addMessage(message));
     socket.emit("chat", formData);
 
