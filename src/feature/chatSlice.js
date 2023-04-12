@@ -3,9 +3,10 @@ import { registerUser } from "./authActions";
 import { BASE_URL } from "../defaultValues/DefaultValues";
 import { io } from "socket.io-client";
 import Cookies from "js-cookie";
+import { loginUser } from "./authActions";
 
 // Initialize userToken from Cookie
-const userToken = Cookies.get("userToken") || null;
+const userToken = Cookies.get("userToken") ? Cookies.get("userToken") : null;
 const userInfo = Cookies.get("userInfo") ? Cookies.get("userInfo") : null;
 const initialState = {
   loading: false,
@@ -36,9 +37,9 @@ const authSlice = createSlice({
 
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.userInfo = payload;
+        state.userInfo = userInfo;
         state.success = true;
-        state.userToken = payload.userToken
+        state.userToken = userToken
       })
 
       .addCase(loginUser.rejected, (state, { payload }) => {
