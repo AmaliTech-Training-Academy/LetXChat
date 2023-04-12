@@ -103,7 +103,8 @@ const Input = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
 
   const CHAT_URL = `${BASE_URL}/chatroom/1/message`
-  const socket = socketIOClient(CHAT_URL);
+  // const socket = socketIOClient(CHAT_URL);
+  const socket = socketIOClient("http://localhost:4000");
 
   const addEmoji = (e) => {
     // setCurrentEmoji(e.native)
