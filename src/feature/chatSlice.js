@@ -24,19 +24,28 @@ const socket = io.connect(`${CHAT_ROOM_URL}`);
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    sendMessage: (state, action) => {
-      // const user =
+  reducers: {},
+  extraReducers: (builder) => {
+    // Login User
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
 
-      const messageObj = {
-        message: state.text,
-        author: username,
-        date: new Date(),
-      };
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.userInfo = payload;
+        state.success = true;
+        state.userToken = payload.userToken
+      })
 
-      socket.emit("send_message", { ...messageObj });
-      state.text;
-    },
+      .addCase(loginUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.success = false;
+        state.error = payload;
+      });
   },
   extraReducers: (builder) => {
     builder
