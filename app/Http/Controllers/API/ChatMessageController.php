@@ -44,14 +44,14 @@ class ChatMessageController extends Controller
             if($request->hasFile('image')) {
                 $imageName = $request->file('image')->getClientOriginalName();
                 $imageName = str_replace(' ', '_', $imageName);
-                $image = $request->file('image')->storeAs('app/images', $imageName);
+                $image = $request->file('image')->storeAs('images', $imageName);
             } else {
                 $image = null;
             }
 
-            $video =  $request->hasFile('video') ? $request->file('video')->store('app/videos') : null;
+            $video =  $request->hasFile('video') ? $request->file('video')->store('videos') : null;
 
-            $audio =  $request->hasFile('video') ? $request->file('voicenote')->store('app/voicenotes') : null;
+            $audio =  $request->hasFile('voicenote') ? $request->file('voicenote')->store('voicenotes') : null;
 
         $newMessage = ChatMessage::create([
             'user_id' => Auth::id(),
