@@ -21,6 +21,7 @@ class AuthController extends Controller
             $chatID = 'E' . str_pad($lastRecord->id + 1, 3, '0', STR_PAD_LEFT);
         }
 
+
         $request->validated($request->all());
 
         try {
