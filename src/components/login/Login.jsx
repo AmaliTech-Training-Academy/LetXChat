@@ -234,6 +234,9 @@ setTimeout(() => {
 >>>>>>> 23a8a44 (Feature/Login: Integrating the backend with the frontend)
               id="emailID"
               name="emailID"
+<<<<<<< HEAD
+>>>>>>> 6a0da87 (Feature/Login: Working on integrating backend with frontend)
+=======
 >>>>>>> 6a0da87 (Feature/Login: Working on integrating backend with frontend)
               placeholder="Enter your email or ID"
               value={values.email}
