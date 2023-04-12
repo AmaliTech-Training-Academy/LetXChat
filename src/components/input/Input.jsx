@@ -147,8 +147,7 @@ const Input = () => {
     };
 
     const formData = new FormData()
-    formData.append("sender", userInfo.name)
-    formData.append("text", text)
+    formData.append("message", text)
     formData.append("voiceNote", audioUrl)
     formData.append("image", image)
     formData.append("video", video)
