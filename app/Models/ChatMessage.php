@@ -13,7 +13,10 @@ class ChatMessage extends Model
     protected $fillable = [
         'user_id',
         'chat_room_id',
-        'message'
+        'message',
+        'image',
+        'video',
+        'voicenote'
     ];
 
     public function chatRoom(): HasOne

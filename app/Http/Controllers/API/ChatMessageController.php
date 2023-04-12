@@ -32,15 +32,25 @@ class ChatMessageController extends Controller
         // check if user is part of the current chatroom
         $chatroom = ChatRoom::find($roomId);
         if (!($chatroom->hasUser(Auth::user())))
-
             return response()->json([
                 'error' => 'user not in ' . $chatroom->name
             ], 404);
+
+            if($request->hasFile('image')) {
+                $imageName = $request->file('image')->getClientOriginalName();
+                $imageName = str_replace(' ', '_', $imageName);
+                $image = $request->file('image')->storeAs('app/images', $imageName);
+            }
+            $video = $request->file('video')->storeAs('app/videos');
+            $audio = $request->file('voicenote')->storeAs('app/voicenotes');
 
         $newMessage = ChatMessage::create([
             'user_id' => Auth::id(),
             'chat_room_id' => $roomId,
             'message' => $request->message,
+            'image' => $image,
+            'video' => $video,
+            'voicenote' => $audio
         ]);
 
         broadcast(new NewChatMessage($newMessage))->toOthers();
