@@ -52,6 +52,7 @@ class ChatMessageController extends Controller
             $video =  $request->hasFile('video') ? $request->file('video')->store('videos') : null;
 
             $audio =  $request->hasFile('voicenote') ? $request->file('voicenote')->store('voicenotes') : null;
+            $file =  $request->hasFile('file') ? $request->file('file')->store('files') : null;
 
         $newMessage = ChatMessage::create([
             'user_id' => Auth::id(),
@@ -59,7 +60,8 @@ class ChatMessageController extends Controller
             'message' => $request->message,
             'image' => $image,
             'video' => $video,
-            'voicenote' => $audio
+            'voicenote' => $audio,
+            'file' => $file
         ]);
 
         broadcast(new NewChatMessage($newMessage))->toOthers();
@@ -69,7 +71,8 @@ class ChatMessageController extends Controller
             'message' => $newMessage->message,
             'image' => $newMessage->image,
             'video' => $newMessage->video,
-            'voicenote' => $newMessage->voicenote
+            'voicenote' => $newMessage->voicenote,
+            'file' => $newMessage->file
         ]);
     }
 }
