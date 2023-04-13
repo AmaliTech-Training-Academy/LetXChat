@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { fetchUserInfo } from "./feature/userSlice";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import Chat from "./pages/chat/Chat";
 
 function App() {
 
@@ -19,7 +20,8 @@ function App() {
   
   return (
     <div className="App">
-      <Router />
+      {/* <Router /> */}
+      <Chat />
       <ToastContainer position="top-center" />
     </div>
     

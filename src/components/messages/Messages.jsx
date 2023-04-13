@@ -10,11 +10,11 @@ const Content = styled(Box)({
 })
 
 
-const Messages = ({username}) => {
+const Messages = () => {
   
   return (
     <Content>
-        <Message username={username} />
+        <Message />
 
     </Content>
   )

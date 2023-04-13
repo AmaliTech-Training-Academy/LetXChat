@@ -6,7 +6,9 @@ import { useSelector } from "react-redux";
 
 const Container = styled(Box)({
   height: "100vh",
-  marginInline: "auto",
+  width: '50vw',
+  // marginInline: "auto",
+  marginLeft: '25vw',
   display: "flex",
   flexDirection: "column",
 });
