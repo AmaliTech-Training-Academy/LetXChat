@@ -2,6 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ChatMessage;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,7 +21,26 @@ class ChatRoomMembersResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'image' => env('APP_URL').'/storage/app/'.$this->image,
-            'memebers' => $this->users,
-        ];;
+            // 'memebers' => $this->users ,
+            // 'messages' => $this->messages,
+            'messages' => $this->users->map(function ($user) {
+                return [
+                    'user_id' => $user->id,
+                    'messages' => $this->messages->where('user_id', $user->id),
+                ];
+            }),
+            'recent_message' => $this->getRecentMessage()
+        ];
+    }
+
+    public function getRecentMessage()
+    {
+        $recent = ChatMessage::latest()->first();
+
+        return [
+            'id' => $recent->id,
+            'message' => $recent->message,
+            'time' => Carbon::parse($recent->created_at)->format('g:i a')
+        ];
     }
 }
