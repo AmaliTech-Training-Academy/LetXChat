@@ -6,15 +6,20 @@ import { fetchUserInfo } from "./feature/userSlice";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import Chat from "./pages/chat/Chat";
+import { fetchChatRooms } from "./feature/chatRooms";
 
 function App() {
 
   const dispatch = useDispatch();
 
+  // Get userInfo and chatrooms using userToken
   const userToken = Cookies.get("userToken")
   useEffect(() => {
     dispatch(fetchUserInfo(userToken));
+    dispatch(fetchChatRooms(userToken))
   }, [dispatch, userToken]);
+
+
 
 
   

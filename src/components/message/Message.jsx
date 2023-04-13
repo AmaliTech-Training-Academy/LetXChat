@@ -79,7 +79,7 @@ const OwnerTime = styled("p")({
 
 const OwnerText = styled("p")({
   whiteSpace: "break-spaces",
-  padding: "5px 20px",
+  padding: "5px",
   paddingBottom: "20px",
   borderRadius: "10px",
 });

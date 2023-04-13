@@ -14,8 +14,8 @@ import { addMessage } from "../../feature/chatRoomSlice";
 import socketIOClient from "socket.io-client";
 import { format } from "date-fns";
 import { FiVideo } from "react-icons/fi";
-import { BASE_URL } from "../../defaultValues/DefaultValues";
 import uploadVideo from "../../assets/uploadVideo.png";
+import { CHATROOM_URL } from "../../defaultValues/DefaultValues";
 
 const Container = styled(Box)({
   height: "12vh",
@@ -43,11 +43,12 @@ const InputCon = styled("form")({
   justifyContent: "space-between",
   gap: "14px",
   paddingLeft: "10px",
+  // overflow: 'hidden'
 });
 
 const InputText = styled("textarea")({
   height: "50px",
-  width: "73%",
+  width: "66%",
   paddingLeft: "4px",
   background: "transparent",
   fontStyle: "Bold",
@@ -101,9 +102,20 @@ const Input = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
 
-  const CHAT_URL = `${BASE_URL}/chatroom/1/message`;
-  // const socket = socketIOClient(CHAT_URL);
-  const socket = socketIOClient("http://localhost:4000");
+  const CHAT_URL = `${CHATROOM_URL}/1`;
+
+  // const socket = io(CHAT_URL);
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     console.log('Connected to socket server');
+  //   });
+  //   socket.on('message', (data) => {
+  //     console.log('Received message:', data);
+  //   });
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, [])
 
   const addEmoji = (e) => {
     // setCurrentEmoji(e.native)
@@ -282,7 +294,7 @@ const Input = () => {
           />
 
           <SendMessage type="submit">
-            <img src={Send} style={{ width: "90%" }} alt="Send message" />
+            <img src={Send} alt="Send message" />
           </SendMessage>
         </FilesAndSend>
       </InputCon>

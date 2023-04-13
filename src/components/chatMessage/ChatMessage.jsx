@@ -20,9 +20,10 @@ const Container = styled(Box)({
 
 const ChatMessage = () => {
 
+ 
 
   return <Container component="article">
-    {/* <Messages /> */}
+    <Messages />
   </Container>;
 };
 

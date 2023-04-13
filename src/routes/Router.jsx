@@ -11,7 +11,7 @@ import Settings from '../components/sidebar/Settings'
 import CreateGroup from '../components/sidebar/CreateGroup'
 import SidebarLayout from '../components/layouts/SidebarLayout'
 import PrivateRoute from '../PrivateRoute'
-import ChatPage from '../pages/chatPage/ChatPage'
+import Chat from '../pages/chat/Chat'
 function Router() {
   return (
     <Routes>
@@ -23,7 +23,7 @@ function Router() {
           <Route path='/contact' element={<Contact />}/>
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/chat" element={<Chat />} />
         </Route>
         <Route path='/sidebar' element={<SidebarLayout />}>
           <Route index element={<Sidebar />}/>
