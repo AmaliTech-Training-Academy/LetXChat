@@ -31,7 +31,7 @@ Route::prefix('v1')->group(function(){
         });
 
         Route::controller(ChatMessageController::class)->group(function(){
-            Route::get('/chatroom/{roomId}/messages', 'chatRoomMessages');
+            Route::get('/chatroom/{roomId}/message', 'chatRoomMessages');
             Route::post('/chatroom/{roomId}/message', 'newMessage');
         });
 
