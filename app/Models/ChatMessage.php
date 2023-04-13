@@ -16,7 +16,8 @@ class ChatMessage extends Model
         'message',
         'image',
         'video',
-        'voicenote'
+        'voicenote',
+        'file'
     ];
 
     public function chatRoom(): HasOne

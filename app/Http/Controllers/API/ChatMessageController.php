@@ -31,7 +31,8 @@ class ChatMessageController extends Controller
             'message' => 'required',
             'image' => 'nullable',
             'video' => 'nullable',
-            'voicenote' => 'nullable'
+            'voicenote' => 'nullable',
+            'file' => 'nullable'
         ]);
 
         // check if user is part of the current chatroom
