@@ -28,7 +28,7 @@ class ChatMessageController extends Controller
     public function newMessage(Request $request, $roomId)
     {
         $request->validate([
-            'message' => 'required',
+            'message' => 'nullable',
             'image' => 'nullable',
             'video' => 'nullable',
             'voicenote' => 'nullable',

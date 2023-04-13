@@ -31,8 +31,8 @@ Route::prefix('v1')->group(function(){
         });
 
         Route::controller(ChatMessageController::class)->group(function(){
-            Route::get('/chatroom/{roomId}/message', 'chatRoomMessages');
-            Route::post('/chatroom/{roomId}/message', 'newMessage');
+            Route::get('/chatrooms/{roomId}/message', 'chatRoomMessages');
+            Route::post('/chatrooms/{roomId}/message', 'newMessage');
         });
 
         Route::post('/logout', [AuthController::class, 'logout']);
