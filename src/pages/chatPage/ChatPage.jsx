@@ -5,10 +5,7 @@ import Input from "../../components/input/Input";
 
 const Container = styled(Box)({
   height: "100vh",
-  width: '50vw',
-  // marginInline: "auto",
-  marginLeft: '25vw',
-  display: "flex",
+  width: '55vw',
   flexDirection: "column",
 });
 

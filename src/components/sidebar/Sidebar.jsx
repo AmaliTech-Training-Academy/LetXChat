@@ -9,6 +9,8 @@ import ama from '../../assets/ama.png'
 import king from '../../assets/king.png'
 import mum from '../../assets/mum.png'
 import chef from '../../assets/chef.png'
+import { useSelector } from 'react-redux'
+import { Skeleton } from '@mui/material'
 
 const msgArr = [
   {
@@ -142,6 +144,36 @@ const msgArr = [
 ]
 
 function Sidebar() {
+
+
+  const {allChatRooms, loading} = useSelector(state => state.chatrooms)
+
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          width: '25vw',
+          height: '100vh',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          background: '#FFFFFF'
+        }}
+      >
+     
+        <Skeleton
+          animation="wave"
+          variant="rounded"
+          height={"100vh"}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <UserCard/>
@@ -149,7 +181,7 @@ function Sidebar() {
       {/* <CreateGroupSection /> */}
       <div className='w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center'>
         {
-          msgArr.length ? msgArr.map(ele => {
+          allChatRooms.length ? allChatRooms.map(ele => {
             return (
               <ChatCard item={ele} key={ele.id}/>
             )

@@ -16,13 +16,14 @@ import { format } from "date-fns";
 import { FiVideo } from "react-icons/fi";
 import uploadVideo from "../../assets/uploadVideo.png";
 import { CHATROOM_URL } from "../../defaultValues/DefaultValues";
+import { useParams } from "react-router";
 
 const Container = styled(Box)({
-  height: "12vh",
+  height: "10vh",
   width: "100%",
   display: "flex",
   alignItems: "center",
-  paddingInline: "70px",
+  paddingInline: "30px",
   borderTop: "1px solid #D9D9D9",
   position: "relative",
 });
@@ -85,6 +86,9 @@ const SendMessage = styled("button")({
   width: "50px",
   borderRadius: "50%",
   cursor: "pointer",
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 });
 
 const Input = () => {
@@ -102,20 +106,24 @@ const Input = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
 
-  const CHAT_URL = `${CHATROOM_URL}/1`;
+  const {chat_room_id} = useParams()
 
-  // const socket = io(CHAT_URL);
-  // useEffect(() => {
-  //   socket.on('connect', () => {
-  //     console.log('Connected to socket server');
-  //   });
-  //   socket.on('message', (data) => {
-  //     console.log('Received message:', data);
-  //   });
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, [])
+  const CHAT_URL = `${CHATROOM_URL}/${chat_room_id}/message`;
+console.log(CHAT_URL);
+
+  const socket = io(CHAT_URL);
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to socket server');
+    });
+    socket.on('message', (data) => {
+      console.log('Received message:', data);
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, [])
 
   const addEmoji = (e) => {
     // setCurrentEmoji(e.native)

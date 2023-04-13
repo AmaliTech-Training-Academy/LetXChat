@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import Chat from "./pages/chat/Chat";
 import { fetchChatRooms } from "./feature/chatRooms";
+import ChatComponent from "./pages/ChatComponent";
 
 function App() {
 
@@ -25,8 +26,9 @@ function App() {
   
   return (
     <div className="App">
-      {/* <Router /> */}
-      <Chat />
+      <Router />
+      {/* <Chat /> */}
+      {/* <ChatComponent /> */}
       <ToastContainer position="top-center" />
     </div>
     

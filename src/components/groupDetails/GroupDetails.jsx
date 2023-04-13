@@ -3,7 +3,7 @@ import React from 'react';
 import GroupImage from '../../assets/user-image.png'
 
 const Container = styled(Box)({
-    width: '25vw',
+    width: '20vw',
     height: '100vh',
     background: 'rgba(243, 243, 243, 0.75)',
     boxShadow: "-3px 0px 2px -1px rgba(0,0,0,0.25)",

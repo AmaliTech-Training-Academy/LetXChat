@@ -30,15 +30,15 @@ export const fetchChatRooms = createAsyncThunk(
 );
 
 
-const chatroomsInfo = Cookies.get('chatrooms') || null
+const initialState = {
+   allChatRooms : Cookies.get('chatrooms') || [],
+    loading: true,
+    error: null
+}
 
 const chatRoomsSlice = createSlice({
     name: 'chatrooms',
-    initialState: {
-        chatroomsInfo,
-        loading: true,
-        error: null
-    },
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchChatRooms.pending, (state) => {
@@ -47,7 +47,7 @@ const chatRoomsSlice = createSlice({
 
         .addCase(fetchChatRooms.fulfilled, (state, action) => {
             state.loading = false
-            state.chatroomsInfo = action.payload;
+            state.allChatRooms = action.payload;
         })
 
         .addCase(fetchChatRooms.rejected, (state, action) => {

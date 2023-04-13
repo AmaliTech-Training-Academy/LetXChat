@@ -1,5 +1,5 @@
 import { Skeleton, styled } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box, display } from '@mui/system';
 import React from 'react';
 import ChatPage from '../chatPage/ChatPage';
 import GroupDetails from '../../components/groupDetails/GroupDetails';
@@ -9,7 +9,8 @@ import { connectToChatroom } from '../../feature/chatRoomSlice';
 
 
 const Container = styled(Box)({
-    display: 'flex'
+    display: 'flex',
+    height: '100vh'
 })
 
 const Chat = () => {
@@ -20,29 +21,52 @@ const Chat = () => {
       return (
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            paddingTop: "1rem",
-            width: '100vw',
-            marginInline: 'auto'
+            width: '75vw',
+            marginInline: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '3vh'
           }}
         >
-            <div style={{height: '8vh'}}>
-
-          <Skeleton
-            variant="circular"
-            width={70}
-            height={70}
-            sx={{ marginLeft: "2.5rem" }}
-            />
-            </div>
+          <div style={{display: 'flex', gap: '1%', marginLeft: '1%', paddingTop: '1%'}}>
           <Skeleton
             animation="wave"
             variant="rounded"
-            height={"73vh"}
+            height={"30vh"}
+            width={"48%"}
+            />
+           <Skeleton
+            animation="wave"
+            variant="rounded"
+            height={"30vh"}
+            width={"48%"}
           />
-          <Skeleton variant="rectangular" height={"14vh"} />
+          </div>
+          
+          <div style={{marginInline: '1%'}}>
+
+          <Skeleton
+            animation="wave"
+            variant="rounded"
+            height={"30vh"}
+            />
+            </div>
+       
+       <div style={{display: 'flex', gap: '1%', marginLeft: '1%'}}>
+          <Skeleton
+            animation="wave"
+            variant="rounded"
+            height={"30vh"}
+            width={"48%"}
+            />
+           <Skeleton
+            animation="wave"
+            variant="rounded"
+            height={"30vh"}
+            width={"48%"}
+          />
+          </div>
+       
         </div>
       );
     }
@@ -52,6 +76,7 @@ const Chat = () => {
     //     dispatch(connectToChatroom(chatroomId));
     //   }, [dispatch, chatroomId]);
 
+    
 
   return (
     <Container>
