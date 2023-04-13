@@ -34,4 +34,10 @@ class NewChatMessage implements ShouldBroadcast
             new Channel('chat.'. $this->chatMessage->chat_room_id),
         ];
     }
+
+    public function broadcastAs()
+    {
+        return 'message';
+    }
+
 }

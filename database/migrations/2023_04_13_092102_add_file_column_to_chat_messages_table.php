@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('chat_messages', function (Blueprint $table) {
-            $table->string('file');
+            $table->string('file')->nullable();
         });
     }
 
