@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AdminController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ChatMessageController;
 use App\Http\Controllers\API\ChatRoomController;
@@ -24,6 +25,11 @@ Route::prefix('v1')->group(function(){
         Route::post('/login', 'login');
     });
 
+    Route::prefix('admin')->controller(AdminController::class)->group(function (){
+        Route::post('/register', 'register');
+        Route::post('/login', 'login');
+    });
+
     Route::middleware('auth:sanctum')->group(function (){
         Route::controller(ProfileController::class)->group(function(){
             Route::get('/profile', 'index');
@@ -36,6 +42,7 @@ Route::prefix('v1')->group(function(){
         });
 
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/logout', [AdminController::class, 'logout']);
     });
 
     Route::apiResource('/chatrooms', ChatRoomController::class);
