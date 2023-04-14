@@ -66,7 +66,7 @@ class ChatMessageController extends Controller
 
         broadcast(new NewChatMessage(
             $request->message,
-            $image,
+            env('APP_URL').'/LetXChat/storage/app/public/'.$image,
             $video,
             $audio,
             $file
