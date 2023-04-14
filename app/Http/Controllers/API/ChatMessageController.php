@@ -31,7 +31,7 @@ class ChatMessageController extends Controller
             'message' => 'nullable',
             'image' => 'nullable',
             'video' => 'nullable',
-            'voicenote' => 'nullable',
+            'voiceNote' => 'nullable',
             'file' => 'nullable'
         ]);
 
@@ -42,18 +42,17 @@ class ChatMessageController extends Controller
                 'error' => 'user not in ' . $chatroom->name
             ], 404);
 
-            if($request->hasFile('image')) {
-                $imageName = $request->file('image')->getClientOriginalName();
-                $imageName = str_replace(' ', '_', $imageName);
-                $image = $request->file('image')->storeAs('images', $imageName);
-            } else {
-                $image = null;
-            }
+        if ($request->hasFile('image')) {
+            $imageName = $request->file('image')->getClientOriginalName();
+            $imageName = str_replace(' ', '_', $imageName);
+            $image = $request->file('image')->storeAs('images', $imageName);
+        } else {
+            $image = null;
+        }
 
-            $video =  $request->hasFile('video') ? $request->file('video')->store('videos') : null;
-
-            $audio =  $request->hasFile('voicenote') ? $request->file('voicenote')->store('voicenotes') : null;
-            $file =  $request->hasFile('file') ? $request->file('file')->store('files') : null;
+        $video =  $request->hasFile('video') ? $request->file('video')->store('videos') : null;
+        $audio =  $request->hasFile('voiceNote') ? $request->file('voiceNote')->store('voiceNotes') : null;
+        $file =  $request->hasFile('file') ? $request->file('file')->store('files') : null;
 
         $newMessage = ChatMessage::create([
             'user_id' => Auth::id(),
@@ -61,7 +60,7 @@ class ChatMessageController extends Controller
             'message' => $request->message,
             'image' => $image,
             'video' => $video,
-            'voicenote' => $audio,
+            'voiceNote' => $audio,
             'file' => $file
         ]);
 
@@ -78,7 +77,7 @@ class ChatMessageController extends Controller
             'message' => $newMessage->message,
             'image' => $newMessage->image,
             'video' => $newMessage->video,
-            'voicenote' => $newMessage->voicenote,
+            'voiceNote' => $newMessage->voiceNote,
             'file' => $newMessage->file
         ]);
     }

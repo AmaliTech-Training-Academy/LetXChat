@@ -19,7 +19,7 @@ class ChatMessage extends Model
         'message',
         'image',
         'video',
-        'voicenote',
+        'voiceNote',
         'file'
     ];
 

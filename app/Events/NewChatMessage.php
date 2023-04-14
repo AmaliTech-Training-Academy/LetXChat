@@ -22,7 +22,7 @@ class NewChatMessage implements ShouldBroadcast
         public $message,
         public $image,
         public $video,
-        public $voicenote,
+        public $voiceNote,
         public $file
     )
     {
