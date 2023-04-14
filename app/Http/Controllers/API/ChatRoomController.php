@@ -16,7 +16,7 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        return ChatRoomResource::collection(ChatRoom::query()->paginate(7));
+        return ChatRoomResource::collection(ChatRoom::all());
     }
 
     /**
@@ -43,7 +43,7 @@ class ChatRoomController extends Controller
      */
     public function show($chatRoom)
     {
-        
+
         $chatroomMembers = ChatRoom::with(['users:id,fullname,email', 'messages'])->findOrFail($chatRoom);
         return new ChatRoomMembersResource($chatroomMembers);
     }
