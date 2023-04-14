@@ -65,7 +65,13 @@ class ChatMessageController extends Controller
             'file' => $file
         ]);
 
-        broadcast(new NewChatMessage($newMessage))->toOthers();
+        broadcast(new NewChatMessage(
+            $request->message,
+            $image,
+            $video,
+            $audio,
+            $file
+        ))->toOthers();
 
         return response()->json([
             'sender' => Auth::user()->fullname,
