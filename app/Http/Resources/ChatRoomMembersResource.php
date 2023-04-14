@@ -20,9 +20,7 @@ class ChatRoomMembersResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => env('APP_URL').'/storage/app/'.$this->image,
-            // 'memebers' => $this->users ,
-            // 'messages' => $this->messages,
+            'image' => env('APP_URL').'/LetXChat/storage/app/public/'.$this->image,
             'messages' => $this->users->map(function ($user) {
                 return [
                     'user_id' => $user->id,
@@ -42,5 +40,6 @@ class ChatRoomMembersResource extends JsonResource
             'message' => $recent->message,
             'time' => Carbon::parse($recent->created_at)->format('g:i a')
         ];
+
     }
 }

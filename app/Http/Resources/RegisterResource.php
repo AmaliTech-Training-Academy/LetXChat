@@ -20,7 +20,7 @@ class RegisterResource extends JsonResource
             'username' => $this->username,
             'chat_id' => $this->chat_id,
             'email' => $this->email,
-            'image' => env('APP_URL').'/storage/app/'.$this->image,
+            'image' => env('APP_URL').'/LetXChat/storage/app/public/'.$this->image,
         ];
     }
 }
