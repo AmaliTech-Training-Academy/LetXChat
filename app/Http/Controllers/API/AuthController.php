@@ -21,6 +21,7 @@ class AuthController extends Controller
             $chatID = 'E' . str_pad($lastRecord->id + 1, 3, '0', STR_PAD_LEFT);
         }
 
+
         $request->validated($request->all());
 
         try {
@@ -34,7 +35,7 @@ class AuthController extends Controller
 
         $user = User::create([
             'fullname' => $request->fullname,
-            'username' => $request->username,
+            'username' => '@'.$request->username,
             'chat_id' => $chatID,
             'email' => $request->email,
             'image' => $image,
