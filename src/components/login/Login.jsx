@@ -10,11 +10,15 @@ import {
   styled,
 } from "@mui/material";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { loginSchema } from "../../schemas";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../feature/authActions";
+import Cookies from "js-cookie";
 
 const Container = styled(Box)({
   width: "100vw",
@@ -156,14 +160,28 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
 
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
   // Submit Form
   const onSubmit = async (values, actions) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log(values);
-    actions.resetForm();
+    dispatch(loginUser(values));
+    setTimeout(() => {
+      actions.resetForm();
+    }, 4000);
   };
 
+  const Token = Cookies.get("userToken");
+  useEffect(() => {
+    if (Token) {
+      navigate("/chat");
+    }
+  }, [Token]);
+
   // Formik Validation
+
   const {
     values,
     errors,
@@ -174,7 +192,7 @@ const Login = () => {
     isSubmitting,
   } = useFormik({
     initialValues: {
-      email: "",
+      emailID: "",
       password: "",
     },
     validationSchema: loginSchema,
@@ -194,13 +212,15 @@ const Login = () => {
               email/ Employee ID*
             </Box>
             <TextFieldStyle
-              id="email"
+              type="text"
+              id="emailID"
+              name="emailID"
               placeholder="Enter your email or ID"
-              value={values.email}
+              value={values.emailID}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={touched.email && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
+              error={touched.emailID && Boolean(errors.emailID)}
+              helperText={touched.emailID && errors.emailID}
             />
           </Box>
           <Box sx={TextComponent}>
@@ -247,8 +267,9 @@ const Login = () => {
               </p>
             </PasswordField>
           </Box>
+
           <Box component="section" sx={SignUpLogin}>
-            {isSubmitting ? (
+            {loading || isSubmitting ? (
               <LoadingButtonStyles
                 loading
                 variant="outlined"
@@ -259,9 +280,12 @@ const Login = () => {
 
             <p>
               Don't have an account?{" "}
-              <span style={{ color: "#3683F5", cursor: "pointer" }}>
+              <Link
+                to="/signup"
+                style={{ color: "#3683F5", cursor: "pointer" }}
+              >
                 Sign Up
-              </span>
+              </Link>
               {/* <Link to="/">Login</Link> */}
             </p>
           </Box>

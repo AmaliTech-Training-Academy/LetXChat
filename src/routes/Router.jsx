@@ -10,6 +10,8 @@ import Sidebar from '../components/sidebar/Sidebar'
 import Settings from '../components/sidebar/Settings'
 import CreateGroup from '../components/sidebar/CreateGroup'
 import SidebarLayout from '../components/layouts/SidebarLayout'
+import PrivateRoute from '../PrivateRoute'
+import ChatPage from '../pages/chatPage/ChatPage'
 function Router() {
   return (
     <Routes>
@@ -19,6 +21,9 @@ function Router() {
           <Route path='/login' element={<Login />}/>
           <Route path='/about' element={<About />}/>
           <Route path='/contact' element={<Contact />}/>
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route path="/chat" element={<ChatPage />} />
         </Route>
         <Route path='/sidebar' element={<SidebarLayout />}>
           <Route index element={<Sidebar />}/>

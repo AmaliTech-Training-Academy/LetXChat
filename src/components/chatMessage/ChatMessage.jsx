@@ -5,7 +5,6 @@ const Container = styled(Box)({
   height: "80vh",
   width: "100%",
   paddingInline: "15px",
-  background: "crimson",
   overflowY: "scroll",
   "&::-webkit-scrollbar": {
     width: "5px",
