@@ -13,6 +13,8 @@ import SidebarLayout from "../components/layouts/SidebarLayout";
 import PrivateRoute from "../PrivateRoute";
 import Chat from "../pages/chat/Chat";
 import ChatComponent from "../pages/ChatComponent";
+import SignUpLayout from "../layout/signup/SignUpLayout";
+import RegModal from "../components/regModal/RegModal";
 function Router() {
   return (
     // <Routes>
@@ -36,7 +38,9 @@ function Router() {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup" element={<SignUpLayout />}>
+          <Route path="/signup/signupmodal" element={<RegModal />} />
+        </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
