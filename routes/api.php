@@ -7,6 +7,7 @@ use App\Http\Controllers\API\ChatRoomController;
 use App\Http\Controllers\API\RequestController;
 use App\Models\User;
 use App\Http\Controllers\API\ProfileController;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,8 +28,8 @@ Route::prefix('v1')->group(function(){
 
     Route::prefix('admin')->controller(AdminController::class)->group(function (){
         Route::post('/register', 'register');
-        Route::post('/login', 'login');
     });
+    Route::post('/admin/login', [AdminController::class, 'login']);
 
     Route::middleware('auth:sanctum')->group(function (){
         Route::controller(ProfileController::class)->group(function(){
@@ -42,7 +43,7 @@ Route::prefix('v1')->group(function(){
         });
 
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/logout', [AdminController::class, 'logout']);
+        Route::post('/admin/logout', [AdminController::class, 'logout']);
     });
 
     Route::apiResource('/chatrooms', ChatRoomController::class);

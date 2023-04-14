@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminLoginRequest;
 use App\Http\Requests\AdminRequest;
 use App\Models\Admin;
 use Illuminate\Http\Request;
@@ -15,32 +16,27 @@ class AdminController extends Controller
     {
         $request->validated($request->all());
 
-        $request->merge([
+        $admin = Admin::create([
+            'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
-
-        $admin = Admin::create($request->all());
 
         return response()->json([
             'id' => $admin->id,
             'email' => $admin->email,
+            $admin
 
         ]);
     }
 
-    public function login(AdminRequest $request)
+    public function login(AdminLoginRequest $request)
     {
         $request->validated($request->all());
-dd($request->all());
 
-        if (!Auth::attempt($request->only(['email', 'password']))) {
-                return response()->json(['message' => 'Invalid Credentials'], 404);
-        }
+        $admin = Admin::firstWhere('email', $request->email);
+        $check = Hash::check($request->password,  $admin->password);
 
-        $admin = Admin::where('email', Auth::user()->email)
-            ->first();
-
-        if (!$admin) return response()->json(['not found']);
+        if(!$check)  return response()->json(['message' => 'Invalid Credentials'], 404);
 
         $token = $admin->createToken($admin->email)->plainTextToken;
 
