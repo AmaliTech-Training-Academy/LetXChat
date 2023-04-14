@@ -31,4 +31,13 @@ class RegisterRequest extends FormRequest
             'password_confirmation' => 'required|min:8',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'username.unique' => 'Username taken'
+        ];
+    }
+
+
 }
