@@ -16,7 +16,7 @@ const ChatPage = ({chatRoom}) => {
     <Container component="main">
       <ChatHead chatRoom={chatRoom} />
       <ChatMessage />
-      <Input />
+      <Input chatRoom={chatRoom} />
     </Container>
   );
 };

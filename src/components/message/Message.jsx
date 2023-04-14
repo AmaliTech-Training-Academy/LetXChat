@@ -87,8 +87,6 @@ const OwnerText = styled("p")({
 const Message = () => {
   const messages = useSelector((state) => state.chat.messages);
 
-  console.log(messages, "Chat messages");
-
   // The Focus should always stay at the bottom for Messages
   const messagesRef = useRef(null);
   useEffect(() => {

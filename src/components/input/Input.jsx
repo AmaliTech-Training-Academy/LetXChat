@@ -91,7 +91,7 @@ const SendMessage = styled("button")({
   justifyContent: 'center'
 });
 
-const Input = () => {
+const Input = ({chatRoom}) => {
   const [showEmoji, setShowEmoji] = useState(false);
 
   const [text, setText] = useState("");
@@ -106,9 +106,9 @@ const Input = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
 
-  const {chat_room_id} = useParams()
+  const id = chatRoom.id
 
-  const CHAT_URL = `${CHATROOM_URL}/${chat_room_id}/message`;
+  const CHAT_URL = `${CHATROOM_URL}/${id}/message`;
 console.log(CHAT_URL);
 
   // const socket = io(CHAT_URL);

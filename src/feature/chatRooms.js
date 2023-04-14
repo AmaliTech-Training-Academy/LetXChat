@@ -20,7 +20,7 @@ export const fetchChatRooms = createAsyncThunk(
 
     try {
       const res = await axios(config);
-      Cookies.set("chatrooms", res.data.data);
+      Cookies.set('chatrooms', res.data.data)
       return res.data.data;
     } catch (error) {
       console.error(error.message);
@@ -28,32 +28,32 @@ export const fetchChatRooms = createAsyncThunk(
   }
 );
 
+
 const initialState = {
-  allChatRooms: [],
-  loading: true,
-  error: null,
-};
+   allChatRooms : Cookies.get('chatrooms') || [],
+    loading: true,
+    error: null
+}
 
 const chatRoomsSlice = createSlice({
-  name: "chatrooms",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchChatRooms.pending, (state) => {
-        state.loading = true;
-      })
+    name: 'chatrooms',
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(fetchChatRooms.pending, (state) => {
+            state.loading = true
+        })
 
-      .addCase(fetchChatRooms.fulfilled, (state, action) => {
-        state.loading = false;
-        state.allChatRooms = action.payload;
-      })
+        .addCase(fetchChatRooms.fulfilled, (state, action) => {
+            state.loading = false
+            state.allChatRooms = action.payload;
+        })
 
-      .addCase(fetchChatRooms.rejected, (state, action) => {
-        state.loading = false;
+        .addCase(fetchChatRooms.rejected, (state, action) => {
+            state.loading = false
         state.error = action.error.message;
-      });
-  },
-});
+        })
+    }
+})
 
-export default chatRoomsSlice.reducer;
+export default chatRoomsSlice.reducer
