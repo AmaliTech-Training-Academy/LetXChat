@@ -1,7 +1,7 @@
 import { Box, styled } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import Mic from "../../assets/Microphone.png";
-import Cam from "../../assets/Camera.png";
+import Cam from "../../assets/camera.png";
 import Send from "../../assets/Send.png";
 import Emoji from "../../assets/Emoji.png";
 import Attach from "../../assets/Attach.png";
