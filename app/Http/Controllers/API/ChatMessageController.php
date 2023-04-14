@@ -75,7 +75,7 @@ class ChatMessageController extends Controller
         return response()->json([
             'sender' => Auth::user()->fullname,
             'message' => $newMessage->message,
-            'image' => $newMessage->image,
+            'image' => env('APP_URL').'/LetXChat/storage/app/public/'.$newMessage->image,
             'video' => $newMessage->video,
             'voiceNote' => $newMessage->voiceNote,
             'file' => $newMessage->file
