@@ -43,7 +43,8 @@ class ChatRoomController extends Controller
      */
     public function show($chatRoom)
     {
-        $chatroomMembers = ChatRoom::with('users:id,fullname,email')->findOrFail($chatRoom);
+        
+        $chatroomMembers = ChatRoom::with(['users:id,fullname,email', 'messages'])->findOrFail($chatRoom);
         return new ChatRoomMembersResource($chatroomMembers);
     }
 
