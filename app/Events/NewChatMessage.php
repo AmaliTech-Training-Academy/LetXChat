@@ -18,7 +18,13 @@ class NewChatMessage implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(public $chatMessage)
+    public function __construct(
+        public $message,
+        public $image,
+        public $video,
+        public $voicenote,
+        public $file
+        )
     {
 
     }
@@ -31,7 +37,7 @@ class NewChatMessage implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('chat.'. $this->chatMessage->chat_room_id),
+            new Channel('chat'),
         ];
     }
 

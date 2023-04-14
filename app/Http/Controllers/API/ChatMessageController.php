@@ -27,6 +27,8 @@ class ChatMessageController extends Controller
 
     public function newMessage(Request $request, $roomId)
     {
+
+        // dd($request->all());
         $request->validate([
             'message' => 'nullable',
             'image' => 'nullable',
@@ -51,7 +53,6 @@ class ChatMessageController extends Controller
             }
 
             $video =  $request->hasFile('video') ? $request->file('video')->store('videos') : null;
-
             $audio =  $request->hasFile('voicenote') ? $request->file('voicenote')->store('voicenotes') : null;
             $file =  $request->hasFile('file') ? $request->file('file')->store('files') : null;
 
@@ -65,7 +66,13 @@ class ChatMessageController extends Controller
             'file' => $file
         ]);
 
-        broadcast(new NewChatMessage($newMessage))->toOthers();
+        broadcast(new NewChatMessage(
+            $request->message,
+            $image,
+            $video,
+            $audio,
+            $file
+            ))->toOthers();
 
         return response()->json([
             'sender' => Auth::user()->fullname,

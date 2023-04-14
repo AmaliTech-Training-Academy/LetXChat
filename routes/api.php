@@ -1,11 +1,13 @@
 <?php
 
+use App\Events\NewChatMessage;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ChatMessageController;
 use App\Http\Controllers\API\ChatRoomController;
 use App\Http\Controllers\API\RequestController;
 use App\Models\User;
 use App\Http\Controllers\API\ProfileController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +46,11 @@ Route::prefix('v1')->group(function(){
 
     Route::get('/users', function(){
         return User::all();
+    });
+
+    Route::post('send-message', function(Request $request) {
+        event(new NewChatMessage($request->message));
+        return true;
     });
 });
 
