@@ -41,19 +41,17 @@ function Router() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
-      <Route path="/chat" 
-      element={
-        <PrivateRoute>
-          <ChatComponent />
-        </PrivateRoute>
-      }
+      <Route
+        path="/chat"
+        element={
+          <PrivateRoute>
+            <ChatComponent />
+          </PrivateRoute>
+        }
       >
-        <Route path="/chat" element={<Chat />} />
-        
-
+        <Route path="/chat/:id" element={<Chat />} />
       </Route>
       <Route path="*" element={<MainLayout />} />
-     
     </Routes>
   );
 }

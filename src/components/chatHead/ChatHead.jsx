@@ -34,7 +34,7 @@ const Email = styled("a")({
 
 
 
-const ChatHead = () => {
+const ChatHead = ({chatRoom}) => {
 
 
   
@@ -44,12 +44,12 @@ const ChatHead = () => {
       <LeftSection component="section">
         <ProfileContainer>
           <img
-            src={UserImage}
+            src={chatRoom.image}
             style={{ width: "100%", height: "100%" }}
             alt="Profile pic"
           />
         </ProfileContainer>
-        <Email>kofi@gmail.com</Email>
+        <Email>{chatRoom.name}</Email>
       </LeftSection>
 
     </Container>

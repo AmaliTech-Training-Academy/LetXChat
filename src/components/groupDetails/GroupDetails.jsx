@@ -45,11 +45,12 @@ const Attach = styled(Box)({
     fontWeight: 'bold'
 })
 
-const GroupDetails = () => {
+const GroupDetails = ({chatRoom}) => {
+
   return (
     <Container component='aside'>
-        <img src={GroupImage} alt="Group Image" style={{height: '150px', width: '150px', borderRadius: '50%'}} />
-        <GroupName>Let X Chat</GroupName>
+        <img src={chatRoom.image} alt="Group Image" style={{height: '150px', width: '150px', borderRadius: '50%'}} />
+        <GroupName>{chatRoom.name}</GroupName>
         <Attachments>Attachments</Attachments>
         <AttachmentCollection>
             <Attach>media</Attach>

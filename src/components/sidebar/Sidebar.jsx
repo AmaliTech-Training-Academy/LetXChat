@@ -11,6 +11,7 @@ import mum from '../../assets/mum.png'
 import chef from '../../assets/chef.png'
 import { useSelector } from 'react-redux'
 import { Skeleton } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 const msgArr = [
   {
@@ -178,12 +179,16 @@ function Sidebar() {
     <>
       <UserCard/>
       <Search />
-      {/* <CreateGroupSection /> */}
       <div className='w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center'>
         {
-          allChatRooms.length ? allChatRooms.map(ele => {
+          allChatRooms.length ? allChatRooms.map(chatroom => {
             return (
-              <ChatCard item={ele} key={ele.id}/>
+              <div key={chatroom.id}>
+                <Link to={`/chat/${chatroom.id}`}>
+              <ChatCard item={chatroom}/>
+                {/* <div style={{marginLeft: '2rem'}}>{chatroom.name}</div> */}
+                </Link>
+              </div>
             )
           }): 
           <div className='text-black font-bold'>

@@ -9,14 +9,13 @@ const Container = styled(Box)({
   flexDirection: "column",
 });
 
-const ChatPage = () => {
+const ChatPage = ({chatRoom}) => {
 
 
   return (
     <Container component="main">
-      <ChatHead />
+      <ChatHead chatRoom={chatRoom} />
       <ChatMessage />
-
       <Input />
     </Container>
   );

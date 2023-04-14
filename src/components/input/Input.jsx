@@ -111,19 +111,19 @@ const Input = () => {
   const CHAT_URL = `${CHATROOM_URL}/${chat_room_id}/message`;
 console.log(CHAT_URL);
 
-  const socket = io(CHAT_URL);
+  // const socket = io(CHAT_URL);
 
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log('Connected to socket server');
-    });
-    socket.on('message', (data) => {
-      console.log('Received message:', data);
-    });
-    return () => {
-      socket.disconnect();
-    };
-  }, [])
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     console.log('Connected to socket server');
+  //   });
+  //   socket.on('message', (data) => {
+  //     console.log('Received message:', data);
+  //   });
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, [])
 
   const addEmoji = (e) => {
     // setCurrentEmoji(e.native)
