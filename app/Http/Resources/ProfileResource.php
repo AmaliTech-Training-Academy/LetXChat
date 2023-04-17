@@ -18,7 +18,7 @@ class ProfileResource extends JsonResource
             'name' => $this->fullname,
             'chat_id' => $this->chat_id,
             'email' => $this->email,
-            'image' => env('APP_URL').'storage/'.$this->image
+            'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image
         ];
     }
 }
