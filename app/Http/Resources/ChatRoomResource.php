@@ -19,14 +19,14 @@ class ChatRoomResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => env('APP_URL').'/LetXChat/storage/app/public/'.$this->image,
+            'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/images/'.$this->image,
             'recent_message' => $this->getRecentMessage($this->id),
             'total_messages' => $this->messages->count()
         ];
     }
 
     public function getRecentMessage($roomID)
-    
+
     {
         $recent = ChatMessage::where('chat_room_id', $roomID)->latest()->first();
         if(!$recent) return null;

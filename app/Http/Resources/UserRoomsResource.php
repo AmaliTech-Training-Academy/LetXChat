@@ -19,7 +19,7 @@ class UserRoomsResource extends JsonResource
                 'name' => $this->fullname,
                 'employee_id' => $this->employee_id,
                 'email' => $this->email,
-                'image' => env('APP_URL').'/LetXChat/storage/app/public/'.$this->image,
+                'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/images/'.$this->image,
                 'chatrooms' => $this->chatrooms,
         ];
     }
