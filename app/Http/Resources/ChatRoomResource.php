@@ -19,7 +19,7 @@ class ChatRoomResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/images/'.$this->image,
+            'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image,
             'recent_message' => $this->getRecentMessage($this->id),
             'total_messages' => $this->messages->count()
         ];
