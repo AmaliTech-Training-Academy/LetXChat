@@ -7,6 +7,7 @@ use App\Http\Controllers\API\ChatRoomController;
 use App\Http\Controllers\API\RequestController;
 use App\Models\User;
 use App\Http\Controllers\API\ProfileController;
+use App\Http\Resources\RegisterResource;
 use App\Models\Admin;
 use App\Models\ChatRoom;
 use Illuminate\Support\Facades\Route;
@@ -52,10 +53,11 @@ Route::prefix('v1')->group(function(){
     Route::apiResource('/request', RequestController::class);
 
     Route::get('/users', function(){
-        $active = ChatRoom::with('users')->count();
-        $pending = User::count() - $active;
+        $pending = User::whereDoesntHave('chatrooms')->count();
+        $active = User::count() - $pending;
+
         return [
-            'users' => User::all(),
+            'users' => RegisterResource::collection(User::all()),
             'active_users' => $active,
             'pending_request' => $pending,
             'total' => User::count()
