@@ -53,6 +53,10 @@ Route::prefix('v1')->group(function(){
     Route::apiResource('/request', RequestController::class);
 
     Route::get('/users', function(){
+        return RegisterResource::collection(User::all());
+    });
+
+    Route::get('/users/status', function(){
         $pending = User::whereDoesntHave('chatrooms')->count();
         $active = User::count() - $pending;
 
@@ -63,5 +67,7 @@ Route::prefix('v1')->group(function(){
             'total' => User::count()
         ];
     });
+
+
 });
 
