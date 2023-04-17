@@ -44,3 +44,10 @@ export const loginSchema = yup.object().shape({
 
   password: yup.string().required("This field is required"),
 });
+
+export const adminLoginSchema = yup.object().shape({
+  email: yup.string().required("This field is required"),
+
+  password: yup.string().required("This field is required"),
+});
+

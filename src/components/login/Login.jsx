@@ -290,10 +290,21 @@ const Login = () => {
               >
                 Sign Up
               </Link>
-              {/* <Link to="/">Login</Link> */}
             </p>
+            <p>
+              Are you and Admin? {" "}
+            <Link
+              to="/admin-login"
+              style={{
+                color: "#3683F5",
+                cursor: "pointer",
+                
+              }}
+              >
+              Login as Admin
+            </Link>
+              </p>
           </Box>
-          <p style={{ marginTop: "1rem" }}>Login as Admin</p>
         </Box>
       </FormContainer>
     </Container>

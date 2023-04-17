@@ -40,7 +40,7 @@ function UserCard({ settings }) {
       </div>
       <div className="flex flex-col">
         <span className={`${settings ? "font-bold" : "font-medium text-xs"}`}>
-          {userInfo.email}
+          {userInfo?.email}
         </span>
         {settings && <span className="text-[#878787]">@username</span>}
       </div>

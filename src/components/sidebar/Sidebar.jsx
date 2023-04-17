@@ -14,144 +14,14 @@ import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineHome } from "react-icons/ai";
 
-const msgArr = [
-  {
-    id: 1,
-    image: mno,
-    mail: "mno@yahoo.com",
-    message: "Hello abc!, how are you? I hope everything is good?",
-    tim: "06:23",
-    no: "1",
-  },
-  {
-    id: 2,
-    image: kofi,
-    mail: "kofi@gmail.com",
-    message: "Chale! wahala dey oo",
-    tim: "07:04",
-    no: "1",
-  },
-  {
-    id: 3,
-    image: ama,
-    mail: "ama@yahoo.com",
-    message: "Hey you, we have a class at 1pm. Don’t forget",
-    tim: "09:17",
-    no: "2",
-  },
-  {
-    id: 4,
-    image: king,
-    mail: "king@gmail.com",
-    message: "I done with the design of the house.",
-    tim: "11:00",
-    no: "2",
-  },
-  {
-    id: 5,
-    image: mum,
-    mail: "mum@yahoo.com",
-    message: "Hello son, get me some drugs on your way home",
-    tim: "13:39",
-    no: "1",
-  },
-  {
-    id: 6,
-    image: chef,
-    mail: "chef@gmail.com",
-    message: "Buddy, your order is ready for pickup at our office",
-    tim: "16:51",
-    no: "4",
-  },
-  {
-    id: 7,
-    image: mno,
-    mail: "mno@yahoo.com",
-    message: "Hello abc!, how are you? I hope everything is good?",
-    tim: "06:23",
-    no: "1",
-  },
-  {
-    id: 8,
-    image: kofi,
-    mail: "kofi@gmail.com",
-    message: "Chale! wahala dey oo",
-    tim: "07:04",
-    no: "1",
-  },
-  {
-    id: 9,
-    image: ama,
-    mail: "ama@yahoo.com",
-    message: "Hey you, we have a class at 1pm. Don’t forget",
-    tim: "09:17",
-    no: "2",
-  },
-  {
-    id: 10,
-    image: king,
-    mail: "king@gmail.com",
-    message: "I done with the design of the house.",
-    tim: "11:00",
-    no: "2",
-  },
-  {
-    id: 11,
-    image: mum,
-    mail: "mum@yahoo.com",
-    message: "Hello son, get me some drugs on your way home",
-    tim: "13:39",
-    no: "1",
-  },
-  {
-    id: 12,
-    image: king,
-    mail: "king@gmail.com",
-    message: "I done with the design of the house.",
-    tim: "11:00",
-    no: "2",
-  },
-  {
-    id: 13,
-    image: mum,
-    mail: "mum@yahoo.com",
-    message: "Hello son, get me some drugs on your way home",
-    tim: "13:39",
-    no: "1",
-  },
-  {
-    id: 14,
-    image: king,
-    mail: "king@gmail.com",
-    message: "I done with the design of the house.",
-    tim: "11:00",
-    no: "2",
-  },
-  {
-    id: 15,
-    image: mum,
-    mail: "mum@yahoo.com",
-    message: "Hello son, get me some drugs on your way home",
-    tim: "13:39",
-    no: "1",
-  },
-  {
-    id: 16,
-    image: chef,
-    mail: "chef@gmail.com",
-    message: "Buddy, your order is ready for pickup at our office",
-    tim: "16:51",
-    no: "4",
-  },
-];
-
 function Sidebar() {
-  const { allChatRooms, loading } = useSelector((state) => state.chatrooms);
-  const navigate = useNavigate()
+  const { allChatRooms } = useSelector((state) => state.chatrooms);
+  const { loading } = useSelector(state => state.user)
+  const navigate = useNavigate();
 
   const handleBackHome = () => {
-    navigate('/')
-  }
+    navigate("/");
+  };
 
   if (loading) {
     return (
@@ -175,15 +45,14 @@ function Sidebar() {
 
   return (
     <>
-    <div className="mt-[0.5rem] ml-2 cursor-pointer" onClick={handleBackHome}>
-
-      <AiOutlineHome
-        style={{
-          color: "gray",
-          fontSize: "1.5rem",
-        }}
+      <div className="mt-[0.5rem] ml-2 cursor-pointer" onClick={handleBackHome}>
+        <AiOutlineHome
+          style={{
+            color: "gray",
+            fontSize: "1.5rem",
+          }}
         />
-        </div>
+      </div>
       <UserCard />
       <Search />
       <div className="w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
