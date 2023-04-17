@@ -20,7 +20,7 @@ class ChatRoomMembersResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image,
+            'image' => $this->image ? 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image : null,
             'messages' => $this->users->map(function ($user) {
                 return [
                     'user_id' => $user->id,
@@ -30,19 +30,17 @@ class ChatRoomMembersResource extends JsonResource
                     'messages' => $this->messages->where('user_id', $user->id),
                 ];
             }),
-            'recent_message' => $this->getRecentMessage()
+            'recent_message' => $this->getRecentMessage($this->id)
         ];
     }
 
-    public function getRecentMessage()
+    public function getRecentMessage($roomID)
     {
-        $recent = ChatMessage::latest()->first();
-
+        $recent = ChatMessage::where('chat_room_id', $roomID)->latest()->first();
+        if(!$recent) return null;
         return [
-            'id' => $recent->id,
             'message' => $recent->message,
-            'time' => Carbon::parse($recent->created_at)->format('g:i a')
+            'time' => strtoupper(Carbon::parse($recent->created_at)->format('g:i a'))
         ];
-
     }
 }
