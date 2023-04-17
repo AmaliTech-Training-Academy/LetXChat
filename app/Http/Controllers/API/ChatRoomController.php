@@ -16,7 +16,10 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        return ChatRoomResource::collection(ChatRoom::all());
+        return [
+            'chatrooms' => ChatRoomResource::collection(ChatRoom::all()),
+            'total' => ChatRoom::count()
+        ];
     }
 
     /**
@@ -43,7 +46,7 @@ class ChatRoomController extends Controller
      */
     public function show($chatRoom)
     {
-        
+
         $chatroomMembers = ChatRoom::with(['users:id,fullname,email', 'messages'])->findOrFail($chatRoom);
         return new ChatRoomMembersResource($chatroomMembers);
     }
@@ -100,7 +103,7 @@ class ChatRoomController extends Controller
             $imageName = $request->file('image')->getClientOriginalName();
             $imageName = str_replace(' ', '_', $imageName);
 
-            $image = $request->file('image')->storeAs('chatroom_profile', $imageName);
+            $image = $request->file('image')->storeAs('images', $imageName);
             return $image;
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Must be image file']);

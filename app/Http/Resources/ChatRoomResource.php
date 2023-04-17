@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\ChatMessage;
+use App\Models\ChatRoom;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -21,7 +22,7 @@ class ChatRoomResource extends JsonResource
             'name' => $this->name,
             'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image,
             'recent_message' => $this->getRecentMessage($this->id),
-            'total_messages' => $this->messages->count()
+            'total_messages' => $this->messages->count(),
         ];
     }
 
