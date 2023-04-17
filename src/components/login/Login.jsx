@@ -19,6 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../feature/authActions";
 import Cookies from "js-cookie";
+import { fetchUserInfo } from "../../feature/userSlice";
 
 const Container = styled(Box)({
   width: "100vw",
@@ -161,13 +162,16 @@ const Login = () => {
   const handleShowPassword = () => setShowPassword((show) => !show);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading } = useSelector((state) => state.auth);
 
-  const navigate = useNavigate();
+  // Get userInfo and chatrooms using userToken
+  const userToken = Cookies.get("userToken");
 
   // Submit Form
   const onSubmit = async (values, actions) => {
     dispatch(loginUser(values));
+    dispatch(fetchUserInfo(userToken));
     setTimeout(() => {
       actions.resetForm();
     }, 4000);
@@ -289,6 +293,7 @@ const Login = () => {
               {/* <Link to="/">Login</Link> */}
             </p>
           </Box>
+          <p style={{ marginTop: "1rem" }}>Login as Admin</p>
         </Box>
       </FormContainer>
     </Container>

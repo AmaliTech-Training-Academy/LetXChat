@@ -15,6 +15,7 @@ import Chat from "../pages/chat/Chat";
 import ChatComponent from "../pages/ChatComponent";
 import SignUpLayout from "../layout/signup/SignUpLayout";
 import RegModal from "../components/regModal/RegModal";
+import AdminLogin from "../components/adminLogin";
 function Router() {
   return (
     // <Routes>
@@ -42,6 +43,7 @@ function Router() {
           <Route path="/signup/signupmodal" element={<RegModal />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Route>

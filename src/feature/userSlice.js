@@ -28,7 +28,8 @@ let config = {
         return res.data.data
 
     } catch (error) {
-        const ERROR_MESSAGE =error.message
+        const ERROR_MESSAGE = error.response.data.message
+  
         toast.error(ERROR_MESSAGE, {autoClose: 3000})
       return thunkAPI.rejectWithValue(error.message);
     }
