@@ -13,8 +13,9 @@ import { addMessage } from "../../feature/chatRoomSlice";
 import { format } from "date-fns";
 import { FiVideo } from "react-icons/fi";
 import uploadVideo from "../../assets/uploadVideo.png";
-import { CHATROOM_URL } from "../../defaultValues/DefaultValues";
+import { CHATROOM_URL, PUSHER_API_KEY, PUSHER_CLUSTER } from "../../defaultValues/DefaultValues";
 import Pusher from "pusher-js";
+import Cookies from "js-cookie";
  
 
 const Container = styled(Box)({
@@ -136,15 +137,17 @@ const Input = ({ chatRoom }) => {
   // Connect Pusher to App
   const CHAT_URL = `${CHATROOM_URL}/${id}/message`;
 
-  // const pusher = new Pusher(`${process.env.PUSHER_API_KEY}`, {
-  //     cluster: `${process.env.PUSHER_CLUSTER}`,
-  //     encrypted: true,
-  //   });
+  const pusher = new Pusher(`${PUSHER_API_KEY}`, {
+      cluster: `${PUSHER_CLUSTER}`,
+      encrypted: true,
+    });
 
-  // const channel = pusher.subscribe("chat");
-  // channel.bind('message', function(data) {
-  //   console.log(data);
-  // })
+  const channel = pusher.subscribe("chat");
+  channel.bind('message', function(data) {
+    console.log(data);
+  })
+
+
 
 
   // Send Message
@@ -153,16 +156,22 @@ const Input = ({ chatRoom }) => {
 
     const timestamp = format(new Date(), "h:mm a");
 
-    const message = {
-      id: Date.now(),
-      time: timestamp,
-      sender: userInfo.name,
-      text: text,
-      voiceNote: audioUrl,
-      image: image,
-      video: video,
-      file: file,
-    };
+    // const message = {
+    //   id: Date.now(),
+    //   time: timestamp,
+    //   sender: userInfo.name,
+    //   text: text,
+    //   voiceNote: audioUrl,
+    //   image: image,
+    //   video: video,
+    //   file: file,
+    // };
+
+
+    let myHeaders = new Headers();
+    const userToken = Cookies.get('userToken')
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
+    console.log(userToken);
 
     const formData = new FormData();
     formData.append("message", text);
@@ -173,10 +182,10 @@ const Input = ({ chatRoom }) => {
     dispatch(addMessage(formData));
 
 
-    var requestOptions = {
+    let requestOptions = {
       method: 'POST',
       headers: myHeaders,
-      body: formdata,
+      body: formData,
       redirect: 'follow'
     };
 

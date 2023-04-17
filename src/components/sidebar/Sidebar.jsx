@@ -187,7 +187,7 @@ function Sidebar() {
       <UserCard />
       <Search />
       <div className="w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
-        {allChatRooms.length ? (
+        {allChatRooms?.length ? (
           allChatRooms.map((chatroom) => {
             return (
               <div key={chatroom.id}>

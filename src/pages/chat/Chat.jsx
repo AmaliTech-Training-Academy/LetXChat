@@ -83,8 +83,6 @@ const Chat = () => {
 
 
   const chatRoom = allChatRooms.find((chatroom) => chatroom.id === parseInt(id));
-  
-  console.log(chatRoom.id);
 
 return (
     <div>

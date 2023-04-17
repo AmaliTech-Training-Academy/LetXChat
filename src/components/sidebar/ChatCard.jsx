@@ -3,9 +3,8 @@ import mno from "../../assets/mno.png";
 
 
 function ChatCard({item}) {
-  // console.log(item.recent_message.time);
   const recentMessage = item?.recent_message
-  console.log(recentMessage?.time);
+ 
 
   return (
     <div className="relative flex items-center w-[280px] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">
