@@ -25,7 +25,7 @@ function UserCard({ settings }) {
         } rounded-full`}
       >
         <img
-          src={userInfo.image}
+          src={userInfo?.image}
           alt="User Profile"
           className="w-full h-full object-contain"
         />

@@ -132,20 +132,20 @@ const Input = ({ chatRoom }) => {
 
 
   
-  const id = chatRoom.id;
+  // const id = chatRoom.id;
 
-  // Connect Pusher to App
-  const CHAT_URL = `${CHATROOM_URL}/${id}/message`;
+  // // Connect Pusher to App
+  // const CHAT_URL = `${CHATROOM_URL}/${id}/message`;
 
-  const pusher = new Pusher(`${PUSHER_API_KEY}`, {
-      cluster: `${PUSHER_CLUSTER}`,
-      encrypted: true,
-    });
+  // const pusher = new Pusher(`${PUSHER_API_KEY}`, {
+  //     cluster: `${PUSHER_CLUSTER}`,
+  //     encrypted: true,
+  //   });
 
-  const channel = pusher.subscribe("chat");
-  channel.bind('message', function(data) {
-    console.log(data);
-  })
+  // const channel = pusher.subscribe("chat");
+  // channel.bind('message', function(data) {
+  //   console.log(data);
+  // })
 
 
 
@@ -167,6 +167,18 @@ const Input = ({ chatRoom }) => {
     //   file: file,
     // };
 
+      const id = chatRoom.id;
+
+  // Connect Pusher to App
+  const CHAT_URL = `${CHATROOM_URL}/${id}/message`;
+
+
+
+  const pusher = new Pusher(PUSHER_API_KEY, {
+    cluster: PUSHER_CLUSTER,
+  });
+
+  pusher.trigger
 
     let myHeaders = new Headers();
     const userToken = Cookies.get('userToken')
