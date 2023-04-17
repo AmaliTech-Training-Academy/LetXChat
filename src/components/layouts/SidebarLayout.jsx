@@ -10,7 +10,7 @@ function SidebarLayout() {
         {/* <Outlet /> */}
         <Sidebar />
         {/* <Settings /> */}
-        <CreateGroup />
+        {/* <CreateGroup /> */}
     </div>
   )
 }

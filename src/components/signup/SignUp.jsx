@@ -209,7 +209,6 @@ const SignUp = () => {
     // transform email string to lowercase to avoid case sensitivity issues in login
     values.email = values.email.toLowerCase();
 
-    // sendReg()
 
     // actions.resetForm();
 

@@ -45,7 +45,7 @@ function UserCard({ settings }) {
         {settings && <span className="text-[#878787]">@username</span>}
       </div>
       {!settings && (
-        <Link to="/sidebar/settings">
+        <Link to="/chat/settings">
           <img
             src={gear}
             alt="User Profile"

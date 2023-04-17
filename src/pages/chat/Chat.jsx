@@ -17,8 +17,7 @@ const Container = styled(Box)({
 const Chat = () => {
   const { id } = useParams();
   const { loading } =
-    useSelector((state) => state.user) ||
-    useSelector((state) => state.chatrooms);
+    useSelector((state) => state.user || state.chatrooms)
     const { allChatRooms } = useSelector((state) => state.chatrooms);
 
   if (loading) {
@@ -76,7 +75,6 @@ const Chat = () => {
     );
   }
 
-  // console.log(allChatRooms);
 
   // Connect to chatroom
   // useEffect(() => {
@@ -84,8 +82,9 @@ const Chat = () => {
   //   }, [dispatch, chatroomId]);
 
 
-
-const chatRoom = allChatRooms.find((chatroom) => chatroom.id === parseInt(id));
+  const chatRoom = allChatRooms.find((chatroom) => chatroom.id === parseInt(id));
+  
+  console.log(chatRoom.id);
 
 return (
     <div>

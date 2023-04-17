@@ -20,6 +20,7 @@ export const fetchChatRooms = createAsyncThunk(
 
     try {
       const res = await axios(config);
+      console.log(res.data.data);
       Cookies.set('chatrooms', res.data.data)
       return res.data.data;
     } catch (error) {

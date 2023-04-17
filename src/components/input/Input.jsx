@@ -5,18 +5,17 @@ import Cam from "../../assets/camera.png";
 import Send from "../../assets/Send.png";
 import Emoji from "../../assets/Emoji.png";
 import Attach from "../../assets/Attach.png";
-import io from "socket.io-client";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { BsMicMute } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../../feature/chatRoomSlice";
-import socketIOClient from "socket.io-client";
 import { format } from "date-fns";
 import { FiVideo } from "react-icons/fi";
 import uploadVideo from "../../assets/uploadVideo.png";
 import { CHATROOM_URL } from "../../defaultValues/DefaultValues";
-import { useParams } from "react-router";
+import Pusher from "pusher-js";
+ 
 
 const Container = styled(Box)({
   height: "10vh",
@@ -86,12 +85,12 @@ const SendMessage = styled("button")({
   width: "50px",
   borderRadius: "50%",
   cursor: "pointer",
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center'
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 });
 
-const Input = ({chatRoom}) => {
+const Input = ({ chatRoom }) => {
   const [showEmoji, setShowEmoji] = useState(false);
 
   const [text, setText] = useState("");
@@ -105,25 +104,6 @@ const Input = ({chatRoom}) => {
 
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-
-  const id = chatRoom.id
-
-  const CHAT_URL = `${CHATROOM_URL}/${id}/message`;
-console.log(CHAT_URL);
-
-  const socket = io(CHAT_URL);
-
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log('Connected to socket server');
-    });
-    socket.on('message', (data) => {
-      console.log('Received message:', data);
-    });
-    return () => {
-      socket.disconnect();
-    };
-  }, [])
 
   const addEmoji = (e) => {
     // setCurrentEmoji(e.native)
@@ -148,6 +128,25 @@ console.log(CHAT_URL);
     };
   });
 
+
+
+  
+  const id = chatRoom.id;
+
+  // Connect Pusher to App
+  const CHAT_URL = `${CHATROOM_URL}/${id}/message`;
+
+  // const pusher = new Pusher(`${process.env.PUSHER_API_KEY}`, {
+  //     cluster: `${process.env.PUSHER_CLUSTER}`,
+  //     encrypted: true,
+  //   });
+
+  // const channel = pusher.subscribe("chat");
+  // channel.bind('message', function(data) {
+  //   console.log(data);
+  // })
+
+
   // Send Message
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -171,8 +170,20 @@ console.log(CHAT_URL);
     formData.append("image", image);
     formData.append("video", video);
     formData.append("file", file);
-    dispatch(addMessage(message));
-    socket.emit("chat", formData);
+    dispatch(addMessage(formData));
+
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    fetch(`${CHAT_URL}`, requestOptions)
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+    
 
     setText("");
     setImage(null);
@@ -276,8 +287,8 @@ console.log(CHAT_URL);
               style={{ display: "none" }}
               onChange={handleVideoChange}
             />
-            <label htmlFor="video" style={{cursor: 'pointer'}}>
-             <img src={uploadVideo} alt="video upload" />
+            <label htmlFor="video" style={{ cursor: "pointer" }}>
+              <img src={uploadVideo} alt="video upload" />
             </label>
           </div>
 
