@@ -94,7 +94,7 @@ class ChatRoomController extends Controller
         $user = User::findOrFail($user);
 
         // Find the chatroom with the given ID
-        $chatRoom = Chatroom::findOrFail($chatRoom);
+        $chatRoom = ChatRoom::findOrFail($chatRoom);
 
         return $user->chatrooms()->detach($chatRoom);
     }

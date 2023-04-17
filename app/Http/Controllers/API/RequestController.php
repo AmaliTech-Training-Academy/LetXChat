@@ -26,10 +26,10 @@ class RequestController extends Controller
     public function store(Request $request)
     {
         $user = User::find($request->user_id);
-        $chatroom = Chatroom::find($request->chat_room_id);
+        $chatroom = ChatRoom::find($request->chat_room_id);
 
         if (!$user) return response()->json(['message' => 'User Not Found']);
-        if (!$chatroom) return response()->json(['message' => 'Chatroom Not Found']);
+        if (!$chatroom) return response()->json(['message' => 'ChatRoom Not Found']);
 
         if ($chatroom->hasUser($user))
             return response()->json(['message' => 'Already joined ' . $chatroom->name]);
@@ -59,7 +59,7 @@ class RequestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    // public function destroy(User $user, Chatroom $chatroom)
+    // public function destroy(User $user, ChatRoom $chatroom)
     // {
     //     dd($user,$chatroom);
     //     if (!($chatroom->hasUser($user)))
