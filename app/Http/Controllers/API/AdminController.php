@@ -25,33 +25,8 @@ class AdminController extends Controller
         return response()->json([
             'id' => $admin->id,
             'email' => $admin->email,
-            $admin
-
         ]);
     }
-
-    // public function login(AdminLoginRequest $request)
-    // {
-    //     $request->validated($request->all());
-
-    //     if (!Auth::attempt($request->only(['email', 'password']))) {
-    //         $checkpass = Hash::check($request->password, Admin::where('email',$request->email)->get('password'));
-    //         return $checkpass;
-    //         return response()->json(['message' => 'Invalid Credentials'], 404);
-    //     }
-
-    //     $admin = Admin::where('email', Auth::user()->email)->first();
-
-    //     if (!$admin) return response()->json(['not found']);
-
-    //     $token = $admin->createToken($admin->email)->plainTextToken;
-
-    //     return response()
-    //         ->json([
-    //             'message' => 'Logged in Successful',
-    //             'token' => $token
-    //         ]);
-    // }
 
     public function login(Request $request)
     {
