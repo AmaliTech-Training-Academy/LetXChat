@@ -17,8 +17,8 @@ function Pagination({usersPerPage, totalUsers, paginate, currentPage}) {
                 <span>Previous</span>
             </div>
             {
-                pageNumbers && pageNumbers.map(number => (
-                    <div onClick={() => paginate(number)} className={`${currentPage === number ? 'bg-gray-300 text-gray-700' : 'text-gray-800'} py-3 px-4 border-y-2 border-l-2 cursor-pointer text-sm`}>{number}</div>
+                pageNumbers && pageNumbers.map((number, index) => (
+                    <div key={index} onClick={() => paginate(number)} className={`${currentPage === number ? 'bg-gray-300 text-gray-700' : 'text-gray-800'} py-3 px-4 border-y-2 border-l-2 cursor-pointer text-sm`}>{number}</div>
                 ))
             }
             <div className='py-3 px-4 border-2 rounded-r-lg cursor-pointer flex flex-row-reverse items-center gap-3'>

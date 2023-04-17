@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AdminNavbar from "../../components/admin/AdminNavbar";
 import Cards from "../../components/admin/Cards";
-import Users from "../../components/admin/Users";
+import Chatrooms from "../../components/admin/Chatrooms";
 import Pagination from "../../components/admin/Pagination";
 
 const users = [
@@ -149,7 +149,7 @@ const users = [
     members: "12",
     status: "Pending",
   },
-];
+]
 
 function Admin() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -171,7 +171,7 @@ function Admin() {
         <AdminNavbar />
         <div className="md:mx-11">
           <Cards />
-          <Users currentUsers={currentUsers} />
+          <Chatrooms currentUsers={currentUsers} />
           <Pagination
             usersPerPage={usersPerpage}
             totalUsers={users.length}
