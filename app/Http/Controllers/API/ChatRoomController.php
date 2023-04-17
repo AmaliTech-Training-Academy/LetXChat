@@ -32,7 +32,7 @@ class ChatRoomController extends Controller
             'image' => 'nullable'
         ]);
 
-        $chatRoom = Chatroom::create([
+        $chatRoom = ChatRoom::create([
             'name' => $request->name,
             'image' => $this->checkImage($request)
         ]);
