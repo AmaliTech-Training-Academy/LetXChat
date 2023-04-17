@@ -38,7 +38,6 @@ class ChatRoomController extends Controller
         ]);
 
         return new ChatRoomResource($chatRoom);
-
     }
 
     /**
@@ -56,17 +55,17 @@ class ChatRoomController extends Controller
      */
     public function update(Request $request, $chatRoom)
     {
+        // dd($request->all());
         $request->validate([
             'name' => 'required',
-            'image' => 'required'
+            'image' => 'nullable'
         ]);
 
-        $chatRoom = ChatRoom::whereId($chatRoom)->first();
-        dd($request->all());
+        $chatRoom = ChatRoom::findOrFail($chatRoom)->first();
 
-        $chatRoom->update([
+        $chatRoom->updateOrFail([
             'name' => $request->name,
-            'image' => $this->checkImage($request)
+            'image' => $request->old($this->checkImage($request), null)
         ]);
 
         return new ChatRoomResource($chatRoom);
@@ -82,19 +81,23 @@ class ChatRoomController extends Controller
 
         if (!$delete) return response()->json([
             'message' => 'Not Found'
-        ],404);
+        ], 404);
 
         return $delete;
     }
 
-    public function removeUser(User $user,ChatRoom $chatRoom)
+    public function removeUser(User $user, ChatRoom $chatRoom)
     {
         // $chatRoom = ChatRoom::with('users')->find($chatRoom);
         // dd($chatRoom);
         // if (!($chatRoom->hasUser($user)))
         //     return response()->json(['message'=>'User is not the current chatroom'],404);
-        return $user->chatrooms()->detach($chatRoom);
+        $user = User::findOrFail($user);
 
+        // Find the chatroom with the given ID
+        $chatRoom = Chatroom::findOrFail($chatRoom);
+
+        return $user->chatrooms()->detach($chatRoom);
     }
 
     public function checkImage($request)
