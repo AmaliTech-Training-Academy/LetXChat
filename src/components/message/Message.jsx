@@ -79,15 +79,13 @@ const OwnerTime = styled("p")({
 
 const OwnerText = styled("p")({
   whiteSpace: "break-spaces",
-  padding: "5px 20px",
+  padding: "5px",
   paddingBottom: "20px",
   borderRadius: "10px",
 });
 
 const Message = () => {
   const messages = useSelector((state) => state.chat.messages);
-
-  console.log(messages, "Chat messages");
 
   // The Focus should always stay at the bottom for Messages
   const messagesRef = useRef(null);

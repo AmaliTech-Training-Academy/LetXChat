@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 function Navbar() {
   const location = useLocation()
-  if(location.pathname === '/sign-up' || location.pathname === '/sign-in') {
+  if(location.pathname === '/signup' || location.pathname === '/login') {
     return null
   };
 
@@ -20,8 +20,8 @@ function Navbar() {
               <Link to='/contact' className='text-xl cursor-pointer relative hover:text-[#53352D] after:absolute after:h-[2px] after:w-full after:bottom-0 after:inset-x-0 after:bg-[#53352D] after:scale-x-0 after:content-[""] hover:after:scale-x-100 after:origin-bottom-left after:transition-all'>Contact</Link>
           </ul>
           <div className='flex gap-5'>
-              <Link to='/sign-in' className='border-2 border-[#53352D] py-2 px-4 rounded-lg text-[#53352D] hover:text-white hover:bg-[#53352D]'>Sign in</Link>
-              <Link to='/sign-up' className='py-2 px-4 border-2 border-[#53352D] rounded-lg text-[#53352D] hover:text-white hover:bg-[#53352D]'>Register</Link>
+              <Link to='/login' className='border-2 border-[#53352D] py-2 px-4 rounded-lg text-[#53352D] hover:text-white hover:bg-[#53352D]'>Sign in</Link>
+              <Link to='/signup' className='py-2 px-4 border-2 border-[#53352D] rounded-lg text-[#53352D] hover:text-white hover:bg-[#53352D]'>Register</Link>
           </div>
       </nav>
     </div>

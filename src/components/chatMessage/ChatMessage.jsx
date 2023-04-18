@@ -18,11 +18,12 @@ const Container = styled(Box)({
 
 
 
-const ChatMessage = ({username}) => {
+const ChatMessage = () => {
 
+ 
 
   return <Container component="article">
-    <Messages username={username} />
+    <Messages />
   </Container>;
 };
 

@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loginUser, registerUser } from "./authActions";
 import { BASE_URL } from "../defaultValues/DefaultValues";
-import { io } from "socket.io-client";
 import Cookies from "js-cookie";
 
 // Initialize userToken from Cookie
