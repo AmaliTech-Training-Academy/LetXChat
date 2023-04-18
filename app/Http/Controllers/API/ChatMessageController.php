@@ -52,6 +52,20 @@ class ChatMessageController extends Controller
             $image = null;
         }
 
+        if ($request->hasFile('file')) {
+            $fileName = $request->file('file')->getClientOriginalName();
+            $fileName = str_replace(' ', '_', $fileName);
+        }
+        if ($request->hasFile('video')) {
+            $videoName = $request->file('video')->getClientOriginalName();
+            $videoName = str_replace(' ', '_', $videoName);
+        }
+
+        if ($request->hasFile('voiceNote')) {
+            $audioName = $request->file('voiceNote')->getClientOriginalName();
+            $audioName = str_replace(' ', '_', $audioName);
+        }
+
         $video =  $request->hasFile('video') ? $request->file('video')->store('videos') : null;
         $audio =  $request->hasFile('voiceNote') ? $request->file('voiceNote')->store('voiceNotes') : null;
         $file =  $request->hasFile('file') ? $request->file('file')->store('files') : null;
@@ -61,9 +75,18 @@ class ChatMessageController extends Controller
             'chat_room_id' => $roomId,
             'message' => $request->message,
             'image' => $image,
-            'video' => $video,
-            'voiceNote' => $audio,
-            'file' => $file
+            'video' => [
+                'name' => $videoName,
+                'url' => $video
+            ],
+            'voiceNote' => [
+                'name' => $audioName,
+                'url' => $audio
+            ],
+            'file' => [
+                'name' => $fileName,
+                'url' => $file,
+            ]
         ]);
 
         broadcast(new NewChatMessage(
