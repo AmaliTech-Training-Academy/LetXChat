@@ -20,7 +20,7 @@ class ChatMessageController extends Controller
             ], 404);
 
         return ChatMessage::where('chat_room_id', $roomId)
-            ->with('user:id,fullname')
+            ->with('user:id,fullname,username,image')
             ->orderBy('created_at', 'DESC')
             ->get();
     }
