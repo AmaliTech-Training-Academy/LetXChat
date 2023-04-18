@@ -20,6 +20,7 @@ class ChatRoomResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'description' => $this->description,
             'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image,
             'created_at' => Carbon::parse($this->created_at,)->format('Y-m-d'),
             'recent_message' => $this->getRecentMessage($this->id),

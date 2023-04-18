@@ -11,7 +11,8 @@ class ChatRoom extends Model
 
     protected $fillable = [
         'name',
-        'image'
+        'image',
+        'description'
     ];
 
     public function users()
