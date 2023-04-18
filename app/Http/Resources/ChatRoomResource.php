@@ -24,6 +24,13 @@ class ChatRoomResource extends JsonResource
             'created_at' => Carbon::parse($this->created_at,)->format('Y-m-d'),
             'recent_message' => $this->getRecentMessage($this->id),
             'total_messages' => $this->messages->count(),
+            'members' => $this->users->map(function($user){
+                return [
+                    'name' => $user->fullname,
+                    'email' => $user->email
+                ];
+            }),
+            'total_members' => $this->users->count()
         ];
     }
 

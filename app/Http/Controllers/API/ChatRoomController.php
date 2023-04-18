@@ -16,10 +16,7 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        return [
-            'chatrooms' => ChatRoomResource::collection(ChatRoom::all()),
-            'total' => ChatRoom::count()
-        ];
+        return ChatRoomResource::collection(ChatRoom::query()->with('users')->paginate(10));
     }
 
     /**
