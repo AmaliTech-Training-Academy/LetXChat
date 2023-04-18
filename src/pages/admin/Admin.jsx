@@ -3,6 +3,10 @@ import AdminNavbar from "../../components/admin/AdminNavbar";
 import Cards from "../../components/admin/Cards";
 import Chatrooms from "../../components/admin/Chatrooms";
 import Pagination from "../../components/admin/Pagination";
+import AddChatroomModal from "../../components/admin/modals/AddChatroomModal";
+import { useSelector } from "react-redux";
+import Delete from "../../components/admin/modals/Delete";
+import Users from "../../components/admin/modals/Users";
 
 const users = [
   {
@@ -154,6 +158,7 @@ const users = [
 function Admin() {
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerpage, setUsersPerpage] = useState(10);
+  const {AddChatroomModalState, deleteModalState, viewUsersModalState} = useSelector(state => state.admin)
 
   //Get current page
   const indexOfLastUser = currentPage * usersPerpage;
@@ -166,7 +171,10 @@ function Admin() {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center relative">
+      {AddChatroomModalState && <AddChatroomModal />}
+      {deleteModalState && <Delete />}
+      {viewUsersModalState && <Users />}
       <div className="w-full max-w-[1640px]">
         <AdminNavbar />
         <div className="md:mx-11">
