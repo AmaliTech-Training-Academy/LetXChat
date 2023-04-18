@@ -20,8 +20,8 @@ class ChatMessageController extends Controller
             ], 404);
 
         return ChatMessage::where('chat_room_id', $roomId)
-        ->with('user:id,fullname,username,image')
-        ->orderBy('created_at', 'DESC')
+            ->with('user:id,fullname,username,image')
+            ->orderBy('created_at', 'DESC')
             ->get();
     }
 
@@ -51,60 +51,70 @@ class ChatMessageController extends Controller
         } else {
             $image = null;
         }
-
+        $fileName = '';
         if ($request->hasFile('file')) {
             $fileName = $request->file('file')->getClientOriginalName();
             $fileName = str_replace(' ', '_', $fileName);
+            $file = $request->file('file')->storeAs('files', $fileName);
+        } else {
+            $file = null;
         }
+        $videoName = '';
         if ($request->hasFile('video')) {
             $videoName = $request->file('video')->getClientOriginalName();
-            $videoName = str_replace(' ', '_', $videoName);
+            $videoName = $videoName != null ? str_replace(' ', '_', $videoName) : '';
+            $video = $request->file('video')->storeAs('videos', $videoName);
+        } else {
+            $video = null;
         }
-
+        $audioName = '';
         if ($request->hasFile('voiceNote')) {
             $audioName = $request->file('voiceNote')->getClientOriginalName();
-            $audioName = str_replace(' ', '_', $audioName);
+            $audioName = $audioName != null ? str_replace(' ', '_', $audioName) : '';
+            $audio = $request->file('voiceNotes')->storeAs('voiceNotes', $audioName);
+        } else {
+            $audio = null;
         }
 
-        $video =  $request->hasFile('video') ? $request->file('video')->store('videos') : null;
-        $audio =  $request->hasFile('voiceNote') ? $request->file('voiceNote')->store('voiceNotes') : null;
-        $file =  $request->hasFile('file') ? $request->file('file')->store('files') : null;
+        // $video =  $request->hasFile('video') ? $request->file('video')->store('videos') : null;
+        // $audio =  $request->hasFile('voiceNote') ? $request->file('voiceNote')->store('voiceNotes') : null;
+        // $file =  $request->hasFile('file') ? $request->file('file')->store('files') : null;
 
         $newMessage = ChatMessage::create([
             'user_id' => Auth::id(),
             'chat_room_id' => $roomId,
             'message' => $request->message,
             'image' => $image,
-            'video' => [
-                'name' => $videoName,
-                'url' => $video
-            ],
-            'voiceNote' => [
-                'name' => $audioName,
-                'url' => $audio
-            ],
-            'file' => [
-                'name' => $fileName,
-                'url' => $file,
-            ]
+            'video' => $video,
+            'voiceNote' => $audio,
+            'file' => $file
         ]);
 
         broadcast(new NewChatMessage(
             $request->message,
-            'https://takoraditraining.com/LetXChat/storage/app/public/'.$image,
-            'https://takoraditraining.com/LetXChat/storage/app/public/'.$video,
-            'https://takoraditraining.com/LetXChat/storage/app/public/'.$audio,
-            'https://takoraditraining.com/LetXChat/storage/app/public/'.$file
+            'https://takoraditraining.com/LetXChat/storage/app/public/' . $image,
+            'https://takoraditraining.com/LetXChat/storage/app/public/' . $video,
+            'https://takoraditraining.com/LetXChat/storage/app/public/' . $audio,
+            'https://takoraditraining.com/LetXChat/storage/app/public/' . $file
         ))->toOthers();
 
         return response()->json([
             'sender' => Auth::user()->fullname,
-            'sender_image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.Auth::user()->image,
+            'sender_image' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . Auth::user()->image,
             'message' => $newMessage->message,
-            'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$newMessage->image,
-            'video' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$newMessage->video,
-            'voiceNote' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$newMessage->voiceNote,
-            'file' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$newMessage->file
+            'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . $newMessage->image,
+            'video' => [
+                'name' => $videoName,
+                'url' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . $newMessage->video
+            ],
+            'voiceNote' => [
+                'name' => $audioName,
+                'url' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . $newMessage->voiceNote
+            ],
+            'file' => [
+                'name' => $fileName,
+                'url' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . $newMessage->file
+            ]
         ]);
     }
 }
