@@ -87,15 +87,8 @@ class ChatRoomController extends Controller
 
     public function removeUser(User $user, ChatRoom $chatRoom)
     {
-        // $chatRoom = ChatRoom::with('users')->find($chatRoom);
-        // dd($chatRoom);
-        // if (!($chatRoom->hasUser($user)))
-        //     return response()->json(['message'=>'User is not the current chatroom'],404);
         $user = User::findOrFail($user);
-
-        // Find the chatroom with the given ID
         $chatRoom = ChatRoom::findOrFail($chatRoom);
-
         return $user->chatrooms()->detach($chatRoom);
     }
 

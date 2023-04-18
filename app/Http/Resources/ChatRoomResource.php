@@ -21,6 +21,7 @@ class ChatRoomResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image,
+            'created_at' => Carbon::parse($this->created_at,)->format('Y-m-d'),
             'recent_message' => $this->getRecentMessage($this->id),
             'total_messages' => $this->messages->count(),
         ];
