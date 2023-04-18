@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use App\Models\ChatMessage;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,17 +19,19 @@ class ChatRoomMembersResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'description' => $this->description,
             'image' => $this->image ? 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image : null,
-            'messages' => $this->users->map(function ($user) {
+            'members' => $this->users->map(function ($user) {
                 return [
-                    'user_id' => $user->id,
+                    'id' => $user->chat_id,
                     'username' => $user->username,
                     'image' => $user->image,
                     'time' => Carbon::parse($user->created_at)->format('g:i a'),
                     'messages' => $this->messages->where('user_id', $user->id),
                 ];
             }),
-            'recent_message' => $this->getRecentMessage($this->id)
+            'recent_message' => $this->getRecentMessage($this->id),
+            'total_users' => $this->users->count()
         ];
     }
 

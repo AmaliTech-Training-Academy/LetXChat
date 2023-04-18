@@ -16,10 +16,7 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        return [
-            'chatrooms' => ChatRoomResource::collection(ChatRoom::all()),
-            'total' => ChatRoom::count()
-        ];
+        return ChatRoomResource::collection(ChatRoom::query()->with('users')->paginate(10));
     }
 
     /**
@@ -29,12 +26,14 @@ class ChatRoomController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:chat_rooms|max:255',
-            'image' => 'nullable'
+            'image' => 'nullable',
+            'description' => 'required'
         ]);
 
         $chatRoom = ChatRoom::create([
             'name' => $request->name,
-            'image' => $this->checkImage($request)
+            'image' => $this->checkImage($request),
+            'description' => $request->description
         ]);
 
         return new ChatRoomResource($chatRoom);
@@ -45,7 +44,7 @@ class ChatRoomController extends Controller
      */
     public function show($chatRoom)
     {
-        $chatroomMembers = ChatRoom::with(['users:id,fullname,email', 'messages'])->findOrFail($chatRoom);
+        $chatroomMembers = ChatRoom::with(['users', 'messages'])->findOrFail($chatRoom);
         return new ChatRoomMembersResource($chatroomMembers);
     }
 
@@ -56,8 +55,9 @@ class ChatRoomController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'name' => 'required',
-            'image' => 'nullable'
+            'name' => 'nullable',
+            'image' => 'nullable',
+            'description' => 'nullable'
         ]);
 
         $chatRoom = ChatRoom::findOrFail($chatRoom)->first();
