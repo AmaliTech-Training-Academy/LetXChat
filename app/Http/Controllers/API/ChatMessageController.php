@@ -68,7 +68,7 @@ class ChatMessageController extends Controller
 
         broadcast(new NewChatMessage(
             $request->message,
-            env('APP_URL').'/LetXChat/storage/app/public/'.$image,
+            'https://takoraditraining.com/LetXChat/storage/app/public/'.$image,
             $video,
             $audio,
             $file
@@ -77,7 +77,7 @@ class ChatMessageController extends Controller
         return response()->json([
             'sender' => Auth::user()->fullname,
             'message' => $newMessage->message,
-            'image' => env('APP_URL').'/LetXChat/storage/app/public/'.$newMessage->image,
+            'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$newMessage->image,
             'video' => $newMessage->video,
             'voiceNote' => $newMessage->voiceNote,
             'file' => $newMessage->file
