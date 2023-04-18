@@ -3,6 +3,7 @@ import upload from "../../../assets/upload-image.png"
 import close from "../../../assets/close-button.png"
 import { useSelector, useDispatch } from 'react-redux'
 import {hideAddChatroomModal} from '../../../feature/adminSlice'
+import axios from 'axios'
 
 function AddChatroomModal() {
     const [name, setName] = useState('')
@@ -11,23 +12,34 @@ function AddChatroomModal() {
     const dispatch = useDispatch()
     const {AddChatroomModalState} =useSelector(state => state.admin)
 
-    useEffect(() => {
-        console.log(AddChatroomModalState);
-    }, [AddChatroomModalState])
-    useEffect(() => {
-        console.log(name);
-    }, [name])
-    useEffect(() => {
-        console.log(description);
-    }, [description])
+    // useEffect(() => {
+    //     console.log(AddChatroomModalState);
+    // }, [AddChatroomModalState])
+    // useEffect(() => {
+    //     console.log(name);
+    // }, [name])
+    // useEffect(() => {
+    //     console.log(description);
+    // }, [description])
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
         e.preventDefault()
-        const chatroomObject = new FormData()
-        chatroomObject.name = name;
-        chatroomObject.description = description
-        chatroomObject.image = profileImage
-        console.log(chatroomObject)
+        const data = new FormData()
+        data.set('name', name)
+        data.set('description', description)
+        data.set('image', profileImage)
+        if (name && description && profileImage) {
+            try {
+                const response = await axios.post('https://letxchat.takoraditraining.com/api/v1/chatrooms', data)
+                console.log(response)
+            } catch (error) {
+                throw new Error(error)
+            }
+        }
+        else {
+            console.log("some fields are empty")
+        }
+        // console.log(name, description, profileImage)
     }
     
   return (

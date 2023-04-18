@@ -44,6 +44,8 @@ function Users() {
             <input type="text" className="mt-5 w-full p-3 rounded" placeholder="search user"/>
             {members.length !== 0 && <div className="flex flex-col gap-2 w-full h-36 overflow-y-scroll mt-5">
                 <span className="cursor-pointer">Emma</span>
+                <span className="cursor-pointer">Michael</span>
+                <span className="cursor-pointer">Emma</span>
             </div>}
         </>}
       </div>

@@ -4,13 +4,13 @@ import Chatroom from "./Chatroom";
 import { useDispatch, useSelector } from "react-redux";
 import {showAddChatroomModal} from "../../feature/adminSlice"
 
-function Chatrooms({ currentUsers }) {
-  const { AddChatroomModalState } = useSelector((state) => state.admin);
+function Chatrooms({ currentChatrooms }) {
+  // const { AddChatroomModalState } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(AddChatroomModalState);
-  }, [AddChatroomModalState]);
+  // useEffect(() => {
+  //   console.log(AddChatroomModalState);
+  // }, [AddChatroomModalState]);
 
   return (
     <div className="mt-11">
@@ -25,7 +25,7 @@ function Chatrooms({ currentUsers }) {
       </div>
       <div className="w-full p-5 shadow">
         <ChatroomHeader />
-        {currentUsers.map((ele) => {
+        {currentChatrooms && currentChatrooms.map((ele) => {
           return <Chatroom key={ele.id} item={ele} />;
         })}
       </div>

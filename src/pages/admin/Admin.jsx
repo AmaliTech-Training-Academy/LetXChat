@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminNavbar from "../../components/admin/AdminNavbar";
 import Cards from "../../components/admin/Cards";
 import Chatrooms from "../../components/admin/Chatrooms";
 import Pagination from "../../components/admin/Pagination";
 import AddChatroomModal from "../../components/admin/modals/AddChatroomModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Delete from "../../components/admin/modals/Delete";
 import Users from "../../components/admin/modals/Users";
+import {getChatrooms} from "../../feature/adminSlice"
 
 const users = [
   {
@@ -156,19 +157,27 @@ const users = [
 ]
 
 function Admin() {
+  const [data, setData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerpage, setUsersPerpage] = useState(10);
-  const {AddChatroomModalState, deleteModalState, viewUsersModalState} = useSelector(state => state.admin)
+  const {AddChatroomModalState, deleteModalState, viewUsersModalState, chatrooms} = useSelector(state => state.admin)
+  const dispatch = useDispatch()
 
   //Get current page
   const indexOfLastUser = currentPage * usersPerpage;
   const indexOfFirstUser = indexOfLastUser - usersPerpage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const currentChatrooms = data?.slice(indexOfFirstUser, indexOfLastUser);
 
   // change currentPage
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  useEffect(() => {
+    dispatch(getChatrooms())
+    setData(chatrooms.chatrooms);
+    console.log(chatrooms.chatrooms);
+  }, [])
 
   return (
     <div className="flex justify-center relative">
@@ -179,10 +188,10 @@ function Admin() {
         <AdminNavbar />
         <div className="md:mx-11">
           <Cards />
-          <Chatrooms currentUsers={currentUsers} />
+          <Chatrooms currentChatrooms={currentChatrooms}/>
           <Pagination
             usersPerPage={usersPerpage}
-            totalUsers={users.length}
+            totalUsers={data?.length}
             paginate={paginate}
             currentPage={currentPage}
           />

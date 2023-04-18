@@ -3,22 +3,45 @@ import axios from "axios";
 
 const initialState = {
     chatrooms: [],
+    singleChatroom: {},
     AddChatroomModalState: false,
     viewUsersModalState: false,
     editModal: false,
     deleteModalState: false,
-    isLoading: true
+    isLoading: true,
+    loadingMembers: true
 }
 
-const url = 'https://letxchat.takoraditraining.com/api/v1/chatrooms?page='
+const baseUrl = 'https://letxchat.takoraditraining.com/api/v1/'
 
 export const getChatrooms = createAsyncThunk('chatrooms/getChatrooms', 
     async () => {
         try {
-            const response = axios(url)
+            const response = axios(`${baseUrl}chatrooms?page=`)
             return await response
         } catch (error) {
-            throw new Error
+            throw new Error(error)
+        }
+    }
+)
+
+export const logout = createAsyncThunk('admin/logout', 
+async () => {
+    try {
+        const response = await axios(url)
+        return response
+    } catch (error) {
+      throw new Error(error)  
+    }
+})
+
+export const getSingleChatroom = createAsyncThunk('admin/getMembers',
+    async (id) => {
+        try {
+            const response = await axios(`${baseUrl}chatrooms/${id}`)
+            return response
+        } catch (error) {
+           throw new Error(error) 
         }
     }
 )
@@ -64,6 +87,15 @@ const adminSlice = createSlice({
         },
         [getChatrooms.rejected]: (state) => {
             state.chatrooms = false
+        },
+        [getSingleChatroom.pending]: (state) => {
+            state.loadingMembers = true
+        },
+        [getSingleChatroom.fulfilled]: (state, {payload}) => {
+            state.singleChatroom = payload.data
+        },
+        [getSingleChatroom.rejected]: (state) => {
+            state.loadingMembers = false
         }
     }
 })

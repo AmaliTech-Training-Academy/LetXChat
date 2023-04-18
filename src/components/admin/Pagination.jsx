@@ -3,6 +3,7 @@ import previous from '../../assets/previous.png'
 import next from '../../assets/next.png'
 
 function Pagination({usersPerPage, totalUsers, paginate, currentPage}) {
+    
     const pageNumbers = []
     for (let i = 1; i <= Math.ceil(totalUsers / usersPerPage); i++) {
         pageNumbers.push(i)
