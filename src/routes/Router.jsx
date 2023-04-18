@@ -11,6 +11,8 @@ import Settings from '../components/sidebar/Settings'
 import CreateGroup from '../components/sidebar/CreateGroup'
 import SidebarLayout from '../components/layouts/SidebarLayout'
 import Admin from '../pages/admin/Admin'
+import AdminLayout from '../components/layouts/AdminLayout'
+import NewChatroom from '../components/admin/NewChatroom'
 function Router() {
   return (
     <Routes>
@@ -26,7 +28,10 @@ function Router() {
           <Route path='/sidebar/settings' element={<Settings />}/>
           <Route path='/sidebar/creategroup' element={<CreateGroup />}/>
         </Route>
-        <Route path='/admin' element={<Admin />}/>
+        <Route path='/admin' element={<AdminLayout />}>
+          <Route index element={<Admin />} />
+          <Route path='/admin/createchatroom' element={<NewChatroom />} />
+        </Route>
     </Routes>
   )
 }

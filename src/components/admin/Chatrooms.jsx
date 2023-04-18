@@ -3,25 +3,26 @@ import ChatroomHeader from "./ChatroomHeader";
 import Chatroom from "./Chatroom";
 import { useDispatch, useSelector } from "react-redux";
 import {showAddChatroomModal} from "../../feature/adminSlice"
+import { Link } from "react-router-dom";
 
 function Chatrooms({ currentChatrooms }) {
   // const { AddChatroomModalState } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   console.log(AddChatroomModalState);
-  // }, [AddChatroomModalState]);
+  useEffect(() => {
+    console.log(currentChatrooms);
+  }, []);
 
   return (
     <div className="mt-11">
       <div className="mb-5 flex justify-between items-center font-bold text-[#101828]">
         <span className="text-2xl">Chatrooms</span>
-        <button
+        <Link to='/admin/createchatroom'
           className="px-10 py-5 bg-green-300 rounded-lg text-white text-lg"
-          onClick={() => dispatch(showAddChatroomModal())}
+          // onClick={() => dispatch(showAddChatroomModal())}
         >
           Add Chatroom
-        </button>
+        </Link>
       </div>
       <div className="w-full p-5 shadow">
         <ChatroomHeader />

@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-import AdminNavbar from "../../components/admin/AdminNavbar";
 import Cards from "../../components/admin/Cards";
 import Chatrooms from "../../components/admin/Chatrooms";
 import Pagination from "../../components/admin/Pagination";
-import AddChatroomModal from "../../components/admin/modals/AddChatroomModal";
 import { useDispatch, useSelector } from "react-redux";
-import Delete from "../../components/admin/modals/Delete";
-import Users from "../../components/admin/modals/Users";
 import {getChatrooms} from "../../feature/adminSlice"
 
 const users = [
@@ -157,16 +153,16 @@ const users = [
 ]
 
 function Admin() {
-  const [data, setData] = useState([])
+  // const [data, setData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerpage, setUsersPerpage] = useState(10);
-  const {AddChatroomModalState, deleteModalState, viewUsersModalState, chatrooms} = useSelector(state => state.admin)
+  const {chatrooms} = useSelector(state => state.admin)
   const dispatch = useDispatch()
 
   //Get current page
   const indexOfLastUser = currentPage * usersPerpage;
   const indexOfFirstUser = indexOfLastUser - usersPerpage;
-  const currentChatrooms = data?.slice(indexOfFirstUser, indexOfLastUser);
+  const currentChatrooms = chatrooms.data?.slice(indexOfFirstUser, indexOfLastUser);
 
   // change currentPage
   const paginate = (pageNumber) => {
@@ -175,28 +171,20 @@ function Admin() {
 
   useEffect(() => {
     dispatch(getChatrooms())
-    setData(chatrooms.chatrooms);
-    console.log(chatrooms.chatrooms);
+    // setData(chatrooms.data);
+    // console.log(chatrooms.data);
   }, [])
 
   return (
-    <div className="flex justify-center relative">
-      {AddChatroomModalState && <AddChatroomModal />}
-      {deleteModalState && <Delete />}
-      {viewUsersModalState && <Users />}
-      <div className="w-full max-w-[1640px]">
-        <AdminNavbar />
-        <div className="md:mx-11">
+    <div className="md:mx-11">
           <Cards />
           <Chatrooms currentChatrooms={currentChatrooms}/>
           <Pagination
             usersPerPage={usersPerpage}
-            totalUsers={data?.length}
+            totalUsers={chatrooms.data?.length}
             paginate={paginate}
             currentPage={currentPage}
           />
-        </div>
-      </div>
     </div>
   );
 }

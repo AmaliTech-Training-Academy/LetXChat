@@ -18,8 +18,8 @@ function Chatroom({item}) {
   }
 
   useEffect(() => {
-   console.log(singleChatroom);
-  }, [singleChatroom])
+   console.log(item);
+  }, [])
 
   return (
     <div className="w-full flex justify-between items-center py-4 hover:bg-gray-100">
@@ -30,13 +30,13 @@ function Chatroom({item}) {
         {item.email}
       </span> */}
       <span className="flex-[1.43] font-medium text-[#101828] text-center">
-        {item.date_assigned}
+        {item.created_at}
       </span>
       {/* <span className="flex-[1.43] font-medium text-[#101828] text-center break-words">
         {item.chatroom}
       </span> */}
       <span className="flex-[1.43] font-medium text-[#101828] text-center">
-        {item.members}
+        {item.members?.length || '0'}
       </span>
       <div className="flex-[1.43] flex gap-3 justify-center font-medium text-white">
           <button className="border p-2 rounded-lg bg-blue-300" onClick={viewMembers}>View members</button>
