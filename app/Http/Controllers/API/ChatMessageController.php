@@ -69,18 +69,19 @@ class ChatMessageController extends Controller
         broadcast(new NewChatMessage(
             $request->message,
             'https://takoraditraining.com/LetXChat/storage/app/public/'.$image,
-            $video,
-            $audio,
-            $file
+            'https://takoraditraining.com/LetXChat/storage/app/public/'.$video,
+            'https://takoraditraining.com/LetXChat/storage/app/public/'.$audio,
+            'https://takoraditraining.com/LetXChat/storage/app/public/'.$file
         ))->toOthers();
 
         return response()->json([
             'sender' => Auth::user()->fullname,
+            'sender_image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.Auth::user()->image,
             'message' => $newMessage->message,
             'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$newMessage->image,
-            'video' => $newMessage->video,
-            'voiceNote' => $newMessage->voiceNote,
-            'file' => $newMessage->file
+            'video' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$newMessage->video,
+            'voiceNote' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$newMessage->voiceNote,
+            'file' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$newMessage->file
         ]);
     }
 }
