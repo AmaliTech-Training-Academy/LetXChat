@@ -157,51 +157,48 @@ const LoadingButtonStyles = styled(LoadingButton)({
 });
 
 const Login = () => {
-  // Show Password
-  const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => setShowPassword((show) => !show);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { loading } = useSelector((state) => state.auth);
-
-  // Get userInfo and chatrooms using userToken
-  const userToken = Cookies.get("userToken");
-
-  // Submit Form
-  const onSubmit = async (values, actions) => {
-    dispatch(loginUser(values));
-    dispatch(fetchUserInfo(userToken));
-    setTimeout(() => {
-      actions.resetForm();
-    }, 4000);
-  };
-
-  const Token = Cookies.get("userToken");
-  useEffect(() => {
-    if (Token) {
-      navigate("/chat");
-    }
-  }, [Token]);
-
-  // Formik Validation
-
-  const {
-    values,
-    errors,
-    touched,
-    handleBlur,
-    handleSubmit,
-    handleChange,
-    isSubmitting,
-  } = useFormik({
-    initialValues: {
-      emailID: "",
-      password: "",
-    },
-    validationSchema: loginSchema,
-    onSubmit,
-  });
+    // Show Password
+    const [showPassword, setShowPassword] = useState(false);
+    const handleShowPassword = () => setShowPassword((show) => !show);
+  
+    const dispatch = useDispatch();
+    const { loading } = useSelector((state) => state.auth);
+  
+    const navigate = useNavigate();
+  
+    // Submit Form
+    const onSubmit = async (values, actions) => {
+      dispatch(loginUser(values));
+      setTimeout(() => {
+        actions.resetForm();
+      }, 4000);
+    };
+  
+    const Token = Cookies.get("userToken");
+    useEffect(() => {
+      if (Token) {
+        navigate("/chat");
+      }
+    }, [Token]);
+  
+    // Formik Validation
+  
+    const {
+      values,
+      errors,
+      touched,
+      handleBlur,
+      handleSubmit,
+      handleChange,
+      isSubmitting,
+    } = useFormik({
+      initialValues: {
+        emailID: "",
+        password: "",
+      },
+      validationSchema: loginSchema,
+      onSubmit,
+    });
 
   return (
     <Container component="main">

@@ -9,25 +9,16 @@ import Chat from "./pages/chat/Chat";
 import { fetchChatRooms } from "./feature/chatRooms";
 import ChatComponent from "./pages/ChatComponent";
 
-
-
 function App() {
-
   const dispatch = useDispatch();
 
   // Get userInfo and chatrooms using userToken
-  const userToken = Cookies.get("userToken")
-  const userInfo = Cookies.get("userInfo")
+  const userToken = Cookies.get("userToken");
   useEffect(() => {
-    dispatch(fetchChatRooms(userToken))
+    dispatch(fetchUserInfo(userToken));
+    dispatch(fetchChatRooms(userToken));
   }, [dispatch, userToken]);
 
-  console.log(userInfo);
-
-
-
-
-  
   return (
     <div className="App">
       <Router />
@@ -35,10 +26,6 @@ function App() {
       {/* <ChatComponent /> */}
       <ToastContainer position="top-center" />
     </div>
-    
-  
-    
-
   );
 }
 

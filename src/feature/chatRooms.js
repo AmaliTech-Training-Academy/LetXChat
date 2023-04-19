@@ -8,19 +8,22 @@ const CHATROOMS_API = CHATROOMS_URL;
 export const fetchChatRooms = createAsyncThunk(
   "chatrooms/fetchChatRooms",
   async () => {
-    const Token = Cookies.get("userToken");
+    const UserInfo = Cookies.get("userinfo");
 
     let config = {
       method: "get",
       url: CHATROOMS_API,
       headers: {
-        Authorization: `Bearer ${Token}`,
+        Authorization: `Bearer ${UserInfo}`,
       },
     };
 
     try {
       const res = await axios(config);
-      Cookies.set('chatrooms', res.data.data)
+      // Cookies.set('chatrooms', res.data.chatrooms)
+      localStorage.setItem('chatrooms', res.data.data)
+      console.log(res.data.data);
+
       return res.data.data;
     } catch (error) {
       console.error(error.message);
@@ -30,7 +33,7 @@ export const fetchChatRooms = createAsyncThunk(
 
 
 const initialState = {
-   allChatRooms : Cookies.get('chatrooms') || [],
+   allChatRooms: [],
     loading: true,
     error: null
 }
@@ -44,9 +47,9 @@ const chatRoomsSlice = createSlice({
             state.loading = true
         })
 
-        .addCase(fetchChatRooms.fulfilled, (state, action) => {
+        .addCase(fetchChatRooms.fulfilled, (state, {payload}) => {
             state.loading = false
-            state.allChatRooms = action.payload;
+            state.allChatRooms = payload
         })
 
         .addCase(fetchChatRooms.rejected, (state, action) => {

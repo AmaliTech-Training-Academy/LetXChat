@@ -25,6 +25,7 @@ let config = {
 
     const res = await axios(config)
     Cookies.set("userInfo", res.data.data)
+
         return res.data.data
 
     } catch (error) {
@@ -37,7 +38,6 @@ let config = {
 );
 
 const userInfo = Cookies.get("userInfo") || null
-
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -45,7 +45,14 @@ const userSlice = createSlice({
     loading: true,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      Cookies.remove("userInfo")
+      state.loading = false
+      state.userInfo = null
+      state.error = null
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserInfo.pending, (state) => {
@@ -62,4 +69,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { logout } = userSlice.actions
 export default userSlice.reducer;

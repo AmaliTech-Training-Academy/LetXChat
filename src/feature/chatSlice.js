@@ -14,7 +14,14 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearToken: (state) => {
+      Cookies.remove('userToken')
+      state.loading = false
+      state.userToken = null
+      state.error = null
+    }
+  },
   extraReducers: (builder) => {
     builder
 
@@ -53,5 +60,5 @@ const authSlice = createSlice({
   },
 });
 
-// export const { sendMessage } = chatSlice.actions;
+export const { clearToken } = authSlice.actions;
 export default authSlice.reducer;

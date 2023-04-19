@@ -13,10 +13,14 @@ import { addMessage } from "../../feature/chatRoomSlice";
 import { format } from "date-fns";
 import { FiVideo } from "react-icons/fi";
 import uploadVideo from "../../assets/uploadVideo.png";
-import { CHATROOM_URL, PUSHER_API_KEY, PUSHER_CLUSTER } from "../../defaultValues/DefaultValues";
+import {
+  CHATROOMS_URL,
+  PUSHER_API_KEY,
+  PUSHER_CLUSTER,
+} from "../../defaultValues/DefaultValues";
 import Pusher from "pusher-js";
 import Cookies from "js-cookie";
- 
+import axios from "axios";
 
 const Container = styled(Box)({
   height: "10vh",
@@ -130,60 +134,14 @@ const Input = ({ chatRoom }) => {
   });
 
 
-
-  
-  // const id = chatRoom.id;
-
-  // // Connect Pusher to App
-  // const CHAT_URL = `${CHATROOM_URL}/${id}/message`;
-
-  // const pusher = new Pusher(`${PUSHER_API_KEY}`, {
-  //     cluster: `${PUSHER_CLUSTER}`,
-  //     encrypted: true,
-  //   });
-
-  // const channel = pusher.subscribe("chat");
-  // channel.bind('message', function(data) {
-  //   console.log(data);
-  // })
-
-
-
-
   // Send Message
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const timestamp = format(new Date(), "h:mm a");
-
-    // const message = {
-    //   id: Date.now(),
-    //   time: timestamp,
-    //   sender: userInfo.name,
-    //   text: text,
-    //   voiceNote: audioUrl,
-    //   image: image,
-    //   video: video,
-    //   file: file,
-    // };
-
-      const id = chatRoom.id;
-
-  // Connect Pusher to App
-  const CHAT_URL = `${CHATROOM_URL}/${id}/message`;
-
-
-
-  const pusher = new Pusher(PUSHER_API_KEY, {
-    cluster: PUSHER_CLUSTER,
-  });
-
-  pusher.trigger
-
-    let myHeaders = new Headers();
-    const userToken = Cookies.get('userToken')
-    myHeaders.append("Authorization", `Bearer ${userToken}`);
-    console.log(userToken);
+    const id = chatRoom.id;
+    const userToken = Cookies.get("userToken")
+    // Connect Pusher to App
+    const CHAT_URL = `${CHATROOMS_URL}/${id}/message`;
 
     const formData = new FormData();
     formData.append("message", text);
@@ -191,20 +149,36 @@ const Input = ({ chatRoom }) => {
     formData.append("image", image);
     formData.append("video", video);
     formData.append("file", file);
-    dispatch(addMessage(formData));
+
+    const pusher = new Pusher(PUSHER_API_KEY, {
+      cluster: PUSHER_CLUSTER,
+      encrypted: true,
+    });
+
+    const channel = pusher.subscribe("chat");
+    // channel.bind("messages", function (data) {
+    //   console.log(data);
+    //   dispatch(addMessage(formData));
+    //   setMessages([...messages, data.FormData]);
+    // });
+
+    channel.trigger("client-new-message", {
+      message: formData,
+    });
 
 
-    let requestOptions = {
+    fetch(`${CHAT_URL}`, {
       method: 'POST',
-      headers: myHeaders,
-      body: formData,
-      redirect: 'follow'
-    };
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${userToken}`
+      },
+      body: {
+        message: 'rer'
+      }
+    }).then(res => console.log(res)).catch(err => console.log(err))
 
-    fetch(`${CHAT_URL}`, requestOptions)
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-    
+    console.log(formData);
 
     setText("");
     setImage(null);
@@ -291,7 +265,7 @@ const Input = ({ chatRoom }) => {
             <input
               type="file"
               id="file"
-              // accept=".pdf,.doc,.docx,.xls,.xlsx"
+              accept=".pdf,.doc,.docx,.xls,.xlsx"
               onChange={handleFileUpload}
               style={{ display: "none" }}
             />

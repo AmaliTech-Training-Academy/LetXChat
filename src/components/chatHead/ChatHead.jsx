@@ -1,8 +1,7 @@
 import { styled } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import UserImage from "../../assets/user-image.png";
-
+import { useNavigate } from "react-router";
 
 const Container = styled(Box)({
   paddingInline: "52px",
@@ -19,12 +18,6 @@ const LeftSection = styled(Box)({
   gap: "26px",
 });
 
-const ProfileContainer = styled(Box)({
-  width: "60px",
-  height: "60px",
-  borderRadius: "50%",
-});
-
 const Email = styled("a")({
   fontStyle: "bold",
   fontSize: "16px",
@@ -32,26 +25,33 @@ const Email = styled("a")({
   color: "#ACACAC",
 });
 
+const ChatHead = ({ chatRoom }) => {
 
+  const navigate = useNavigate()
 
-const ChatHead = ({chatRoom}) => {
-
-
-  
 
   return (
     <Container component="section">
       <LeftSection component="section">
-        <ProfileContainer>
-          <img
-            src={chatRoom.image}
-            style={{ width: "100%", height: "100%" }}
-            alt="Profile pic"
-          />
-        </ProfileContainer>
-        <Email>{chatRoom.name}</Email>
+        <img
+          src={chatRoom?.image}
+          style={{ width: "60px", height: "60px", borderRadius: "50%" }}
+          alt="Profile pic"
+        />
+        <Email>{chatRoom?.name}</Email>
       </LeftSection>
-
+      <button
+        style={{
+          background: "gray",
+          color: "white",
+          padding: "0.2rem 0.5rem",
+          borderRadius: "20px",
+          fontSize: ".9rem",
+        }}
+        onClick={() => navigate('/chat')}
+      >
+        Go Back
+      </button>
     </Container>
   );
 };

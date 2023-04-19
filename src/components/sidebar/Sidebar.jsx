@@ -9,19 +9,30 @@ import ama from "../../assets/ama.png";
 import king from "../../assets/king.png";
 import mum from "../../assets/mum.png";
 import chef from "../../assets/chef.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineHome } from "react-icons/ai";
+import { logout } from "../../feature/userSlice";
+import { clearToken } from "../../feature/chatSlice";
 
 function Sidebar() {
   const { allChatRooms } = useSelector((state) => state.chatrooms);
-  const { loading } = useSelector(state => state.user)
+  const { loading } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleBackHome = () => {
     navigate("/");
   };
+
+
+  const handleLogout = () => {
+    dispatch(logout())
+    dispatch(clearToken())
+    navigate("/login");
+
+  }
 
   if (loading) {
     return (
@@ -38,6 +49,7 @@ function Sidebar() {
           background: "#FFFFFF",
         }}
       >
+
         <Skeleton animation="wave" variant="rounded" height={"100vh"} />
       </div>
     );
@@ -45,19 +57,16 @@ function Sidebar() {
 
   return (
     <>
-      <div className="mt-[0.5rem] ml-2 cursor-pointer" onClick={handleBackHome}>
-        <AiOutlineHome
-          style={{
-            color: "gray",
-            fontSize: "1.5rem",
-          }}
-        />
+
+      <div className="mt-[1rem] ml-2 cursor-pointer text-sm" onClick={handleBackHome}>
+      <span>&#8592;</span> Back Home
       </div>
+
       <UserCard />
       <Search />
       <div className="w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
         {allChatRooms?.length ? (
-          allChatRooms.map((chatroom) => {
+          allChatRooms?.map((chatroom) => {
             return (
               <div key={chatroom.id}>
                 <Link to={`/chat/${chatroom.id}`}>

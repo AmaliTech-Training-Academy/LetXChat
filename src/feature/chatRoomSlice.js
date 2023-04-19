@@ -1,35 +1,29 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { CHATROOM_URL } from "../defaultValues/DefaultValues";
-
+import { CHATROOMS_URL } from "../defaultValues/DefaultValues";
 
 export const connectToChatroom = createAsyncThunk(
-    'chatroom/connectToChatroom',
-    async (chatroomId, { dispatch }) => {
-      // try {
-
-      //   const socket = io(`${CHATROOM_URL}`);
-  
-      //   socket.on('connect', () => {
-      //     console.log('Connected to chatroom');
-      //     socket.emit('joinChatroom', chatroomId);
-      //   });
-  
-      //   socket.on('newMessage', (message) => {
-      //     dispatch(addMessage(message));
-      //   });
-  
-      //   return socket;
-      // } catch (error) {
-      //   console.error(error);
-      // }
-    }
-  );
+  "chatroom/connectToChatroom",
+  async (chatroomId, { dispatch }) => {
+    // try {
+    //   const socket = io(`${CHATROOMS_URL}`);
+    //   socket.on('connect', () => {
+    //     console.log('Connected to chatroom');
+    //     socket.emit('joinChatroom', chatroomId);
+    //   });
+    //   socket.on('newMessage', (message) => {
+    //     dispatch(addMessage(message));
+    //   });
+    //   return socket;
+    // } catch (error) {
+    //   console.error(error);
+    // }
+  }
+);
 
 const chatRoomSlice = createSlice({
   name: "chat",
   initialState: {
     messages: [],
-    socket: null,
     loading: false,
     error: null,
     chatroomId: null,
@@ -69,6 +63,7 @@ const chatRoomSlice = createSlice({
   },
 });
 
-export const { addMessage, setChatroomId, setLoading, setError } = chatRoomSlice.actions;
+export const { addMessage, setChatroomId, setLoading, setError } =
+  chatRoomSlice.actions;
 
 export default chatRoomSlice.reducer;
