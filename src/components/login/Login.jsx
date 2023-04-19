@@ -157,48 +157,49 @@ const LoadingButtonStyles = styled(LoadingButton)({
 });
 
 const Login = () => {
-    // Show Password
-    const [showPassword, setShowPassword] = useState(false);
-    const handleShowPassword = () => setShowPassword((show) => !show);
-  
-    const dispatch = useDispatch();
-    const { loading } = useSelector((state) => state.auth);
-  
-    const navigate = useNavigate();
-  
-    // Submit Form
-    const onSubmit = async (values, actions) => {
-      dispatch(loginUser(values));
-      setTimeout(() => {
-        actions.resetForm();
-      }, 4000);
-    };
-  
-    const Token = Cookies.get("userToken");
-    useEffect(() => {
-      if (Token) {
-        navigate("/chat");
-      }
-    }, [Token]);
-  
-    // Formik Validation
-  
-    const {
-      values,
-      errors,
-      touched,
-      handleBlur,
-      handleSubmit,
-      handleChange,
-      isSubmitting,
-    } = useFormik({
-      initialValues: {
-        emailID: "",
-        password: "",
-      },
-      validationSchema: loginSchema,
-      onSubmit,
-    });
+  // Show Password
+  const [showPassword, setShowPassword] = useState(false);
+  const handleShowPassword = () => setShowPassword((show) => !show);
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
+  // Submit Form
+  const onSubmit = async (values, actions) => {
+    dispatch(loginUser(values));
+    setTimeout(() => {
+      actions.resetForm();
+    }, 4000);
+  };
+
+  const Token = Cookies.get("userToken");
+  useEffect(() => {
+    if (Token) {
+      dispatch(fetchUserInfo(Token));
+      navigate("/chat");
+    }
+  }, [dispatch, Token]);
+
+  // Formik Validation
+
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleSubmit,
+    handleChange,
+    isSubmitting,
+  } = useFormik({
+    initialValues: {
+      emailID: "",
+      password: "",
+    },
+    validationSchema: loginSchema,
+    onSubmit,
+  });
 
   return (
     <Container component="main">
@@ -289,18 +290,17 @@ const Login = () => {
               </Link>
             </p>
             <p>
-              Are you and Admin? {" "}
-            <Link
-              to="/admin-login"
-              style={{
-                color: "#3683F5",
-                cursor: "pointer",
-                
-              }}
+              Are you and Admin?{" "}
+              <Link
+                to="/admin-login"
+                style={{
+                  color: "#3683F5",
+                  cursor: "pointer",
+                }}
               >
-              Login as Admin
-            </Link>
-              </p>
+                Login as Admin
+              </Link>
+            </p>
           </Box>
         </Box>
       </FormContainer>

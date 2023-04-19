@@ -31,6 +31,7 @@ const MessageContent = styled(Box)({
   background: "#878787",
   position: "relative",
   color: "#FFFFFF",
+  overflow: 'hidden'
 });
 
 const Text = styled("p")({
@@ -40,9 +41,10 @@ const Text = styled("p")({
 });
 
 const Author = styled("p")({
-  color: "#2c2c2c",
+  color: "#252525",
   fontSize: "14px",
-  margin: "5px",
+  padding: "2px 5px",
+  background: '#e2e2e2'
 });
 
 const Time = styled("p")({

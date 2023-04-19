@@ -15,7 +15,6 @@ function App() {
   // Get userInfo and chatrooms using userToken
   const userToken = Cookies.get("userToken");
   useEffect(() => {
-    dispatch(fetchUserInfo(userToken));
     dispatch(fetchChatRooms(userToken));
   }, [dispatch, userToken]);
 

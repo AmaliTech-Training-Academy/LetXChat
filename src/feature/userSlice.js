@@ -10,13 +10,13 @@ export const fetchUserInfo = createAsyncThunk(
   'user/fetchUserInfo',
   async (userToken) => {
 
-    const Token = Cookies.get("userToken")
+    // const userToken = Cookies.get("userToken")
 
 let config = {
     method: "get",
     url: USER_API,
     headers: {
-        Authorization: `Bearer ${Token}`
+        Authorization: `Bearer ${userToken}`
     },
 }
 

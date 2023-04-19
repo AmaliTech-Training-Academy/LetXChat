@@ -3,6 +3,7 @@ import { BASE_URL } from "../defaultValues/DefaultValues";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 export const registerUser = createAsyncThunk(
   "auth/register",
@@ -19,8 +20,7 @@ export const registerUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-
-      const formData = new FormData()
+      const formData = new FormData();
 
       formData.append("fullname", fullname);
       formData.append("username", username);
@@ -29,7 +29,6 @@ export const registerUser = createAsyncThunk(
       formData.append("image", image);
       formData.append("password", password);
       formData.append("password_confirmation", password_confirmation);
-  
 
       const config = {
         header: {
@@ -38,15 +37,15 @@ export const registerUser = createAsyncThunk(
         },
       };
 
-   const res =  await axios.post(
+      const res = await axios.post(
         `${BASE_URL}/register`,
 
         formData,
         config
       );
     } catch (error) {
-      const ERROR_MESSAGE = error.response.data.message
-      toast.error(ERROR_MESSAGE, {autoClose: 3000,})
+      const ERROR_MESSAGE = error.response.data.message;
+      toast.error(ERROR_MESSAGE, { autoClose: 3000 });
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
@@ -56,9 +55,8 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-
 export const loginUser = createAsyncThunk("auth/login", async (values) => {
-  
+
 
   // Changing emailID to email and chat_id
   if (values.emailID.includes("@")) {
@@ -84,10 +82,12 @@ export const loginUser = createAsyncThunk("auth/login", async (values) => {
   axios
     .request(config)
     .then((response) => {
-      Cookies.set('userToken', response.data.token)
+      Cookies.set("userToken", response.data.token);
       const SUCCESS_MESSAGE = response.data.message;
-      toast.success(SUCCESS_MESSAGE, {autoClose: 3000,});
+      toast.success(SUCCESS_MESSAGE, { autoClose: 3000 });
     })
+
+ 
     .catch((error) => {
       const ERROR_MESSAGE = error.response.data.message;
       toast.warn(ERROR_MESSAGE);

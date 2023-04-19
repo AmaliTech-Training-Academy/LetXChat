@@ -134,14 +134,13 @@ const Input = ({ chatRoom }) => {
   });
 
 
+
   // Send Message
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const id = chatRoom.id;
     const userToken = Cookies.get("userToken")
-    // Connect Pusher to App
-    const CHAT_URL = `${CHATROOMS_URL}/${id}/message`;
 
     const formData = new FormData();
     formData.append("message", text);
@@ -155,30 +154,31 @@ const Input = ({ chatRoom }) => {
       encrypted: true,
     });
 
-    const channel = pusher.subscribe("chat");
-    // channel.bind("messages", function (data) {
-    //   console.log(data);
-    //   dispatch(addMessage(formData));
-    //   setMessages([...messages, data.FormData]);
-    // });
-
-    channel.trigger("client-new-message", {
-      message: formData,
+    
+    const channel = pusher.subscribe('chat');
+    channel.bind('message', function(data) {
+        console.log(data);
+        alert(JSON.stringify(data));
     });
 
-
-    fetch(`${CHAT_URL}`, {
-      method: 'POST',
+    let config = {
+      method: "POST",
+      // url: `${CHATROOMS_URL}/${id}/message`,
+      // url: `https://letxchat.takoraditraining.com/api/v1/chatrooms/${id}/message`,
+      url: 'https://letxchat.takoraditraining.com/api/v1/chatrooms/1/message',
       headers: {
-        'Content-Type': 'application/json',
+        // "Content-Type": "multipart/form-data",
         "Authorization": `Bearer ${userToken}`
       },
-      body: {
-        message: 'rer'
-      }
-    }).then(res => console.log(res)).catch(err => console.log(err))
+      data: formData,
+    };
 
-    console.log(formData);
+    fetch(config)
+    .then((res) => {
+      console.log("Upload successful", res);
+    }).catch((err) => {
+      console.error("Upload failed", err);
+    })
 
     setText("");
     setImage(null);

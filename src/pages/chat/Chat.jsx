@@ -3,11 +3,13 @@ import { Box, display } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import ChatPage from "../chatPage/ChatPage";
 import GroupDetails from "../../components/groupDetails/GroupDetails";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { connectToChatroom } from "../../feature/chatRoomSlice";
 import { useLocation, useParams } from "react-router";
 import axios from "axios";
 import { CHATROOMS_URL } from "../../defaultValues/DefaultValues";
+import Cookies from "js-cookie";
+import { fetchUserInfo } from "../../feature/userSlice";
 
 const Container = styled(Box)({
   display: "flex",
@@ -18,6 +20,9 @@ const Chat = () => {
   const { id } = useParams();
   const { loading } = useSelector((state) => state.user || state.chatrooms);
   const { allChatRooms } = useSelector((state) => state.chatrooms);
+
+
+ 
 
   if (loading) {
     return (
