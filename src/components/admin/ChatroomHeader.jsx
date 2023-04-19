@@ -2,7 +2,7 @@ import React from 'react'
 
 function ChatroomHeader() {
   return (
-    <div className='w-full flex justify-between mb-8'>
+    <div className='w-full flex bg-[#F9FAFB] justify-between mb-8 p-5'>
         <span className='flex-[1.43] font-medium text-2xl text-[#101828]'>Name</span>
         {/* <span className='flex-[1.43] font-medium text-2xl text-[#101828]'>Email</span> */}
         <span className='flex-[1.43] font-medium text-2xl text-[#101828] text-center'>Date Assigned</span>

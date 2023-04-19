@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import {showDeleteModal, showViewUsersModal, showAddChatroomModal, getSingleChatroom, getMembers} from "../../feature/adminSlice"
+import {showDeleteModal, showViewUsersModal, showEditChatroomModal, getSingleChatroom, getMembers} from "../../feature/adminSlice"
 import { useDispatch, useSelector } from "react-redux";
 import edit from '../../assets/edit-icon.svg'
 import trash from '../../assets/trash.svg'
@@ -15,7 +15,12 @@ function Chatroom({item}) {
   const deleteChatroom = (e) => {
     // e.preventDefault()
     dispatch(showDeleteModal())
-    dispatch(getMembers(item.id))
+    dispatch(getSingleChatroom(item))
+  }
+  const editChatroom = () => {
+    // e.preventDefault()
+    dispatch(showEditChatroomModal())
+    dispatch(getSingleChatroom(item))
   }
 
   // useEffect(() => {
@@ -41,7 +46,7 @@ function Chatroom({item}) {
       </span>
       <div className="flex-[1.43] flex gap-5 justify-center text-white">
           <button className="border p-2 rounded-lg bg-[#5B9BF4] text-xs" onClick={viewMembers}>View members</button>
-          <img src={edit} alt="Edit" onClick={() => dispatch(showAddChatroomModal())}/>
+          <img src={edit} alt="Edit" onClick={editChatroom}/>
           <img src={trash} alt="Delete" onClick={deleteChatroom}/>
           {/* <button className="border p-2 rounded-lg bg-green-300">Edit</button>
           <button className="border p-2 rounded-lg bg-red-500" onClick={deleteChatroom}>Delete</button> */}

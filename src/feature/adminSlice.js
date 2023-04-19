@@ -6,7 +6,7 @@ const initialState = {
     allUsers: [],
     chatroomMembers: [],
     singleChatroom: [],
-    AddChatroomModalState: false,
+    EditChatroomModalState: false,
     viewUsersModalState: false,
     editModal: false,
     deleteModalState: false,
@@ -63,11 +63,11 @@ const adminSlice = createSlice({
     name: 'admin',
     initialState,
     reducers: {
-        showAddChatroomModal: (state) => {
-            state.AddChatroomModalState = true
+        showEditChatroomModal: (state) => {
+            state.EditChatroomModalState = true
         },
-        hideAddChatroomModal: (state) => {
-            state.AddChatroomModalState = false
+        hideEditChatroomModal: (state) => {
+            state.EditChatroomModalState = false
         },
         showViewUsersModal: (state) => {
             state.viewUsersModalState = true
@@ -128,6 +128,6 @@ const adminSlice = createSlice({
     }
 })
 
-export const {showAddChatroomModal, hideAddChatroomModal, showDeleteModal, hideDeleteModal, showViewUsersModal, hideViewUsersModal, getSingleChatroom, getMembers} = adminSlice.actions
+export const {showEditChatroomModal, hideEditChatroomModal, showDeleteModal, hideDeleteModal, showViewUsersModal, hideViewUsersModal, getSingleChatroom, getMembers} = adminSlice.actions
 
 export default adminSlice.reducer

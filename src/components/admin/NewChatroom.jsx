@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import upload from "../../assets/upload-vector.svg"
 import UserSearch from "./UserSearch";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function NewChatroom() {
@@ -14,6 +14,8 @@ function NewChatroom() {
     const [searchInput, setSearchInput] = useState('')
     const {allUsers} = useSelector(state => state.admin)
 
+    const navigate = useNavigate()
+
     const handleClick = async (e) => {
         e.preventDefault()
         const data = new FormData()
@@ -24,6 +26,12 @@ function NewChatroom() {
             try {
                 const response = await axios.post('https://letxchat.takoraditraining.com/api/v1/chatrooms', data)
                 console.log(response)
+                if(response.status === 201) {
+                    setName('')
+                    setDescription('')
+                    setProfileImage('')
+                    navigate('/admin')
+                }
             } catch (error) {
                 throw new Error(error)
             }
@@ -33,9 +41,17 @@ function NewChatroom() {
         }
     }
 
+    const handleInput = (e) => {
+        setSearchInput(e.target.value)
+        setMatchedUsers(allUsers.filter(ele => ele.fullname.toLowerCase().includes(e.target.value) || ele.username.toLowerCase().includes(e.target.value) || ele.email.toLowerCase().includes(e.target.value)));
+    }
+
+    // useEffect(() => {
+    //     console.log(allUsers);
+    // }, [])
     useEffect(() => {
-        console.log(allUsers);
-    }, [])
+        console.log(addedUsers);
+    }, [addedUsers])
 
   return (
     <div className="w-full h-full px-12 pt-9">
@@ -59,10 +75,10 @@ function NewChatroom() {
                     <span className=" px-1 bg-gray-100 rounded-full text-xs">4</span>
                 </div>
                     <div className="h-64 overflow-y-scroll">
+                        {/* <UserSearch added={true}/>
                         <UserSearch added={true}/>
                         <UserSearch added={true}/>
-                        <UserSearch added={true}/>
-                        <UserSearch added={true}/>
+                        <UserSearch added={true}/> */}
                     </div>
                 </>}
             </aside>
@@ -72,12 +88,15 @@ function NewChatroom() {
                 <label htmlFor="" className=" font-semibold">Description<span className=" opacity-40">(Required)</span></label>
                 <input type="text" className="w-full border shadow-sm rounded-md py-3 px-4 mt-4 mb-6" placeholder="Enter a description" onChange={(e) => setDescription(e.target.value)}/>
                 <label htmlFor="" className=" font-semibold">Add Member<span className=" opacity-40">(Optional)</span></label>
-                <input type="text" className="w-full border shadow-sm rounded-md py-3 px-4 mt-4 mb-6" placeholder="search for user"/>
-                {matchedUsers.length !== 0 && <div className="w-full h-64 border rounded-md px-8 overflow-y-scroll pt-2">
+                <input type="text" className="w-full border shadow-sm rounded-md py-3 px-4 mt-4 mb-6" placeholder="search for user" onInput={handleInput}/>
+                {matchedUsers.length > 0 && searchInput !== '' && <div className="w-full h-64 border rounded-md px-8 overflow-y-scroll pt-2">
                     <span className=" font-semibold border-b pb-1">Search Result...</span>
+                    {matchedUsers.map(item => (
+                        <UserSearch setAddedUsers={setAddedUsers} item={item} key={item.id}/>
+                    ))}
+                    {/* <UserSearch />
                     <UserSearch />
-                    <UserSearch />
-                    <UserSearch />
+                    <UserSearch /> */}
                 </div>}
                 <div className=" mt-8 w-full flex justify-end gap-4">
                     <Link to='/admin' className=" py-3 px-8 border rounded-lg hover:bg-gray-100">Cancel</Link>

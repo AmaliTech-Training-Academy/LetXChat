@@ -2,7 +2,7 @@ import React from 'react'
 import trash from "../../assets/trash.svg"
 import rose from '../../assets/rose.png'
 
-function UserSearch({added, item}) {
+function UserSearch({added, item, setAddedUsers}) {
   return (
     <div className={`w-full ${added ? '' : 'border-b'} flex justify-between items-center text-xs mt-2 pb-1`}>
         <div className='flex items-center gap-4'>
@@ -15,7 +15,7 @@ function UserSearch({added, item}) {
             </div>
         </div>
         {added && <img src={trash} alt="remove" className=' mr-2'/>}
-        {!added && <button className=' px-2 py-1 bg-blue-600 text-white rounded-md'>Add</button>}
+        {!added && <button className=' px-2 py-1 bg-blue-600 text-white rounded-md' >Add</button>}
     </div>
   )
 }

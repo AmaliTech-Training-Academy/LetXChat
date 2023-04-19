@@ -173,19 +173,19 @@ function Admin() {
     dispatch(getChatrooms())
     dispatch(getAllUsers())
     // setData(chatrooms.data);
-    console.log(chatrooms.data);
+    // console.log(chatrooms.data);
   }, [])
 
   return (
     <div className="md:mx-11">
           <Cards />
           <Chatrooms currentChatrooms={currentChatrooms}/>
-          <Pagination
+          {currentChatrooms.length > 0 && <Pagination
             usersPerPage={usersPerpage}
             totalUsers={chatrooms.data?.length}
             paginate={paginate}
             currentPage={currentPage}
-          />
+          />}
     </div>
   );
 }

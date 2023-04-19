@@ -7,10 +7,10 @@ import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router'
 
 function AdminLayout() {
-    const {AddChatroomModalState, deleteModalState, viewUsersModalState, chatrooms} = useSelector(state => state.admin)
+    const {EditChatroomModalState, deleteModalState, viewUsersModalState, chatrooms} = useSelector(state => state.admin)
   return (
     <div className="flex justify-center relative">
-      {AddChatroomModalState && <EditChatroomModal />}
+      {EditChatroomModalState && <EditChatroomModal />}
       {deleteModalState && <Delete />}
       {viewUsersModalState && <Users />}
       <div className="w-full max-w-[1640px]">

@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import ChatroomHeader from "./ChatroomHeader";
 import Chatroom from "./Chatroom";
 import { useDispatch, useSelector } from "react-redux";
-import {showAddChatroomModal} from "../../feature/adminSlice"
 import { Link } from "react-router-dom";
+import no_data from '../../assets/no-data.svg'
 
 function Chatrooms({ currentChatrooms }) {
   // const { AddChatroomModalState } = useSelector((state) => state.admin);
@@ -24,11 +24,16 @@ function Chatrooms({ currentChatrooms }) {
           Add Chatroom
         </Link>
       </div>
-      <div className="w-full p-5 shadow">
+      <div className="w-full shadow">
         <ChatroomHeader />
-        {currentChatrooms && currentChatrooms.map((ele) => {
+        {currentChatrooms.lenght > 0 ? currentChatrooms.map((ele) => {
           return <Chatroom key={ele.id} item={ele} />;
-        })}
+        }) : 
+        <div className=" h-96 flex flex-col items-center justify-center">
+          <img src={no_data} alt="" />
+          <span className=" font-semibold">No chatrooms to show</span>
+        </div>
+        }
       </div>
     </div>
   );

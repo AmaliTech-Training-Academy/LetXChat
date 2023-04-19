@@ -1,6 +1,6 @@
 import React from 'react'
 import close from "../../../assets/close-svg.svg"
-import {hideDeleteModal} from "../../../feature/adminSlice"
+import {hideDeleteModal, getChatrooms} from "../../../feature/adminSlice"
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
@@ -10,9 +10,16 @@ function Delete() {
 
   const handleDelete = async (e) => {
     e.preventDefault()
-    // console.log(singleChatroom.data.id)
-    const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.data.id}`)
+    // console.log(singleChatroom.id)
+    const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`)
     console.log(response)
+    if(response.status === 200) {
+      dispatch(getChatrooms())
+      dispatch(hideDeleteModal())
+    }
+    else {
+      console.log('delete unsucessfull');
+    }
   }
   return (
     <div className='fixed h-screen w-full bg-[#344054b2] backdrop-blur z-10 flex justify-center items-center'>
