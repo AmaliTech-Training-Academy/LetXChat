@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import upload from "../../../assets/upload-image.png"
-import close from "../../../assets/close-button.png"
+// import upload from "../../../assets/upload-image.png"
+// import close from "../../../assets/close-button.png"
 import { useSelector, useDispatch } from 'react-redux'
 import {hideAddChatroomModal} from '../../../feature/adminSlice'
 import axios from 'axios'
+import upload from '../../../assets/Upload-Vector.svg'
+import close from '../../../assets/close-svg.svg'
 
-function AddChatroomModal() {
+function EditChatroomModal() {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [profileImage, setProfileImage] = useState(null)
@@ -44,29 +46,33 @@ function AddChatroomModal() {
     
   return (
     <div className='fixed h-screen w-full bg-[#344054b2] backdrop-blur z-10 flex justify-center items-center'>
-        <div className=' w-10 h-10 absolute top-16 right-16 bg-white rounded-lg' onClick={() => dispatch(hideAddChatroomModal())}>
-            <img src={close} alt="close" className='w-full h-full object-cover cursor-pointer' />
-        </div>
-        <form className=' w-[600px] bg-slate-100 rounded-lg flex flex-col gap-5 p-10 text-center'>
-            <span className=' text-2xl font-semibold'>Add Chatroom</span>
+        <form className=' w-[600px] bg-white rounded-lg flex flex-col gap-5 p-10'>
+            <div className=' flex justify-between items-center'>
+                <span className=' text-lg font-semibold'>Edit Chatroom</span>
+                <div className=' w-4 h-4' onClick={() => dispatch(hideAddChatroomModal())}>
+                    <img src={close} alt="close" className='w-full h-full object-cover cursor-pointer' />
+                </div>
+            </div>
             {/* <label htmlFor="name" className='mb-2'>Name</label> */}
-            <input type="text" id='name' placeholder='Enter name' className='p-4 rounded' onChange={(e) => setName(e.target.value)}/>
+            <label htmlFor="name" className=''>Chatroom Name</label>
+            <input type="text" id='name' placeholder='Enter name' className='p-4 rounded-lg border-2 shadow-sm' onChange={(e) => setName(e.target.value)}/>
             {/* <label htmlFor="description" className=' mt-5 mb-2'>Description</label> */}
-            <textarea name="description" id="description" placeholder='Enter description' className='p-4 rounded' onChange={(e) => setDescription(e.target.value)}/>
+            <label htmlFor="description">Description</label>
+            <input type='text' name="description" id="description" placeholder='Enter description' className='p-4 rounded-lg border-2 shadow-sm' onChange={(e) => setDescription(e.target.value)}/>
             {/* <label htmlFor="image" className=' mt-5 mb-2'>image</label> */}
             <div className='flex items-center gap-5'>
                 <label className=' w-8 h-8' htmlFor="image">
-                    <img src={upload} alt="Uplod" className='w-full h-full object-cover cursor-pointer'/>
+                    <img src={upload} alt="Uplod" className='w-full h-full object-contain cursor-pointer'/>
                 </label>
-                <span>{profileImage?.name || 'Choose profile picture'}</span>
+                <span className='text-[#1570EFE5]'>{profileImage?.name || 'Upload new profile'}</span>
             </div>
             <input type="file" id='image' hidden onChange={(e) => {
                 setProfileImage(e.target.files[0])
             }}/>
-            <button className='py-4 bg-blue-300 rounded text-lg font-semibold text-white' onClick={handleClick}>Create Chatroom</button>
+            <button className='py-4 bg-[#1570EFE5] rounded text-lg font-semibold text-white' onClick={handleClick}>Save Changes</button>
         </form>
     </div>
   )
 }
 
-export default AddChatroomModal
+export default EditChatroomModal

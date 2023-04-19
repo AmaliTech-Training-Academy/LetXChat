@@ -9,16 +9,16 @@ function Chatrooms({ currentChatrooms }) {
   // const { AddChatroomModalState } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(currentChatrooms);
-  }, []);
+  // useEffect(() => {
+  //   console.log(currentChatrooms);
+  // }, []);
 
   return (
     <div className="mt-11">
       <div className="mb-5 flex justify-between items-center font-bold text-[#101828]">
         <span className="text-2xl">Chatrooms</span>
         <Link to='/admin/createchatroom'
-          className="px-10 py-5 bg-green-300 rounded-lg text-white text-lg"
+          className="px-7 py-4 bg-[#5B9BF4E5] rounded-lg font-medium text-white text-2xl"
           // onClick={() => dispatch(showAddChatroomModal())}
         >
           Add Chatroom

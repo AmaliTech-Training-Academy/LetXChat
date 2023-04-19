@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import close from "../../../assets/close-button.png"
+import close from "../../../assets/close-svg.svg"
 import {hideViewUsersModal} from "../../../feature/adminSlice"
 import { useDispatch } from "react-redux";
+import UserSearch from "../UserSearch";
 
 function Users() {
     const [addMember, setAddMember] = useState(false)
@@ -9,11 +10,44 @@ function Users() {
     const dispatch = useDispatch()
   return (
     <div className="fixed h-screen w-full bg-[#344054b2] backdrop-blur z-10 flex justify-center items-center">
-        <div className=' w-10 h-10 absolute top-16 right-16 bg-white rounded-lg' onClick={() => dispatch(hideViewUsersModal())}>
+        {/* <div className=' w-10 h-10 absolute top-16 right-16 bg-white rounded-lg' onClick={() => dispatch(hideViewUsersModal())}>
+            <img src={close} alt="close" className='w-full h-full object-cover cursor-pointer' />
+        </div> */}
+      <div className="w-[600px] bg-slate-100 rounded-lg p-8 relative">
+        <div className=' w-4 h-4 absolute top-6 right-7' onClick={() => dispatch(hideViewUsersModal())}>
             <img src={close} alt="close" className='w-full h-full object-cover cursor-pointer' />
         </div>
-      <div className="w-[600px] bg-slate-100 rounded-lg p-8">
-        <header className="flex mb-5 font-semibold text-xl">
+        <div className=" border-b pb-3 mt-8">
+            <span className=" mr-2 text-[#667085] text-sm">Members</span>
+            <span className=" px-1 bg-gray-300 rounded-full text-xs text-[#344054]">4</span>
+        </div>
+        <div className=" mt-7 max-h-96 overflow-y-scroll">
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+            <UserSearch added={true}/>
+        </div>
+        {/* <header className="flex mb-5 font-semibold text-xl">
             <span className="flex-1 text-center">Name</span>
             <span className="flex-1 text-center">Email</span>
         </header>
@@ -47,7 +81,7 @@ function Users() {
                 <span className="cursor-pointer">Michael</span>
                 <span className="cursor-pointer">Emma</span>
             </div>}
-        </>}
+        </>} */}
       </div>
     </div>
   );

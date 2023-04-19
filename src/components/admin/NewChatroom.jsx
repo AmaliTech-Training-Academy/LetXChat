@@ -11,6 +11,7 @@ function NewChatroom() {
     const [profileImage, setProfileImage] = useState(null)
     const [matchedUsers, setMatchedUsers] = useState([])
     const [addedUsers, setAddedUsers] = useState([])
+    const [searchInput, setSearchInput] = useState('')
     const {allUsers} = useSelector(state => state.admin)
 
     const handleClick = async (e) => {

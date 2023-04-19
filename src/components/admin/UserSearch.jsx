@@ -4,7 +4,7 @@ import rose from '../../assets/rose.png'
 
 function UserSearch({added}) {
   return (
-    <div className='w-full border-b flex justify-between items-center text-xs mt-2 pb-1'>
+    <div className={`w-full ${added ? '' : 'border-b'} flex justify-between items-center text-xs mt-2 pb-1`}>
         <div className='flex items-center gap-4'>
             <div className=' w-9 h-9 rounded-full'>
                 <img src={rose} alt="" className='w-full h-full object-cover'/>
