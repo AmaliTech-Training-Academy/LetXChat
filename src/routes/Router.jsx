@@ -5,18 +5,18 @@ import SignUp from "../components/signup/SignUp";
 import Login from "../components/login/Login";
 import About from "../components/about/About";
 import Contact from "../components/contact/Contact";
-import MainLayout from "../components/layouts/MainLayout";
+import MainLayout from "../layouts/MainLayout";
 import Sidebar from "../components/sidebar/Sidebar";
 import Settings from "../components/sidebar/Settings";
 import CreateGroup from "../components/sidebar/CreateGroup";
-import SidebarLayout from "../components/layouts/SidebarLayout";
+import SidebarLayout from "../layouts/SidebarLayout";
 import PrivateRoute from "../PrivateRoute";
 import Chat from "../pages/chat/Chat";
 import ChatComponent from "../pages/ChatComponent";
-import SignUpLayout from "../layout/signup/SignUpLayout";
+import SignUpLayout from "../layouts/SignUpLayout";
 import RegModal from "../components/regModal/RegModal";
 import Admin from '../pages/admin/Admin'
-import AdminLayout from '../components/layouts/AdminLayout'
+import AdminLayout from '../layouts/AdminLayout'
 import NewChatroom from '../components/admin/NewChatroom'
 function Router() {
   return (

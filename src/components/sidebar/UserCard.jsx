@@ -21,13 +21,13 @@ function UserCard({ settings }) {
         className={`${
           settings
             ? `w-[70px] h-[70px] ml-[23px] relative`
-            : `w-[85px] h-[90px] ml-[10px]`
+            : ` w-16 h-16 ml-[10px]`
         } rounded-full`}
       >
         <img
           src={userInfo.image}
           alt="User Profile"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-cover"
         />
         {settings && (
           <>
@@ -38,7 +38,7 @@ function UserCard({ settings }) {
           </>
         )}
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col max-w-[200px] break-words">
         <span className={`${settings ? "font-bold" : "font-medium text-xs"}`}>
           {userInfo.email}
         </span>

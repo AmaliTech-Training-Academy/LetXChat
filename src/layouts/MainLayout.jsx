@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '../Landing-Page/Navbar'
+import Navbar from '../components/Landing-Page/Navbar'
 import { Outlet } from 'react-router'
 
 function MainLayout() {

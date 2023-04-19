@@ -173,7 +173,7 @@ function Admin() {
     dispatch(getChatrooms())
     dispatch(getAllUsers())
     // setData(chatrooms.data);
-    // console.log(chatrooms.data);
+    console.log(chatrooms.data);
   }, [])
 
   return (

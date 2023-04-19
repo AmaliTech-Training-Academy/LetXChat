@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import {showDeleteModal, showViewUsersModal, getSingleChatroom, showAddChatroomModal} from "../../feature/adminSlice"
+import {showDeleteModal, showViewUsersModal, showAddChatroomModal, getSingleChatroom, getMembers} from "../../feature/adminSlice"
 import { useDispatch, useSelector } from "react-redux";
 import edit from '../../assets/edit-icon.svg'
 import trash from '../../assets/trash.svg'
@@ -8,15 +8,14 @@ function Chatroom({item}) {
   const {singleChatroom} = useSelector(state => state.admin)
   const dispatch = useDispatch()
 
-  const viewMembers = (e) => {
-    e.preventDefault()
+  const viewMembers = () => {
     dispatch(showViewUsersModal())
-    dispatch(getSingleChatroom(item.id))
+    dispatch(getMembers(item.members))
   }
   const deleteChatroom = (e) => {
-    e.preventDefault()
+    // e.preventDefault()
     dispatch(showDeleteModal())
-    dispatch(getSingleChatroom(item.id))
+    dispatch(getMembers(item.id))
   }
 
   // useEffect(() => {

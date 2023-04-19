@@ -1,8 +1,8 @@
 import React from 'react'
-import AdminNavbar from '../admin/AdminNavbar'
-import EditChatroomModal from '../admin/modals/EditChatroomModal'
-import Delete from '../admin/modals/Delete'
-import Users from '../admin/modals/Users'
+import AdminNavbar from '../components/admin/AdminNavbar'
+import EditChatroomModal from '../components/admin/modals/EditChatroomModal'
+import Delete from '../components/admin/modals/Delete'
+import Users from '../components/admin/modals/Users'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router'
 
