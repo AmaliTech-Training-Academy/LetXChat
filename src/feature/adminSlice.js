@@ -3,13 +3,15 @@ import axios from "axios";
 
 const initialState = {
     chatrooms: [],
+    allUsers: [],
     singleChatroom: {},
     AddChatroomModalState: false,
     viewUsersModalState: false,
     editModal: false,
     deleteModalState: false,
     isLoading: true,
-    loadingMembers: true
+    loadingMembers: true,
+    loadingUsers: true
 }
 
 const baseUrl = 'https://letxchat.takoraditraining.com/api/v1/'
@@ -39,6 +41,16 @@ export const getSingleChatroom = createAsyncThunk('admin/getMembers',
     async (id) => {
         try {
             const response = await axios(`${baseUrl}chatrooms/${id}`)
+            return response
+        } catch (error) {
+           throw new Error(error) 
+        }
+    }
+)
+export const getAllUsers = createAsyncThunk('admin/getAllUsers',
+    async () => {
+        try {
+            const response = await axios(`${baseUrl}users/status`)
             return response
         } catch (error) {
            throw new Error(error) 
@@ -96,6 +108,15 @@ const adminSlice = createSlice({
         },
         [getSingleChatroom.rejected]: (state) => {
             state.loadingMembers = false
+        },
+        [getAllUsers.pending]: (state) => {
+            state.loadingUsers = true
+        },
+        [getAllUsers.fulfilled]: (state, {payload}) => {
+            state.allUsers = payload.data.users
+        },
+        [getAllUsers.rejected]: (state) => {
+            state.loadingUsers = false
         }
     }
 })

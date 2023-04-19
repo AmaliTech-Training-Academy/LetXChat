@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import upload from "../../assets/upload-vector.svg"
 import UserSearch from "./UserSearch";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function NewChatroom() {
     const [name, setName] = useState('')
@@ -10,6 +11,7 @@ function NewChatroom() {
     const [profileImage, setProfileImage] = useState(null)
     const [matchedUsers, setMatchedUsers] = useState([])
     const [addedUsers, setAddedUsers] = useState([])
+    const {allUsers} = useSelector(state => state.admin)
 
     const handleClick = async (e) => {
         e.preventDefault()
@@ -29,6 +31,10 @@ function NewChatroom() {
             console.log("some fields are empty")
         }
     }
+
+    useEffect(() => {
+        console.log(allUsers);
+    }, [])
 
   return (
     <div className="w-full h-full px-12 pt-9">

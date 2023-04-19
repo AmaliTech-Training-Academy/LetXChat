@@ -3,7 +3,7 @@ import Cards from "../../components/admin/Cards";
 import Chatrooms from "../../components/admin/Chatrooms";
 import Pagination from "../../components/admin/Pagination";
 import { useDispatch, useSelector } from "react-redux";
-import {getChatrooms} from "../../feature/adminSlice"
+import {getChatrooms, getAllUsers} from "../../feature/adminSlice"
 
 const users = [
   {
@@ -171,6 +171,7 @@ function Admin() {
 
   useEffect(() => {
     dispatch(getChatrooms())
+    dispatch(getAllUsers())
     // setData(chatrooms.data);
     // console.log(chatrooms.data);
   }, [])
