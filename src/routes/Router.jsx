@@ -20,24 +20,6 @@ import AdminLayout from '../components/layouts/AdminLayout'
 import NewChatroom from '../components/admin/NewChatroom'
 function Router() {
   return (
-    // <Routes>
-    //     <Route path='/' element={<MainLayout />}>
-    //       <Route index element={<Home />} />
-    //       <Route path='/signup' element={<SignUp />}/>
-    //       <Route path='/login' element={<Login />}/>
-    //       <Route path='/about' element={<About />}/>
-    //       <Route path='/contact' element={<Contact />}/>
-    //     </Route>
-    //     <Route element={<PrivateRoute />}>
-    //       <Route path="/chat:id" element={<Chat />} />
-    //     </Route>
-    //     <Route path='/sidebar' element={<SidebarLayout />}>
-    //       <Route index element={<Sidebar />}/>
-    //       <Route path='/sidebar/settings' element={<Settings />}/>
-    //       <Route path='/sidebar/creategroup' element={<CreateGroup />}/>
-    //     </Route>
-    // </Routes>
-
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
