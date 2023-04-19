@@ -12,13 +12,18 @@ import {
   TextField,
   styled,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import CameraIcon from "../../assets/camera.png";
+import CameraIcon from "../../assets/SignUpCamera.png";
 import ProfilePhoto from "../../assets/profile-picture.png";
-import { Field, useFormik } from "formik";
+import { useFormik } from "formik";
 import { basicSchema } from "../../schemas";
+import RegModal from "../regModal/RegModal";
+
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../feature/authActions";
+import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const ContainerStyle = {
   width: "100vw",
@@ -31,8 +36,7 @@ const ContainerStyle = {
 };
 
 const FormContainer = styled("form")({
-  width: "min(900px, 90vw)",
-  //   height: "min(max-content, 90vh)",
+  width: "min(850px, 90vw)",
   height: "max-content",
   background: "#FFFFFF",
   boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
@@ -53,7 +57,6 @@ const TitleStyle = {
 
 const ProfileStyle = {
   marginInline: "auto",
-  // width: "max-content",
   position: "relative",
   marginBottom: "27px",
   height: "70px",
@@ -68,8 +71,8 @@ const FormStyles = {
 };
 
 const FieldsContainer = {
-  display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
+  display: "flex",
+  flexWrap: 'wrap',
   gap: { xs: "20px", sm: "30px" },
 };
 
@@ -77,6 +80,14 @@ const TextComponent = {
   display: "flex",
   flexDirection: "column",
   gap: "8px",
+  width: '48%'
+};
+
+const EmailComponent = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "8px",
+  width: '100%'
 };
 
 const TextFieldStyle = styled(TextField)({
@@ -142,7 +153,7 @@ const SignUpLogin = {
 };
 
 const ButtonStyles = styled(Button)({
-  textTransform: 'capitalize',
+  textTransform: "capitalize",
   background: "#53352D",
   color: "#FFFFFF",
   width: "15rem",
@@ -152,7 +163,6 @@ const ButtonStyles = styled(Button)({
   borderRadius: "9px",
   "&:hover": {
     background: "rgba(83, 53, 45, 0.7)",
-    // cursor: disabled ? "not-allowed" : "pointer",
   },
 
   "&.MuiInput-underline::before": {
@@ -168,40 +178,57 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
 
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const handleShowConfirmPassword = () =>
-    setShowConfirmPassword((show) => !show);
+  const [showpassword_confirmation, setShowpassword_confirmation] =
+    useState(false);
+  const handleShowpassword_confirmation = () =>
+    setShowpassword_confirmation((show) => !show);
 
-    // Upload Image 
-    const [previewImage, setPreviewImage] = useState(null);
+  // Upload Image
+  const [imagePreview, setImagePreview] = useState("");
 
-    const handleFileSelection = (event) => {
-        const file = event.target.files[0];
-        setFieldValue('image', file);
-        setPreviewImage(URL.createObjectURL(file));
-      };
+  const handleFileSelection = (event) => {
+    let reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImagePreview(reader.result);
+      }
+    };
+    setImagePreview(event.target.files[0]);
+    reader.readAsDataURL(event.target.files[0]);
+    setFieldValue("image", event.target.files[0]);
+  };
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, success } = useSelector((state) => state.auth);
 
   //   Submit Form
   const onSubmit = async (values, actions) => {
-    // Upload Image
-    const reader = new FileReader();
-    reader.onload = () => {
-      document
-        .getElementById("image-preview")
-        .setAttribute("src", reader.result);
-    };
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    console.log("picture", values.image);
+    // transform email string to lowercase to avoid case sensitivity issues in login
+    values.email = values.email.toLowerCase();
 
-    if (values.image) {
-        reader.readAsDataURL(values.image);
+
+    // actions.resetForm();
+
+
+    dispatch(registerUser(values));
+  };
+
+useEffect(() => {
+    // redirect user to confirmation modal if registration was successful
+    if (success) {
+      navigate("/signup/signupmodal");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 4000);
     }
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    actions.resetForm();
-};
+  }, [navigate, success]);
 
-//   Formik Validation
-const {
+  //   Formik Validation
+  const {
     values,
     errors,
     touched,
@@ -209,32 +236,33 @@ const {
     handleChange,
     handleSubmit,
     setFieldValue,
+    isSubmitting
   } = useFormik({
-      initialValues: {
+    initialValues: {
       image: "",
-      name: "",
-      employeeID: "",
+      fullname: "",
       username: "",
-      mail: "",
+      email: "",
       password: "",
-      confirmPassword: "",
+      password_confirmation: "",
     },
     validationSchema: basicSchema,
     onSubmit,
   });
-  
 
-  
-  
   return (
-      <Box component="main" sx={ContainerStyle}>
+    <Box component="main" sx={ContainerStyle}>
       <FormContainer autoComplete="off" onSubmit={handleSubmit}>
         <Box component="h2" sx={TitleStyle}>
           Sign up
         </Box>
         <Box sx={{ width: "100%", height: "max-content", textAlign: "center" }}>
           <Box sx={ProfileStyle}>
-            <Avatar sx={{ height: "70px", width: "70px" }} src={previewImage} alt="Image Upload" />
+            <Avatar
+              sx={{ height: "70px", width: "70px" }}
+              src={imagePreview}
+              alt="Image Upload"
+            />
             <Box
               sx={{
                 position: "absolute",
@@ -252,8 +280,7 @@ const {
                   accept="image/*"
                   type="file"
                   value={undefined}
-
-                onChange={handleFileSelection}
+                  onChange={handleFileSelection}
                   onBlur={handleBlur}
                 />
 
@@ -284,31 +311,17 @@ const {
         <Box component="section" sx={FormStyles}>
           <Box component="section" sx={FieldsContainer}>
             <Box sx={TextComponent}>
-              <Box component="label" htmlFor="name">
-                Name*
+              <Box component="label" htmlFor="fullname">
+                Fullname*
               </Box>
               <TextFieldStyle
-                id="name"
-                placeholder="Enter your full name"
-                value={values.name}
+                id="fullname"
+                placeholder="Enter your full full name"
+                value={values.fullname}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                error={touched.name && Boolean(errors.name)}
-                helperText={touched.name && errors.name}
-              />
-            </Box>
-            <Box sx={TextComponent}>
-              <Box component="label" htmlFor="employeeID">
-                Employee ID*
-              </Box>
-              <TextFieldStyle
-                id="employeeID"
-                placeholder="Enter your ID"
-                value={values.employeeID}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={touched.employeeID && Boolean(errors.employeeID)}
-                helperText={touched.employeeID && errors.employeeID}
+                error={touched.fullname && Boolean(errors.fullname)}
+                helperText={touched.fullname && errors.fullname}
               />
             </Box>
             <Box sx={TextComponent}>
@@ -325,20 +338,20 @@ const {
                 helperText={touched.username && errors.username}
               />
             </Box>
-            <Box sx={TextComponent}>
-              <Box component="label" htmlFor="mail">
-                Work Mail*
+            <Box sx={EmailComponent}>
+              <Box component="label" htmlFor="email">
+                Work Email*
               </Box>
               <TextFieldStyle
-                id="mail"
+                id="email"
                 type="text"
                 inputMode="email"
                 placeholder="Example@amalitech.com"
-                value={values.mail}
+                value={values.email}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                error={touched.mail && Boolean(errors.mail)}
-                helperText={touched.mail && errors.mail}
+                error={touched.email && Boolean(errors.email)}
+                helperText={touched.email && errors.email}
               />
             </Box>
             <Box sx={TextComponent}>
@@ -373,34 +386,36 @@ const {
               </PasswordField>
             </Box>
             <Box sx={TextComponent}>
-              <Box component="label" htmlFor="confirmPassword">
+              <Box component="label" htmlFor="password_confirmation">
                 Confirm Password*
               </Box>
               <PasswordField variant="outlined">
                 <OutlinedInput
-                  id="confirmPassword"
-                  value={values.confirmPassword}
+                  id="password_confirmation"
+                  value={values.password_confirmation}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   error={
-                    touched.confirmPassword && Boolean(errors.confirmPassword)
+                    touched.password_confirmation &&
+                    Boolean(errors.password_confirmation)
                   }
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={showpassword_confirmation ? "text" : "password"}
                   placeholder="Repeat your password"
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="confirm-password"
-                        onClick={handleShowConfirmPassword}
+                        onClick={handleShowpassword_confirmation}
                       >
-                        {showConfirmPassword ? <BsEye /> : <BsEyeSlash />}
+                        {showpassword_confirmation ? <BsEye /> : <BsEyeSlash />}
                       </IconButton>
                     </InputAdornment>
                   }
                 />
                 <FormHelperText sx={{ color: "#d32f2f" }}>
                   {" "}
-                  {touched.confirmPassword && errors.confirmPassword}
+                  {touched.password_confirmation &&
+                    errors.password_confirmation}
                 </FormHelperText>
               </PasswordField>
             </Box>
@@ -408,11 +423,13 @@ const {
 
           <Box component="section" sx={SignUpLogin}>
             <ButtonStyles type="submit">
-              Sign Up
+              {loading || isSubmitting ? "Loading..." : "Sign Up"}
             </ButtonStyles>
             <p>
               Already have an account?{" "}
-              <span style={{ color: "#3683F5", cursor: "pointer" }}>Login</span>
+              <Link to="/login" style={{ color: "#3683F5", cursor: "pointer" }}>
+                Login
+              </Link>
               {/* <Link to="/">Login</Link> */}
             </p>
           </Box>

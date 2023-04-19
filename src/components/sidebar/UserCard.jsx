@@ -3,8 +3,12 @@ import userProfile from "../../assets/sidebar_user.png";
 import gear from "../../assets/Gear.svg";
 import upload from "../../assets/Upload.svg";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function UserCard({ settings }) {
+
+  const {userInfo} = useSelector(state => state.user)
+
   return (
     <div
       className={`${
@@ -21,7 +25,7 @@ function UserCard({ settings }) {
         } rounded-full`}
       >
         <img
-          src={userProfile}
+          src={userInfo.image}
           alt="User Profile"
           className="w-full h-full object-contain"
         />
@@ -36,12 +40,12 @@ function UserCard({ settings }) {
       </div>
       <div className="flex flex-col">
         <span className={`${settings ? "font-bold" : "font-medium text-xs"}`}>
-          abc@gmail.com
+          {userInfo.email}
         </span>
         {settings && <span className="text-[#878787]">@username</span>}
       </div>
       {!settings && (
-        <Link to="/sidebar/settings">
+        <Link to="/chat/settings">
           <img
             src={gear}
             alt="User Profile"
