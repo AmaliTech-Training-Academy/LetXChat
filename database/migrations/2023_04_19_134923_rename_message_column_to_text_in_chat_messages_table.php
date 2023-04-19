@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('chat_messages', function (Blueprint $table) {
-            $table->renameColumn('text', 'text')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
+            $table->renameColumn('message', 'text')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('chat_messages', function (Blueprint $table) {
-            //
+            $table->renameColumn('text', 'message');
         });
     }
 };
