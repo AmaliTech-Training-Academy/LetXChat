@@ -53,21 +53,21 @@ class ChatRoomController extends Controller
      */
     public function update(Request $request, $chatRoom)
     {
-        // dd($request->all());
         $request->validate([
-            'name' => 'nullable',
+            'name' => 'nullable|string',
             'image' => 'nullable',
             'description' => 'nullable'
         ]);
 
-        $chatRoom = ChatRoom::findOrFail($chatRoom)->first();
+        $chatRoom = ChatRoom::findOrFail($chatRoom);
 
-        $chatRoom->updateOrFail([
+        $chatRoom->update([
             'name' => $request->name,
-            'image' => $request->old($this->checkImage($request), null)
+            'image' => $request->old($this->checkImage($request), null),
+            'description' => $request->description
         ]);
 
-        return new ChatRoomResource($chatRoom);
+        return $chatRoom;
     }
 
     // /**

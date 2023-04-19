@@ -30,7 +30,7 @@ class ChatMessageController extends Controller
 
         // dd($request->all());
         $request->validate([
-            'message' => 'nullable',
+            'text' => 'nullable',
             'image' => 'nullable',
             'video' => 'nullable',
             'voiceNote' => 'nullable',
@@ -83,7 +83,7 @@ class ChatMessageController extends Controller
         $newMessage = ChatMessage::create([
             'user_id' => Auth::id(),
             'chat_room_id' => $roomId,
-            'message' => $request->message,
+            'text' => mb_convert_encoding($request->text, 'UTF-8', 'auto'),
             'image' => $image,
             'video' => $video,
             'voiceNote' => $audio,
@@ -91,7 +91,9 @@ class ChatMessageController extends Controller
         ]);
 
         broadcast(new NewChatMessage(
-            $request->message,
+            Auth::user()->fullname,
+            'https://takoraditraining.com/LetXChat/storage/app/public/' . Auth::user()->image,
+            $request->text,
             'https://takoraditraining.com/LetXChat/storage/app/public/' . $image,
             'https://takoraditraining.com/LetXChat/storage/app/public/' . $video,
             'https://takoraditraining.com/LetXChat/storage/app/public/' . $audio,
@@ -101,7 +103,7 @@ class ChatMessageController extends Controller
         return response()->json([
             'sender' => Auth::user()->fullname,
             'sender_image' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . Auth::user()->image,
-            'message' => $newMessage->message,
+            'text' => $newMessage->text,
             'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . $newMessage->image,
             'video' => [
                 'name' => $videoName,

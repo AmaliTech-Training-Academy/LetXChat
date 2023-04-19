@@ -19,7 +19,9 @@ class NewChatMessage implements ShouldBroadcast
      * Create a new event instance.
      */
     public function __construct(
-        public $message,
+        public $sender,
+        public $sender_image,
+        public $text,
         public $image,
         public $video,
         public $voiceNote,

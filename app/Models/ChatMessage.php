@@ -11,12 +11,16 @@ class ChatMessage extends Model
 {
     use HasFactory;
 
+    // protected $charset = 'utf8mb4';
+
+    // protected $collation = 'utf8mb4_unicode_ci';
+
     // protected $appends = ['recent_message'];
 
     protected $fillable = [
         'user_id',
         'chat_room_id',
-        'message',
+        'text',
         'image',
         'video',
         'voiceNote',
@@ -30,7 +34,7 @@ class ChatMessage extends Model
 
     public function user(): HasOne
     {
-        return $this->hasOne(User::class, 'id','user_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     public function latestMessage()
@@ -38,17 +42,4 @@ class ChatMessage extends Model
         return ChatMessage::latest()->first();
     }
 
-    // public function getRecentMessageAttribute()
-    // {
-    //     $latestMessage = ChatMessage::latest()->first([
-    //         'id',
-    //         'message',
-    //         'created_at'
-    //     ]);
-
-    //     $created_at = Carbon::parse($latestMessage['created_at'])->format('g:i a');
-    //     $latestMessage['created_at_formatted'] = $created_at;
-
-    //     return $latestMessage;
-    // }
 }
