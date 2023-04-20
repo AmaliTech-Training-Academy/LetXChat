@@ -3,6 +3,7 @@ import close from "../../../assets/close-svg.svg"
 import {hideDeleteModal, getChatrooms} from "../../../feature/adminSlice"
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 function Delete() {
   const dispatch = useDispatch()
@@ -12,13 +13,14 @@ function Delete() {
     e.preventDefault()
     // console.log(singleChatroom.id)
     const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`)
-    console.log(response)
+    // console.log(response)
     if(response.status === 200) {
+      toast.success('Chatroom deleted successfully')
       dispatch(getChatrooms())
       dispatch(hideDeleteModal())
     }
     else {
-      console.log('delete unsucessfull');
+      toast.warning('Chatroom delete unsucessfull');
     }
   }
   return (

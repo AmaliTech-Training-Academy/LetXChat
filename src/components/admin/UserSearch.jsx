@@ -1,21 +1,54 @@
 import React from 'react'
 import trash from "../../assets/trash.svg"
-import rose from '../../assets/rose.png'
+import { toast } from 'react-toastify';
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {addUserToChatroom} from '../../feature/adminSlice'
+import {addUserToChatroom, getChatrooms, getAllUsers} from '../../feature/adminSlice'
 import axios from 'axios'
 
 function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMatchedUsers, page}) {
   const {singleChatroom} = useSelector(state => state.admin)
   const dispatch = useDispatch()
 
-  const handleClick = (e) => {
-    e.preventDefault()
+  const updateUsers = () => {
     dispatch(addUserToChatroom(item.id))
     const newMatchedUsers = matchedUsers.filter(ele => ele.id !== item.id)
     setAddedUsers([...addedUsers, item])
     setMatchedUsers(newMatchedUsers)
+  }
+
+  const handleClick = async (e) => {
+    e.preventDefault()
+    try {
+      if(page === 'users') {
+        let username = []
+        username.push(item.fullname)
+        const dataObj = {}
+        dataObj.user_names = username
+        dataObj.chat_room = singleChatroom.name
+        const alreadyadded = addedUsers.some(ele => (
+          ele.id === item.id
+        ))
+        if(alreadyadded) {
+          toast.warning("User already added")
+        }
+        else {
+          const response = await axios.post('https://letxchat.takoraditraining.com/api/v1/request', dataObj)
+          if(response.status === 200) {
+            updateUsers()
+            toast.success("User added successfully")
+            dispatch(getChatrooms())
+            dispatch(getAllUsers())
+          }
+        }
+      }
+      else {
+        updateUsers()
+      }
+    } catch (error) {
+      toast.warning("Can't add users right now")
+      console.log(error)
+    }
     // console.log(newMatchedUsers);
   }
 
@@ -29,17 +62,19 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
     }
     else {
       const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatroom/${singleChatroom.id}/${item.id}`)
-      console.log(response)
+      // console.log(response)
       if(response.status === 200) {
-        alert("User deleted successfully")
+        setAddedUsers(addedUsers.filter(ele => ele.id !== item.id));
+        toast.success("User deleted successfully")
+        dispatch(getChatrooms())
       }
     }
   }
 
-  useEffect(() => {
+  // useEffect(() => {
     // console.log(item);
     // console.log(singleChatroom);
-  }, [])
+  // }, [])
   // useEffect(() => {
   //   console.log(matchedUsers);
   // }, [matchedUsers])

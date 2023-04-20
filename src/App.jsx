@@ -29,7 +29,7 @@ function App() {
       <Router />
       {/* <Chat /> */}
       {/* <ChatComponent /> */}
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-right" />
     </div>
     
   

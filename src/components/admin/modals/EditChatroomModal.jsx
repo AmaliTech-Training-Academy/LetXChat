@@ -6,6 +6,7 @@ import {hideEditChatroomModal, getChatrooms} from '../../../feature/adminSlice'
 import axios from 'axios'
 import upload from '../../../assets/Upload-Vector.svg'
 import close from '../../../assets/close-svg.svg'
+import { toast } from 'react-toastify'
 
 function EditChatroomModal() {
     const [name, setName] = useState('')
@@ -39,11 +40,15 @@ function EditChatroomModal() {
                 const response = await axios.post(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`, data)
                 // console.log(response)
                 if(response.status === 200) {
+                    toast.success("Chatroom edited successfully")
                     dispatch(getChatrooms())
                     dispatch(hideEditChatroomModal())
                 }
+                else {
+                    toast.warning("Chatroom edit wasn't successfull")
+                }
             } catch (error) {
-                console.log(error)
+                toast.warning(error)
             }
         console.log(name, description, profileImage)
     }

@@ -4,6 +4,7 @@ import UserSearch from "./UserSearch";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 function NewChatroom() {
     const [name, setName] = useState('')
@@ -25,12 +26,14 @@ function NewChatroom() {
             dataObj.chat_room = name
         try {
             const response = await axios.post('https://letxchat.takoraditraining.com/api/v1/request', dataObj)
+            console.log(response)
              if(response.status === 200) {
                  setName('')
                  setDescription('')
                  setProfileImage('')
                  navigate('/admin')
-             }
+            }
+            toast.success(response.data.message)
         } catch (error) {
            console.log(error) 
         }
@@ -49,6 +52,7 @@ function NewChatroom() {
             try {
                const response = await axios.post('https://letxchat.takoraditraining.com/api/v1/chatrooms', data)
                     if(response.status === 201) {
+                        toast.success("Chatroom created successfully")
                         if(addedUsers.length > 0) {
                             addUsers()
                         }
