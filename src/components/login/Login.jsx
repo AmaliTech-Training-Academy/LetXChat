@@ -163,7 +163,6 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.auth);
-
   const navigate = useNavigate();
 
   // Submit Form
@@ -171,16 +170,18 @@ const Login = () => {
     dispatch(loginUser(values));
     setTimeout(() => {
       actions.resetForm();
-    }, 4000);
+    }, 3000);
   };
 
-  const Token = Cookies.get("userToken");
+  const userToken = Cookies.get("userToken");
   useEffect(() => {
-    if (Token) {
-      dispatch(fetchUserInfo(Token));
+    if (userToken) {
+      dispatch(fetchUserInfo(userToken));
       navigate("/chat");
     }
-  }, [dispatch, Token]);
+  }, [userToken, dispatch]);
+
+
 
   // Formik Validation
 
@@ -211,7 +212,7 @@ const Login = () => {
         <Box component="section" sx={FieldsContainer}>
           <Box sx={TextComponent}>
             <Box component="label" htmlFor="email">
-              email/ Employee ID*
+              Email/ Chat ID*
             </Box>
             <TextFieldStyle
               type="text"

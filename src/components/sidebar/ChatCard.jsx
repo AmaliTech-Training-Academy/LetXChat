@@ -1,13 +1,12 @@
 import React from "react";
-import mno from "../../assets/mno.png";
 
 
 function ChatCard({item}) {
   const recentMessage = item?.recent_message
- 
-
+  const Length = recentMessage
+  console.log(recentMessage);
   return (
-    <div className="relative flex items-center w-[280px] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">
+    <div key={item.name} className="relative flex items-center w-[280px] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">
       <div className="w-[65px]  bg-red-800 rounded-[50%] ml-[3px] cursor-pointer bg-cover bg-no-repeat bg-center overflow-hidden">
         <img src={item?.image} alt="" className="w-full h-full" />
       </div>
@@ -21,7 +20,7 @@ function ChatCard({item}) {
         </div>
       </div>
       <div className="absolute bottom-3 right-3 min-w-max h-3 p-1 bg-[#53352DE5] rounded-full font-semibold text-[9px] text-white flex justify-center items-center">
-        {recentMessage?.message.length}
+        {/* {recentMessage?.message.length} */}
       </div>
     </div>
   );

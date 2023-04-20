@@ -18,7 +18,7 @@ import { clearToken } from "../../feature/chatSlice";
 
 function Sidebar() {
   const { allChatRooms } = useSelector((state) => state.chatrooms);
-  const { loading } = useSelector((state) => state.user);
+  const { loading, userInfo } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -26,13 +26,7 @@ function Sidebar() {
     navigate("/");
   };
 
-
-  const handleLogout = () => {
-    dispatch(logout())
-    dispatch(clearToken())
-    navigate("/login");
-
-  }
+const username = userInfo.name
 
   if (loading) {
     return (
@@ -67,18 +61,25 @@ function Sidebar() {
       <div className="w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
         {allChatRooms?.length ? (
           allChatRooms?.map((chatroom) => {
+            const matchingMember = chatroom.members.find(member => member.name === username)
+           if (matchingMember) {
+            
             return (
-              <div key={chatroom.id}>
+          
+              <div key={chatroom.name}>
                 <Link to={`/chat/${chatroom.id}`}>
                   <ChatCard item={chatroom} />
-                  {/* <div style={{marginLeft: '2rem'}}>{chatroom.name}</div> */}
                 </Link>
               </div>
-            );
+            ) 
+          } else {
+            return (
+              <div className="text-black font-bold">No chatroom yet...</div>
+            )
+          }
+
           })
-        ) : (
-          <div className="text-black font-bold">No chats yet...</div>
-        )}
+        ) : ""}
       </div>
     </>
   );

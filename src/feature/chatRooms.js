@@ -8,7 +8,7 @@ const CHATROOMS_API = CHATROOMS_URL;
 export const fetchChatRooms = createAsyncThunk(
   "chatrooms/fetchChatRooms",
   async () => {
-    const UserInfo = Cookies.get("userinfo");
+    const UserInfo = Cookies.get("userInfo");
 
     let config = {
       method: "get",
@@ -22,7 +22,6 @@ export const fetchChatRooms = createAsyncThunk(
       const res = await axios(config);
       // Cookies.set('chatrooms', res.data.chatrooms)
       localStorage.setItem('chatrooms', res.data.data)
-      console.log(res.data.data);
 
       return res.data.data;
     } catch (error) {

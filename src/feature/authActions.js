@@ -3,7 +3,6 @@ import { BASE_URL } from "../defaultValues/DefaultValues";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
 
 export const registerUser = createAsyncThunk(
   "auth/register",

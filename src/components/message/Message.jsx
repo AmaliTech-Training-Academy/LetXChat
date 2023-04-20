@@ -59,7 +59,7 @@ const OwnerContainer = styled(Box)({
   gap: "10px",
   flexDirection: "row-reverse",
   alignItems: "center",
-  marginBlock: "2rem",
+  marginBlock: ".5rem",
 });
 
 const OwnerMessageInfo = styled(Box)({});
@@ -99,9 +99,7 @@ const Message = () => {
   // The Focus should always stay at the bottom for Messages
   const messagesRef = useRef(null);
   useEffect(() => {
-    // const sortedMessages = [...messages].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
     messagesRef.current?.scrollIntoView();
-    // setMessages(sortedMessages);
   }, [messages]);
 
   const { id } = useParams();
@@ -321,7 +319,8 @@ const Message = () => {
             </div>
           );
         })}
-      {/* <div ref={messagesRef} /> */}
+      <div ref={messagesRef} />
+      
     </>
 
     // <div></div>

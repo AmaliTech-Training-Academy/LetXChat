@@ -10,11 +10,10 @@ export const fetchUserInfo = createAsyncThunk(
   'user/fetchUserInfo',
   async (userToken) => {
 
-    // const userToken = Cookies.get("userToken")
 
 let config = {
     method: "get",
-    url: USER_API,
+    url: `${USER_API}`,
     headers: {
         Authorization: `Bearer ${userToken}`
     },
@@ -24,8 +23,7 @@ let config = {
 
 
     const res = await axios(config)
-    Cookies.set("userInfo", res.data.data)
-
+    Cookies.set("userInfo", JSON.stringify(res.data.data))
         return res.data.data
 
     } catch (error) {
@@ -37,12 +35,13 @@ let config = {
   }
 );
 
-const userInfo = Cookies.get("userInfo") || null
+const getUserInfo = Cookies.get("userInfo") || null;
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    userInfo,
-    loading: true,
+    userInfo: getUserInfo ? JSON.parse(getUserInfo) : null,
+    loading: false,
     error: null,
   },
   reducers: {
@@ -69,5 +68,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions
+export const { logout } = userSlice.actions;
 export default userSlice.reducer;
