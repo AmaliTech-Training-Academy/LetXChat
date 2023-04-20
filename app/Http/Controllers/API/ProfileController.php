@@ -20,7 +20,7 @@ class ProfileController extends Controller
         $user = User::find(auth()->user()->id);
 
         $user->update([
-            'username' => $request->username,
+            'fullname' => $request->fullname,
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);

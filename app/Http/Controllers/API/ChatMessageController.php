@@ -71,7 +71,7 @@ class ChatMessageController extends Controller
         if ($request->hasFile('voiceNote')) {
             $audioName = $request->file('voiceNote')->getClientOriginalName();
             $audioName = $audioName != null ? str_replace(' ', '_', $audioName) : '';
-            $audio = $request->file('voiceNotes')->storeAs('voiceNotes', $audioName);
+            $audio = $request->file('voiceNote')->storeAs('voiceNotes', $audioName);
         } else {
             $audio = null;
         }
@@ -92,12 +92,12 @@ class ChatMessageController extends Controller
 
         broadcast(new NewChatMessage(
             Auth::user()->fullname,
-             Auth::user()->image,
+            Auth::user()->image,
             $request->text,
-             $image,
-             $video,
-             $audio,
-             $file
+            $image,
+            $video,
+            $audio,
+            $file
         ))->toOthers();
 
         return response()->json([
