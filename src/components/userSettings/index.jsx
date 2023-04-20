@@ -17,8 +17,8 @@ import { logout } from "../../feature/userSlice";
 import { clearToken } from "../../feature/chatSlice";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
-import { BsEyeSlash, BsEye } from "react-icons/bs";
-import WrongPassword from '../../assets/WrongPassword.png'
+
+import GeneralSettings from "../generalSettings";
 
 const StyledModal = styled(Modal)({
   "& .MuiBackdrop-root": {
@@ -45,12 +45,6 @@ const style = {
 const UserSettings = ({ openSettings, setOpenSettings }) => {
   const handleClose = () => setOpenSettings(false);
   const [openGeneral, setOpenGeneral] = useState(false);
-  const [openPassword, setOpenPassword] = useState(false);
-
-  //   Password
-  const [showPassword, setShowPassword] = useState(false);
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showConfirmPassword, setConfirmShowPassword] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -89,16 +83,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
                 <img src={Right} alt="Right Icon" />
               </div>
             </div>
-            <div
-              onClick={() => setOpenPassword(true)}
-              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer"
-            >
-              <img src={Password} alt="Password Icon" />
-              <div className="pr-[16px] border-b border-b-[#D9D9D9] w-full h-full flex items-center justify-between">
-                <p>Password</p>
-                <img src={Right} alt="Right Icon" />
-              </div>
-            </div>
+
             <div
               onClick={LogoutFunc}
               className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer"
@@ -109,141 +94,12 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
               </div>
             </div>
           </div>
+
           {openGeneral && (
-            <motion.section
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.5 }}
-              variants={{
-                hidden: { opacity: 0, x: -350, y: -260 },
-                visible: { opacity: 1, x: -239, y: -260 },
-              }}
-              className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-[#FFFFFF] h-[520px] w-[600px] rounded-[12px] shadow-x2l p-[2rem] flex flex-col`}
-            >
-              <div
-                onClick={() => setOpenGeneral(false)}
-                className="flex justify-end text-[#1570efe6] cursor-pointer"
-              >
-                Done
-              </div>
-              <div className="text-[#667085] flex items-center pl-1 h-[44px] w-full border-b border-b-[#D9D9D9]">
-                General
-              </div>
-              <div className="w-[80px] h-[80px] rounded-full mx-auto mt-[14px] relative">
-                <img src={ProfilePic} alt="Profile Pic" />
-                <div className="absolute right-0 bottom-[2px] border border-[#D1CCCC] flex items-center justify-center bg-white rounded-full cursor-pointer">
-                  <img className=" scale-[.7]" src={SignUpCamera} alt="" />
-                </div>
-              </div>
-              <div className=" h-[350px] mt-[24px] mx-[40px]">
-                <div className=" flex justify-between mb-[26px]">
-                  <div className="w-[220px] text-[14px] flex flex-col gap-[5px]">
-                    <p>Name</p>
-                    <input
-                      className="w-full border active:border-[#1570efe6] hover:border-[#1570efe6] transition duration-300 ease-in-out h-[45px] rounded-[5px] p-[5px] placeholder:text-[12px]"
-                      type="text"
-                      placeholder="Rose Grebstad"
-                    />
-                  </div>
-                  <div className="w-[220px] text-[14px] flex flex-col gap-[5px]">
-                    <p>Work Mail</p>
-                    <input
-                      className="w-full border active:border-[#1570efe6] hover:border-[#1570efe6] transition duration-300 ease-in-out h-[45px] rounded-[5px] p-[5px] placeholder:text-[12px]"
-                      type="email"
-                      placeholder="example@amalitech.com"
-                    />
-                  </div>
-                </div>
-                <div className=" flex justify-between mb-[26px]">
-                  <div className="w-[220px] text-[14px] flex flex-col gap-[5px]">
-                    <p>Username</p>
-                    <input
-                      className="w-full border active:border-[#1570efe6] hover:border-[#1570efe6] transition duration-300 ease-in-out h-[45px] rounded-[5px] p-[5px] placeholder:text-[12px]"
-                      type="text"
-                      placeholder="RoseGrebstad"
-                    />
-                  </div>
-                  <div className="w-[220px] text-[14px] flex flex-col gap-[5px]">
-                    <p>Chat ID</p>
-                    <input
-                      className="w-full border cursor-pointer h-[45px] rounded-[5px] p-[5px] placeholder:text-[12px]"
-                      type="text"
-                      readOnly
-                      placeholder="Rose Grebstad"
-                    />
-                  </div>
-                </div>
-                <div className=" flex justify-between mt-[56px]">
-                  <button className="w-[220px] h-[48px] border rounded-[10px] bg-[#FFFFFF] hover:bg-[#cecece] transition duration-300 ease-in-out text-[14px] text-[#1570efe6] text-lg">
-                    Cancel
-                  </button>
-                  <button className="w-[220px] h-[48px] rounded-[10px] bg-[#1570ef] hover:bg-[#1d5db6] transition duration-300 ease-in-out text-[14px] text-[#FFFFFF] text-lg">
-                    Save
-                  </button>
-                </div>
-              </div>
-            </motion.section>
-          )}
-
-          {openPassword && (
-             <motion.section
-             initial="hidden"
-             whileInView="visible"
-             viewport={{ once: true, amount: 0.5 }}
-             transition={{ duration: 0.5 }}
-             variants={{
-               hidden: { opacity: 0, x: -350, y: -260 },
-               visible: { opacity: 1, x: -239, y: -260 },
-             }}
-             className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-[#FFFFFF] h-[520px] w-[600px] rounded-[12px] shadow-x2l p-[2rem] flex flex-col`}
-           >
-              <div
-                onClick={() => setOpenPassword(false)}
-                className="flex justify-end text-[#1570efe6] cursor-pointer"
-              >
-                Done
-              </div>
-              <div className="text-[#667085] flex items-center pl-1 h-[44px] w-full border-b border-b-[#D9D9D9]">
-                Password
-              </div>
-              <div className="w-full px-[5rem] h-full mt-[21px] flex flex-col gap-[26px]">
-                <div className="text-[#344054] text-[14px] flex flex-col gap-[8px] ">
-                  <p>Current Password</p>
-                  <div className="h-[36px] border rounded-[5px] flex items-center px-2 gap-[9px]">
-                    <img src={Password} alt="password icon" />
-                    <input type={showCurrentPassword ? 'text' : 'password'} className="h-full w-full" placeholder="Create a password" />
-                    <div className="cursor-pointer" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>{showCurrentPassword ? <BsEye /> : <BsEyeSlash />}</div>
-                    <img src={WrongPassword} alt=" wrong password" />
-                  </div>
-                    <p className="text-[#F04438]">Incorrect password. Try again !</p>
-                </div>
-                <div className="text-[#344054] text-[14px] flex flex-col gap-[8px] ">
-                  <p>New Password</p>
-                  <div className="h-[36px] border rounded-[5px] flex items-center px-2 gap-[9px]">
-                    <img src={Password} alt="password icon" />
-                    <input type={showCurrentPassword ? 'text' : 'password'} className="h-full w-full" placeholder="Create a new password" />
-                    <div className="cursor-pointer" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>{showCurrentPassword ? <BsEye /> : <BsEyeSlash />}</div>
-                    <img src={WrongPassword} alt=" wrong password" />
-                  </div>
-                    <p className="text-[#F04438]">Incorrect password. Try again !</p>
-                </div>
-                <div className="text-[#344054] text-[14px] flex flex-col gap-[8px] ">
-                  <p>Confirm New Password</p>
-                  <div className="h-[36px] border rounded-[5px] flex items-center px-2 gap-[9px]">
-                    <img src={Password} alt="password icon" />
-                    <input type={showCurrentPassword ? 'text' : 'password'} className="h-full w-full" placeholder="Confirm new password" />
-                    <div className="cursor-pointer" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>{showCurrentPassword ? <BsEye /> : <BsEyeSlash />}</div>
-                    <img src={WrongPassword} alt=" wrong password" />
-                  </div>
-                    <p className="text-[#F04438]">Incorrect password. Try again !</p>
-                </div>
-                <div className="flex justify-end mt-[0.2rem]">
-
-                <button className="text-[14px] text-[#FFFFFF] bg-[#1570ef] px-[12px] py-[8px] rounded-[10px] hover:bg-[#2d69be] transition duration-300 ease-in-out">Save Changes</button>
-                </div>
-              </div>
-            </motion.section>
+            <GeneralSettings
+              openGeneral={openGeneral}
+              setOpenGeneral={setOpenGeneral}
+            />
           )}
         </Box>
       </StyledModal>
