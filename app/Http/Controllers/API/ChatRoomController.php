@@ -8,6 +8,8 @@ use App\Http\Resources\ChatRoomResource;
 use App\Models\ChatRoom;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ChatRoomController extends Controller
 {
@@ -73,19 +75,20 @@ class ChatRoomController extends Controller
             $imageName = $request->file('image')->getClientOriginalName();
             $imageName = str_replace(' ', '_', $imageName);
             $image = $request->file('image')->storeAs('images', $imageName);
+            $chatRoom->image = $image;
         } else {
             $image = $chatRoom->image;
-            $image = $request->old('image', $image);
+            $chatRoom->image = $request->old('image', $image);
         }
 
         $chatRoom->update([
             'name' => $request->name,
-            'image' => $image,
             'description' => $request->description
         ]);
 
         return $chatRoom;
     }
+
 
     // /**
     //  * Remove the specified resource from storage.
@@ -118,7 +121,7 @@ class ChatRoomController extends Controller
             $image = $request->file('image')->storeAs('images', $imageName);
             return $image;
         } catch (\Throwable $e) {
-            return response()->json(['message' => $e.'Must be image file']);
+            return response()->json(['message' => $e->message]);
         }
     }
 }
