@@ -17,6 +17,8 @@ import { logout } from "../../feature/userSlice";
 import { clearToken } from "../../feature/chatSlice";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
+import { BsEyeSlash, BsEye } from "react-icons/bs";
+import WrongPassword from '../../assets/WrongPassword.png'
 
 const StyledModal = styled(Modal)({
   "& .MuiBackdrop-root": {
@@ -44,6 +46,11 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
   const handleClose = () => setOpenSettings(false);
   const [openGeneral, setOpenGeneral] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
+
+  //   Password
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showConfirmPassword, setConfirmShowPassword] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -82,19 +89,22 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
                 <img src={Right} alt="Right Icon" />
               </div>
             </div>
-            <div className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer">
+            <div
+              onClick={() => setOpenPassword(true)}
+              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer"
+            >
               <img src={Password} alt="Password Icon" />
               <div className="pr-[16px] border-b border-b-[#D9D9D9] w-full h-full flex items-center justify-between">
                 <p>Password</p>
                 <img src={Right} alt="Right Icon" />
               </div>
             </div>
-            <div className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer">
+            <div
+              onClick={LogoutFunc}
+              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer"
+            >
               <img src={Logout} alt="Logout Icon" />
-              <div
-                onClick={LogoutFunc}
-                className="pr-[16px] w-full h-full flex items-center justify-between"
-              >
+              <div className="pr-[16px] w-full h-full flex items-center justify-between">
                 <p>Logout</p>
               </div>
             </div>
@@ -171,6 +181,66 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
                   <button className="w-[220px] h-[48px] rounded-[10px] bg-[#1570ef] hover:bg-[#1d5db6] transition duration-300 ease-in-out text-[14px] text-[#FFFFFF] text-lg">
                     Save
                   </button>
+                </div>
+              </div>
+            </motion.section>
+          )}
+
+          {openPassword && (
+             <motion.section
+             initial="hidden"
+             whileInView="visible"
+             viewport={{ once: true, amount: 0.5 }}
+             transition={{ duration: 0.5 }}
+             variants={{
+               hidden: { opacity: 0, x: -350, y: -260 },
+               visible: { opacity: 1, x: -239, y: -260 },
+             }}
+             className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-[#FFFFFF] h-[520px] w-[600px] rounded-[12px] shadow-x2l p-[2rem] flex flex-col`}
+           >
+              <div
+                onClick={() => setOpenPassword(false)}
+                className="flex justify-end text-[#1570efe6] cursor-pointer"
+              >
+                Done
+              </div>
+              <div className="text-[#667085] flex items-center pl-1 h-[44px] w-full border-b border-b-[#D9D9D9]">
+                Password
+              </div>
+              <div className="w-full px-[5rem] h-full mt-[21px] flex flex-col gap-[26px]">
+                <div className="text-[#344054] text-[14px] flex flex-col gap-[8px] ">
+                  <p>Current Password</p>
+                  <div className="h-[36px] border rounded-[5px] flex items-center px-2 gap-[9px]">
+                    <img src={Password} alt="password icon" />
+                    <input type={showCurrentPassword ? 'text' : 'password'} className="h-full w-full" placeholder="Create a password" />
+                    <div className="cursor-pointer" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>{showCurrentPassword ? <BsEye /> : <BsEyeSlash />}</div>
+                    <img src={WrongPassword} alt=" wrong password" />
+                  </div>
+                    <p className="text-[#F04438]">Incorrect password. Try again !</p>
+                </div>
+                <div className="text-[#344054] text-[14px] flex flex-col gap-[8px] ">
+                  <p>New Password</p>
+                  <div className="h-[36px] border rounded-[5px] flex items-center px-2 gap-[9px]">
+                    <img src={Password} alt="password icon" />
+                    <input type={showCurrentPassword ? 'text' : 'password'} className="h-full w-full" placeholder="Create a new password" />
+                    <div className="cursor-pointer" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>{showCurrentPassword ? <BsEye /> : <BsEyeSlash />}</div>
+                    <img src={WrongPassword} alt=" wrong password" />
+                  </div>
+                    <p className="text-[#F04438]">Incorrect password. Try again !</p>
+                </div>
+                <div className="text-[#344054] text-[14px] flex flex-col gap-[8px] ">
+                  <p>Confirm New Password</p>
+                  <div className="h-[36px] border rounded-[5px] flex items-center px-2 gap-[9px]">
+                    <img src={Password} alt="password icon" />
+                    <input type={showCurrentPassword ? 'text' : 'password'} className="h-full w-full" placeholder="Confirm new password" />
+                    <div className="cursor-pointer" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>{showCurrentPassword ? <BsEye /> : <BsEyeSlash />}</div>
+                    <img src={WrongPassword} alt=" wrong password" />
+                  </div>
+                    <p className="text-[#F04438]">Incorrect password. Try again !</p>
+                </div>
+                <div className="flex justify-end mt-[0.2rem]">
+
+                <button className="text-[14px] text-[#FFFFFF] bg-[#1570ef] px-[12px] py-[8px] rounded-[10px] hover:bg-[#2d69be] transition duration-300 ease-in-out">Save Changes</button>
                 </div>
               </div>
             </motion.section>
