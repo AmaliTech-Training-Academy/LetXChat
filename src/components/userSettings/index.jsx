@@ -165,7 +165,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
                   </div>
                 </div>
                 <div className=" flex justify-between mt-[56px]">
-                  <button className="w-[220px] h-[48px] rounded-[10px] bg-[#FFFFFF] hover:bg-[#cecece] transition duration-300 ease-in-out text-[14px] text-[#1570efe6] text-lg">
+                  <button className="w-[220px] h-[48px] border rounded-[10px] bg-[#FFFFFF] hover:bg-[#cecece] transition duration-300 ease-in-out text-[14px] text-[#1570efe6] text-lg">
                     Cancel
                   </button>
                   <button className="w-[220px] h-[48px] rounded-[10px] bg-[#1570ef] hover:bg-[#1d5db6] transition duration-300 ease-in-out text-[14px] text-[#FFFFFF] text-lg">
