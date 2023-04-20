@@ -23,7 +23,7 @@ class ChatRoomMembersResource extends JsonResource
             'image' => $this->image ? 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image : null,
             'members' => $this->users->map(function ($user) {
                 return [
-                    'id' => $user->chat_id,
+                    'id' => $user->id,
                     'username' => $user->username,
                     'image' => $user->image,
                     'time' => Carbon::parse($user->created_at)->format('g:i a'),
