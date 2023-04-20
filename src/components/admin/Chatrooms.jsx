@@ -26,7 +26,7 @@ function Chatrooms({ currentChatrooms }) {
       </div>
       <div className="w-full shadow">
         <ChatroomHeader />
-        {currentChatrooms.lenght > 0 ? currentChatrooms.map((ele) => {
+        {currentChatrooms?.length > 0 ? currentChatrooms.map((ele) => {
           return <Chatroom key={ele.id} item={ele} />;
         }) : 
         <div className=" h-96 flex flex-col items-center justify-center">

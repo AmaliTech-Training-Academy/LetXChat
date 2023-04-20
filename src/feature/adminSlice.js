@@ -86,6 +86,9 @@ const adminSlice = createSlice({
         },
         getMembers: (state, { payload }) => {
             state.chatroomMembers = payload
+        },
+        addUserToChatroom: (state, {payload}) => {
+            state.allUsers.users = state.allUsers.users.filter(ele => ele.id !== payload)
         }
         // toggleAddChatroom: (state) => {
         //     state.showAddChatroomModal = !state.showAddChatroomModal
@@ -120,7 +123,7 @@ const adminSlice = createSlice({
             state.loadingUsers = true
         },
         [getAllUsers.fulfilled]: (state, {payload}) => {
-            state.allUsers = payload.data.users
+            state.allUsers = payload.data
         },
         [getAllUsers.rejected]: (state) => {
             state.loadingUsers = false
@@ -128,6 +131,6 @@ const adminSlice = createSlice({
     }
 })
 
-export const {showEditChatroomModal, hideEditChatroomModal, showDeleteModal, hideDeleteModal, showViewUsersModal, hideViewUsersModal, getSingleChatroom, getMembers} = adminSlice.actions
+export const {showEditChatroomModal, hideEditChatroomModal, showDeleteModal, hideDeleteModal, showViewUsersModal, hideViewUsersModal, getSingleChatroom, getMembers, addUserToChatroom} = adminSlice.actions
 
 export default adminSlice.reducer

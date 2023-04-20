@@ -180,7 +180,7 @@ function Admin() {
     <div className="md:mx-11">
           <Cards />
           <Chatrooms currentChatrooms={currentChatrooms}/>
-          {currentChatrooms.length > 0 && <Pagination
+          {currentChatrooms?.length > 0 && <Pagination
             usersPerPage={usersPerpage}
             totalUsers={chatrooms.data?.length}
             paginate={paginate}
