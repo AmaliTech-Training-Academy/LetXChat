@@ -10,6 +10,11 @@ import General from "../../assets/General.png"
 import Password from "../../assets/Password.png"
 import Right from "../../assets/Right.png"
 import Logout from "../../assets/Logout.png"
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../../feature/userSlice";
+import { clearToken } from "../../feature/chatSlice";
+import { useNavigate } from "react-router";
 
 const StyledModal = styled(Modal)({
   "& .MuiBackdrop-root": {
@@ -35,6 +40,17 @@ const style = {
 
 const UserSettings = ({ openSettings, setOpenSettings }) => {
   const handleClose = () => setOpenSettings(false);
+  const [openGeneral, setOpenGeneral] = useState(false)
+  const [openPassword, setOpenPassword] = useState(false)
+
+  const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+  const LogoutFunc = () => {
+    dispatch(logout())
+    dispatch(clearToken())
+    navigate('/')
+  }
 
   return (
     <div>
@@ -71,7 +87,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
             </div>
             <div className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer">
                 <img src={Logout} alt="Logout Icon" />
-                <div className="pr-[16px] w-full h-full flex items-center justify-between">
+                <div onClick={LogoutFunc} className="pr-[16px] w-full h-full flex items-center justify-between">
                 <p>Logout</p>
                 </div>
             </div>

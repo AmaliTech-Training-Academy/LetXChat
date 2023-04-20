@@ -26,7 +26,7 @@ function Sidebar() {
     navigate("/");
   };
 
-const username = userInfo.name
+const username = userInfo?.name
 
   if (loading) {
     return (
@@ -66,8 +66,8 @@ const username = userInfo.name
             
             return (
           
-              <div key={chatroom.name}>
-                <Link to={`/chat/${chatroom.id}`}>
+              <div key={chatroom?.name}>
+                <Link to={`/chat/${chatroom?.id}`}>
                   <ChatCard item={chatroom} />
                 </Link>
               </div>
