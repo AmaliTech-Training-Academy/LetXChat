@@ -26,7 +26,7 @@ function Sidebar() {
     navigate("/");
   };
 
-const username = userInfo?.name
+  const username = userInfo?.name;
 
   if (loading) {
     return (
@@ -43,7 +43,6 @@ const username = userInfo?.name
           background: "#FFFFFF",
         }}
       >
-
         <Skeleton animation="wave" variant="rounded" height={"100vh"} />
       </div>
     );
@@ -51,9 +50,11 @@ const username = userInfo?.name
 
   return (
     <>
-
-      <div className="mt-[1rem] ml-2 cursor-pointer text-sm" onClick={handleBackHome}>
-      <span>&#8592;</span> Back Home
+      <div
+        className="mt-[1rem] ml-2 cursor-pointer text-sm"
+        onClick={handleBackHome}
+      >
+        <span>&#8592;</span> Back Home
       </div>
 
       <UserCard />
@@ -61,25 +62,22 @@ const username = userInfo?.name
       <div className="w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
         {allChatRooms?.length ? (
           allChatRooms?.map((chatroom) => {
-            const matchingMember = chatroom.members.find(member => member.name === username)
-           if (matchingMember) {
-            
-            return (
-          
-              <div key={chatroom?.name}>
-                <Link to={`/chat/${chatroom?.id}`}>
-                  <ChatCard item={chatroom} />
-                </Link>
-              </div>
-            ) 
-          } else {
-            return (
-              <div className="text-black font-bold">No chatroom yet...</div>
-            )
-          }
-
+            const matchingMember = chatroom.members.find(
+              (member) => member.name === username
+            );
+            if (matchingMember) {
+              return (
+                <div key={chatroom?.name}>
+                  <Link to={`/chat/${chatroom?.id}`}>
+                    <ChatCard item={chatroom} />
+                  </Link>
+                </div>
+              );
+            }
           })
-        ) : ""}
+        ) : (
+          <div className="text-black font-bold">No chatroom yet...</div>
+        )}
       </div>
     </>
   );
