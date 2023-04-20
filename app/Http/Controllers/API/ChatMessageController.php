@@ -92,30 +92,30 @@ class ChatMessageController extends Controller
 
         broadcast(new NewChatMessage(
             Auth::user()->fullname,
-            'https://takoraditraining.com/LetXChat/storage/app/public/' . Auth::user()->image,
+             Auth::user()->image,
             $request->text,
-            'https://takoraditraining.com/LetXChat/storage/app/public/' . $image,
-            'https://takoraditraining.com/LetXChat/storage/app/public/' . $video,
-            'https://takoraditraining.com/LetXChat/storage/app/public/' . $audio,
-            'https://takoraditraining.com/LetXChat/storage/app/public/' . $file
+             $image,
+             $video,
+             $audio,
+             $file
         ))->toOthers();
 
         return response()->json([
             'sender' => Auth::user()->fullname,
-            'sender_image' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . Auth::user()->image,
+            'sender_image' =>  Auth::user()->image,
             'text' => $newMessage->text,
-            'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . $newMessage->image,
+            'image' =>  $newMessage->image,
             'video' => [
                 'name' => $videoName,
-                'url' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . $newMessage->video
+                'url' =>  $newMessage->video
             ],
             'voiceNote' => [
                 'name' => $audioName,
-                'url' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . $newMessage->voiceNote
+                'url' =>  $newMessage->voiceNote
             ],
             'file' => [
                 'name' => $fileName,
-                'url' => 'https://takoraditraining.com/LetXChat/storage/app/public/' . $newMessage->file
+                'url' =>  $newMessage->file
             ]
         ]);
     }

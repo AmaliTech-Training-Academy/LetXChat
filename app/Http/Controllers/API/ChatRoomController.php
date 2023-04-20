@@ -30,9 +30,17 @@ class ChatRoomController extends Controller
             'description' => 'required'
         ]);
 
+        if ($request->hasFile('image')) {
+            $imageName = $request->file('image')->getClientOriginalName();
+            $imageName = str_replace(' ', '_', $imageName);
+            $image = $request->file('image')->storeAs('images', $imageName);
+        } else {
+            $image = null;
+        }
+
         $chatRoom = ChatRoom::create([
             'name' => $request->name,
-            'image' => $this->checkImage($request),
+            'image' => $image,
             'description' => $request->description
         ]);
 
@@ -54,16 +62,25 @@ class ChatRoomController extends Controller
     public function update(Request $request, $chatRoom)
     {
         $request->validate([
-            'name' => 'nullable|string',
+            'name' => 'required|unique:chat_rooms|max:255',
             'image' => 'nullable',
-            'description' => 'nullable'
+            'description' => 'sometimes|required|string',
         ]);
 
         $chatRoom = ChatRoom::findOrFail($chatRoom);
 
+        if ($request->hasFile('image')) {
+            $imageName = $request->file('image')->getClientOriginalName();
+            $imageName = str_replace(' ', '_', $imageName);
+            $image = $request->file('image')->storeAs('images', $imageName);
+        } else {
+            $image = $chatRoom->image;
+            $image = $request->old('image', $image);
+        }
+
         $chatRoom->update([
             'name' => $request->name,
-            'image' => $request->old($this->checkImage($request), null),
+            'image' => $image,
             'description' => $request->description
         ]);
 
@@ -101,7 +118,7 @@ class ChatRoomController extends Controller
             $image = $request->file('image')->storeAs('images', $imageName);
             return $image;
         } catch (\Throwable $e) {
-            return response()->json(['message' => 'Must be image file']);
+            return response()->json(['message' => $e.'Must be image file']);
         }
     }
 }
