@@ -25,18 +25,49 @@ class RequestController extends Controller
 
     public function store(Request $request)
     {
-        $user = User::find($request->user_id);
-        $chatroom = ChatRoom::find($request->chat_room_id);
+        // Retrieve the chatroom details
+        $chatroom = ChatRoom::firstWhere('name', $request->chat_room);
 
-        if (!$user) return response()->json(['message' => 'User Not Found'],404);
-        if (!$chatroom) return response()->json(['message' => 'Chatroom Not Found'],404);
+        if (!$chatroom) {
+            return response()->json(['message' => 'Chatroom Not Found'], 404);
+        }
 
-        if ($chatroom->hasUser($user))
-            return response()->json(['message' => 'Already joined ' . $chatroom->name], 409);
+        // Retrieve the users details
+        $userNames = $request->user_names;
+        $users = User::whereIn('Fullname', $userNames)->get();
 
-        $user->chatrooms()->attach($chatroom);
+        if ($users->count() !== count($userNames)) {
+            return response()->json(['message' => 'One or more users were not found'], 404);
+        }
 
-        return response()->json(['message' => 'Success']);
+        // Add the users to the chatroom
+        $usersToAdd = $users->reject(function ($user) use ($chatroom) {
+            return $chatroom->hasUser($user);
+        });
+
+        $usersToAdd->each(function ($user) use ($chatroom) {
+            $user->chatrooms()->attach($chatroom);
+        });
+
+        if ($usersToAdd->count() === 0) {
+            return response()->json(['message' => 'All users are already members of the chatroom'], 409);
+        }
+
+        return response()->json(['message' => 'Users successfully added to the chatroom']);
+
+
+        // $user = User::firstWhere('Fullname',$request->user_name);
+        // $chatroom = ChatRoom::firstWhere('name',$request->chat_room);
+
+        // if (!$user) return response()->json(['message' => 'User Not Found'],404);
+        // if (!$chatroom) return response()->json(['message' => 'Chatroom Not Found'],404);
+
+        // if ($chatroom->hasUser($user))
+        //     return response()->json(['message' => 'Already joined ' . $chatroom->name], 409);
+
+        // $user->chatrooms()->attach($chatroom);
+
+        // return response()->json(['message' => 'Success']);
     }
 
     /**

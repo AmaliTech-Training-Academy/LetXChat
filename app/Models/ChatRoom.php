@@ -22,7 +22,7 @@ class ChatRoom extends Model
 
     public function hasUser($user)
     {
-        return $this->users()->where('user_id', $user->id)->exists();
+        return $this->users()->Where('fullname', $user->fullname)->exists();
     }
 
     public function messages() {
