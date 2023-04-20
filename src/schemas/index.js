@@ -55,7 +55,7 @@ export const adminLoginSchema = yup.object().shape({
 });
 
 export const userGeneralSettings = yup.object().shape({
-   fullname: yup.string().trim().required("This field is required"),
+   username: yup.string().trim().required("This field is required"),
     email: yup
     .string()
     .trim()

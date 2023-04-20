@@ -30,7 +30,7 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
 
     let config = {
       method: "patch",
-      url: `${BASE_URL}/profile/edit/`,
+      url: `${BASE_URL}/profile/edit`,
       headers: {
         Authorization: `Bearer ${userToken}`,
         Accept: "application/json",
@@ -42,7 +42,8 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
     axios
       .request(config)
       .then((res) => {
-        console.log(res.data);
+        const SUCCESS_MESSAGE = response.data.message;
+      toast.success(SUCCESS_MESSAGE, { autoClose: 3000 });
         return res.data;
       })
       .catch((err) => {
@@ -50,10 +51,9 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
         toast.error(ERROR_MSG, { autoClose: 3000 });
       });
 
-    // actions.resetForm();
+    actions.resetForm();
   };
 
-  const [formDetails, setFormDetails] = useState(null);
 
   //   Formik Validation
   const {
@@ -66,7 +66,7 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
     isSubmitting,
   } = useFormik({
     initialValues: {
-      fullname: "",
+      username: "",
       email: "",
       password: "",
       password_confirmation: "",
@@ -104,17 +104,17 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
               <p>Name</p>
               <div
                 className={`h-[36px] border rounded-[5px] flex items-center px-2 gap-[9px] relative ${
-                  errors.fullname && touched.fullname ? "border-[#FDA29B]" : ""
+                  errors.username && touched.username ? "border-[#FDA29B]" : ""
                 }`}
               >
                 <input
                   type="text"
                   className="h-full w-full"
                   placeholder="Jordan Ablorh"
-                  error={errors.fullname}
-                  touch={touched.fullname}
-                  id="fullname"
-                  value={values.fullname}
+                  error={errors.username}
+                  touch={touched.username}
+                  id="username"
+                  value={values.username}
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
@@ -122,7 +122,7 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
               </div>
               <div className="h-[1.2rem]">
                 <p className="text-[#F04438]">
-                  {touched.fullname && errors.fullname}
+                  {touched.username && errors.username}
                 </p>
               </div>
             </div>
