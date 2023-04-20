@@ -27,6 +27,7 @@ class ChatRoomResource extends JsonResource
             'total_messages' => $this->messages->count(),
             'members' => $this->users->map(function($user){
                 return [
+                    'id' => $user->id,
                     'name' => $user->fullname,
                     'email' => $user->email,
                     'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$user->image
