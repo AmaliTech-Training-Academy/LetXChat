@@ -48,6 +48,7 @@ Route::prefix('v1')->group(function(){
         Route::post('/admin/logout', [AdminController::class, 'logout']);
     });
 
+    Route::post('/chatrooms/{id}', [ChatRoomController::class, 'update']);
     Route::apiResource('/chatrooms', ChatRoomController::class);
     Route::delete('/chatroom/{room_id}/{user_id}', [ChatRoomController::class, 'removeUser']);
     Route::apiResource('/request', RequestController::class);

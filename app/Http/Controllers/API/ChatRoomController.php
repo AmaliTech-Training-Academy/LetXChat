@@ -64,7 +64,7 @@ class ChatRoomController extends Controller
     public function update(Request $request, $chatRoom)
     {
         $request->validate([
-            'name' => 'required|unique:chat_rooms|max:255',
+            'name' => 'nullable',
             'image' => 'nullable',
             'description' => 'sometimes|required|string',
         ]);
