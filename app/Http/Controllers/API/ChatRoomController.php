@@ -105,10 +105,10 @@ class ChatRoomController extends Controller
         return $delete;
     }
 
-    public function removeUser(User $user, ChatRoom $chatRoom)
+    public function removeUser($room_id, $user_id)
     {
-        $user = User::findOrFail($user);
-        $chatRoom = ChatRoom::findOrFail($chatRoom);
+        $user = User::findOrFail($user_id);
+        $chatRoom = ChatRoom::findOrFail($room_id);
         return $user->chatrooms()->detach($chatRoom);
     }
 
