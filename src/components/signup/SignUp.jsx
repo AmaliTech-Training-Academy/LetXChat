@@ -184,17 +184,10 @@ const SignUp = () => {
     setShowpassword_confirmation((show) => !show);
 
   // Upload Image
-  const [imagePreview, setImagePreview] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleFileSelection = (event) => {
-    let reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImagePreview(reader.result);
-      }
-    };
     setImagePreview(event.target.files[0]);
-    reader.readAsDataURL(event.target.files[0]);
     setFieldValue("image", event.target.files[0]);
   };
 
@@ -258,11 +251,15 @@ useEffect(() => {
         </Box>
         <Box sx={{ width: "100%", height: "max-content", textAlign: "center" }}>
           <Box sx={ProfileStyle}>
-            <Avatar
-              sx={{ height: "70px", width: "70px" }}
-              src={imagePreview}
-              alt="Image Upload"
-            />
+          
+          {
+            imagePreview && <Avatar
+            sx={{ height: "70px", width: "70px" }}
+            src={URL.createObjectURL(imagePreview)}
+            alt="Image Upload"
+          />
+          }
+            
             <Box
               sx={{
                 position: "absolute",
@@ -279,7 +276,7 @@ useEffect(() => {
                   name="image"
                   accept="image/*"
                   type="file"
-                  value={undefined}
+                  // value={undefined}
                   onChange={handleFileSelection}
                   onBlur={handleBlur}
                 />

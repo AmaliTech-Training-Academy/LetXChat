@@ -49,8 +49,8 @@ const GroupDetails = ({chatRoom}) => {
 
   return (
     <Container component='aside'>
-        <img src={chatRoom.image} alt="Group Image" style={{height: '150px', width: '150px', borderRadius: '50%'}} />
-        <GroupName>{chatRoom.name}</GroupName>
+        <img src={chatRoom?.image} alt="Group Image" style={{height: '150px', width: '150px', borderRadius: '50%'}} />
+        <GroupName>{chatRoom?.name}</GroupName>
         <Attachments>Attachments</Attachments>
         <AttachmentCollection>
             <Attach>media</Attach>

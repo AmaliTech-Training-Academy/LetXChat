@@ -5,25 +5,20 @@ import { useDispatch } from "react-redux";
 import { fetchUserInfo } from "./feature/userSlice";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
-import Chat from "./pages/chat/Chat";
 import { fetchChatRooms } from "./feature/chatRooms";
-import ChatComponent from "./pages/ChatComponent";
+
 
 function App() {
-
   const dispatch = useDispatch();
 
   // Get userInfo and chatrooms using userToken
-  const userToken = Cookies.get("userToken")
+  const userToken = Cookies.get("userToken");
   useEffect(() => {
-    dispatch(fetchUserInfo(userToken));
-    dispatch(fetchChatRooms(userToken))
+    dispatch(fetchChatRooms(userToken));
   }, [dispatch, userToken]);
 
+ 
 
-
-
-  
   return (
     <div className="App">
       <Router />
@@ -31,10 +26,15 @@ function App() {
       {/* <ChatComponent /> */}
       <ToastContainer position="top-right" />
     </div>
-    
-  
-    
 
+    // <div>
+    //   <h1>React Media Recorder</h1>
+    //   <div className="button-flex">
+    //     <button onClick={toggleRecordOption("audio")}>Record Audio</button>
+    //   </div>
+    //   {/* <div>{recordOption === "audio" && <AudioRecorder />}</div> */}
+    //   <AudioRecorder />
+    // </div>
   );
 }
 

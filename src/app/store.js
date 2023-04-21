@@ -4,7 +4,7 @@ import { persistReducer } from "redux-persist";
 import adminReducer from "../feature/adminSlice";
 import authReducer from "../feature/chatSlice";
 import userReducer from "../feature/userSlice";
-import chatReducer from "../feature/chatRoomSlice";
+import chatReducer from "../feature/chatMessageSlice";
 import chatroomsReducer from "../feature/chatRooms";
 
 const persistConfig = {

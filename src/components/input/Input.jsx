@@ -9,13 +9,12 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { BsMicMute } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage } from "../../feature/chatRoomSlice";
-import { format } from "date-fns";
-import { FiVideo } from "react-icons/fi";
+    
 import uploadVideo from "../../assets/uploadVideo.png";
-import { CHATROOM_URL } from "../../defaultValues/DefaultValues";
-import Pusher from "pusher-js";
- 
+
+import { CHATROOMS_URL } from "../../defaultValues/DefaultValues";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const Container = styled(Box)({
   height: "10vh",
@@ -94,19 +93,17 @@ const Input = ({ chatRoom }) => {
   const [showEmoji, setShowEmoji] = useState(false);
 
   const [text, setText] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [file, setFile] = useState(null);
   const [video, setVideo] = useState(null);
   const [recording, setRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
-  const [audioUrl, setAudioUrl] = useState(null);
+  const [audioUrl, setAudioUrl] = useState("");
   const [mediaRecorder, setMediaRecorder] = useState(null);
 
   const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.user.userInfo);
 
   const addEmoji = (e) => {
-    // setCurrentEmoji(e.native)
     setText(text + e.native);
   };
 
@@ -130,70 +127,11 @@ const Input = ({ chatRoom }) => {
 
 
 
-  
-  const id = chatRoom.id;
-
-  // Connect Pusher to App
-  const CHAT_URL = `${CHATROOM_URL}/${id}/message`;
-
-  // const pusher = new Pusher(`${process.env.PUSHER_API_KEY}`, {
-  //     cluster: `${process.env.PUSHER_CLUSTER}`,
-  //     encrypted: true,
-  //   });
-
-  // const channel = pusher.subscribe("chat");
-  // channel.bind('message', function(data) {
-  //   console.log(data);
-  // })
-
-
-  // Send Message
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const timestamp = format(new Date(), "h:mm a");
-
-    const message = {
-      id: Date.now(),
-      time: timestamp,
-      sender: userInfo.name,
-      text: text,
-      voiceNote: audioUrl,
-      image: image,
-      video: video,
-      file: file,
-    };
-
-    const formData = new FormData();
-    formData.append("message", text);
-    formData.append("voiceNote", audioUrl);
-    formData.append("image", image);
-    formData.append("video", video);
-    formData.append("file", file);
-    dispatch(addMessage(formData));
-
-
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: formdata,
-      redirect: 'follow'
-    };
-
-    fetch(`${CHAT_URL}`, requestOptions)
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-    
-
-    setText("");
-    setImage(null);
-    setFile(null);
-    setVideo(null);
-    setAudioUrl(null);
-  };
-
-  const handleImageChange = (event) => {
-    setImage(event.target.files[0]);
+  // Send Message When your press Ctrl and enter key
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 13 && event.ctrlKey) {
+      handleSubmit(event);
+    }
   };
 
   const handleToggleRecording = () => {
@@ -209,7 +147,9 @@ const Input = ({ chatRoom }) => {
             chunks.push(event.data);
           });
           recorder.addEventListener("stop", () => {
-            const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+            const blob = new Blob(chunks, {
+              type: "audio/ogg/mp3/webm; codecs=opus",
+            });
             const url = URL.createObjectURL(blob);
             setAudioBlob(blob);
             setAudioUrl(url);
@@ -232,6 +172,49 @@ const Input = ({ chatRoom }) => {
     setVideo(event.target.files[0]);
   };
 
+  const handleImageChange = (event) => {
+    setImage(event.target.files[0]);
+  };
+  const userToken = Cookies.get("userToken");
+
+  // Send Message
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const id = chatRoom.id;
+
+    try {
+      let formData = new FormData();
+      formData.append("text", text);
+      formData.append("voiceNote", audioUrl);
+      formData.append("video", video);
+      formData.append("file", file);
+      formData.append("image", image);
+
+      let config = {
+        headers: {
+          // "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+          // Accept: "application/json",
+        },
+      };
+
+      const res = await axios.post(
+        `${CHATROOMS_URL}/${id}/message`,
+        formData,
+        config
+      );
+
+      setText("");
+      setImage("");
+      setFile(null);
+      setVideo(null);
+      setAudioUrl("");
+    } catch (err) {
+      console.error("Upload failed", err.response.data);
+    }
+  };
+
   return (
     <Container component="section">
       {/* Show Emoji Container */}
@@ -249,13 +232,12 @@ const Input = ({ chatRoom }) => {
         )}
       </div>
 
-      <InputCon onSubmit={handleSubmit}>
+      <InputCon onSubmit={handleSubmit} method="post">
         <div
           style={{ cursor: "pointer", color: "#FFFFFF" }}
           onClick={handleToggleRecording}
         >
           {recording ? <BsMicMute /> : <img src={Mic} alt="Microphone" />}
-          {/* <img src={Mic} alt="Microphone" /> */}
         </div>
 
         <InputText
@@ -263,6 +245,7 @@ const Input = ({ chatRoom }) => {
           placeholder="start typing..."
           value={text}
           onChange={(e) => setText(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
 
         <FilesAndSend>
@@ -270,7 +253,7 @@ const Input = ({ chatRoom }) => {
             <input
               type="file"
               id="file"
-              // accept=".pdf,.doc,.docx,.xls,.xlsx"
+              accept=".pdf,.doc,.docx,.xls,.xlsx"
               onChange={handleFileUpload}
               style={{ display: "none" }}
             />

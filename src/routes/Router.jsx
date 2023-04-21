@@ -15,9 +15,10 @@ import Chat from "../pages/chat/Chat";
 import ChatComponent from "../pages/ChatComponent";
 import SignUpLayout from "../layouts/SignUpLayout";
 import RegModal from "../components/regModal/RegModal";
-import Admin from '../pages/admin/Admin'
-import AdminLayout from '../layouts/AdminLayout'
-import NewChatroom from '../components/admin/NewChatroom'
+import AdminLogin from "../components/adminLogin";
+import Admin from "../pages/admin/Admin";
+import AdminLayout from "../layouts/AdminLayout";
+import NewChatroom from "../components/admin/NewChatroom";
 function Router() {
   return (
     <Routes>
@@ -26,11 +27,12 @@ function Router() {
         <Route path="/signup" element={<SignUpLayout />}>
           <Route path="/signup/signupmodal" element={<RegModal />} />
         </Route>
-        <Route path='/admin' element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Admin />} />
-          <Route path='/admin/createchatroom' element={<NewChatroom />} />
+          <Route path="/admin/createchatroom" element={<NewChatroom />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
