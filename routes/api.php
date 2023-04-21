@@ -30,8 +30,8 @@ Route::prefix('v1')->group(function(){
 
     Route::prefix('admin')->controller(AdminController::class)->group(function (){
         Route::post('/register', 'register');
+        Route::post('/login', 'login');
     });
-    Route::post('/admin/login', [AdminController::class, 'login']);
 
     Route::middleware('auth:sanctum')->group(function (){
         Route::controller(ProfileController::class)->group(function(){
@@ -44,30 +44,31 @@ Route::prefix('v1')->group(function(){
             Route::post('/chatrooms/{roomId}/message', 'newMessage');
         });
 
+        Route::apiResource('/chatrooms', ChatRoomController::class);
+
+        Route::apiResource('/request', RequestController::class);
+
+        Route::controller(ChatRoomController::class)->group(function() {
+            Route::post('/chatrooms/{id}', 'update');
+            Route::delete('/chatroom/{room_id}/{user_id}', 'removeUser');
+        });
+
+        Route::get('/users/status', function(){
+            $pending = User::whereDoesntHave('chatrooms')->count();
+            $active = User::count() - $pending;
+
+            return [
+                'users' => RegisterResource::collection(User::all()),
+                'active_users' => $active,
+                'pending_request' => $pending,
+                'total' => User::count()
+            ];
+        });
+
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/admin/logout', [AdminController::class, 'logout']);
     });
 
-    Route::post('/chatrooms/{id}', [ChatRoomController::class, 'update']);
-    Route::apiResource('/chatrooms', ChatRoomController::class);
-    Route::delete('/chatroom/{room_id}/{user_id}', [ChatRoomController::class, 'removeUser']);
-    Route::apiResource('/request', RequestController::class);
-
-    Route::get('/users', function(){
-        return RegisterResource::collection(User::all());
-    });
-
-    Route::get('/users/status', function(){
-        $pending = User::whereDoesntHave('chatrooms')->count();
-        $active = User::count() - $pending;
-
-        return [
-            'users' => RegisterResource::collection(User::all()),
-            'active_users' => $active,
-            'pending_request' => $pending,
-            'total' => User::count()
-        ];
-    });
 
 
 });

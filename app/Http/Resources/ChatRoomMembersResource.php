@@ -24,6 +24,7 @@ class ChatRoomMembersResource extends JsonResource
             'members' => $this->users->map(function ($user) {
                 return [
                     'id' => $user->id,
+                    'name' => $user->fullname,
                     'username' => $user->username,
                     'image' => $user->image,
                     'time' => Carbon::parse($user->created_at)->format('g:i a'),
