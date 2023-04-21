@@ -71,7 +71,7 @@ const userImage = userInfo.image
             Settings
           </div>
           <div className="w-[76px] h-[76px] rounded-full mx-auto mt-[14px]">
-            <img src={userImagegit } alt="Profile Pic" />
+            <img src={userImage} alt="Profile Pic" />
           </div>
           <div className="w-full h-[175px] mt-[30px] shadow-2xl shadow-[rgba(0, 0, 0, 0.25)] rounded-[12px] text-[#101828] pl-[18px] pr-[12px] py-[13px]">
             <div
