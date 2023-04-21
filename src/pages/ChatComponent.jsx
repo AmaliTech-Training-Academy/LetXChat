@@ -1,7 +1,7 @@
 import { styled } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import SidebarLayout from '../components/layouts/SidebarLayout';
+import SidebarLayout from '../layouts/SidebarLayout';
 import Chat from './chat/Chat';
 import { Outlet } from 'react-router';
 
