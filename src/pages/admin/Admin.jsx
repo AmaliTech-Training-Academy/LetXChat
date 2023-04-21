@@ -11,12 +11,13 @@ function Admin() {
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerpage, setUsersPerpage] = useState(10);
   const {chatrooms} = useSelector(state => state.admin)
+  const [searchInput, setSearchInput] = useState('')
+  const [currentChatrooms, setCurrentChatrooms] = useState([])
   const dispatch = useDispatch()
 
   //Get current page
   const indexOfLastUser = currentPage * usersPerpage;
   const indexOfFirstUser = indexOfLastUser - usersPerpage;
-  const currentChatrooms = chatrooms.data?.slice(indexOfFirstUser, indexOfLastUser);
 
   // change currentPage
   const paginate = (pageNumber) => {
@@ -24,6 +25,11 @@ function Admin() {
   };
 
   useEffect(() => {
+    setCurrentChatrooms(chatrooms.data?.filter(ele => ele.name.toLowerCase().includes(searchInput.toLowerCase())));
+  }, [searchInput])
+
+  useEffect(() => {
+    setCurrentChatrooms(chatrooms.data?.slice(indexOfFirstUser, indexOfLastUser))
     dispatch(getChatrooms())
     dispatch(getAllUsers())
     // setData(chatrooms.data);
@@ -32,10 +38,10 @@ function Admin() {
 
   return (
     <>
-    <AdminNavbar />
+    <AdminNavbar setSearchInput={setSearchInput}/>
     <div className="md:mx-11">
           <Cards />
-          <Chatrooms currentChatrooms={currentChatrooms}/>
+          <Chatrooms searchInput={searchInput} currentChatrooms={currentChatrooms}/>
           {currentChatrooms?.length > 0 && <Pagination
             usersPerPage={usersPerpage}
             totalUsers={chatrooms.data?.length}
