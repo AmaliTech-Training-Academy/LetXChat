@@ -19,11 +19,16 @@ class ProfileController extends Controller
     {
         $user = User::find(auth()->user()->id);
 
-        $user->update([
+        $data = [
             'fullname' => $request->fullname,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        ];
+
+        if ($request->has('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
 
         return new ProfileResource($user);
     }
