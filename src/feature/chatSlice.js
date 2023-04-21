@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loginUser, registerUser } from "./authActions";
-import { BASE_URL } from "../defaultValues/DefaultValues";
 import Cookies from "js-cookie";
 
 // Initialize userToken from Cookie
@@ -15,7 +14,14 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearToken: (state) => {
+      Cookies.remove('userToken')
+      state.loading = false
+      state.userToken = null
+      state.error = null
+    }
+  },
   extraReducers: (builder) => {
     builder
 
@@ -52,9 +58,7 @@ const authSlice = createSlice({
         state.error = payload;
       });
   },
-
 });
 
-// export const { sendMessage } = chatSlice.actions;
+export const { clearToken } = authSlice.actions;
 export default authSlice.reducer;
-

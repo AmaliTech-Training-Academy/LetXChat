@@ -2,18 +2,20 @@ import React from "react";
 import UserCard from "./UserCard";
 import Search from "./Search";
 import ChatCard from "./ChatCard";
+
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { AiOutlineHome } from "react-icons/ai";
 
 function Sidebar() {
-  const { allChatRooms, loading } = useSelector((state) => state.chatrooms);
-  const navigate = useNavigate()
+  const { allChatRooms } = useSelector((state) => state.chatrooms);
+  const { loading, userInfo } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const handleBackHome = () => {
-    navigate('/')
-  }
+    navigate("/");
+  };
+  const username = userInfo?.name;
 
   if (loading) {
     return (
@@ -37,31 +39,33 @@ function Sidebar() {
 
   return (
     <>
-    <div className="mt-[0.5rem] ml-2 cursor-pointer" onClick={handleBackHome}>
+      <div
+        className="mt-[1rem] ml-2 cursor-pointer text-sm"
+        onClick={handleBackHome}
+      >
+        <span>&#8592;</span> Back Home
+      </div>
 
-      <AiOutlineHome
-        style={{
-          color: "gray",
-          fontSize: "1.5rem",
-        }}
-        />
-        </div>
       <UserCard />
       <Search />
       <div className="w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
-        {allChatRooms.length ? (
-          allChatRooms.map((chatroom) => {
-            return (
-              <div key={chatroom.id}>
-                <Link to={`/chat/${chatroom.id}`}>
-                  <ChatCard item={chatroom} />
-                  {/* <div style={{marginLeft: '2rem'}}>{chatroom.name}</div> */}
-                </Link>
-              </div>
+        {allChatRooms?.length ? (
+          allChatRooms?.map((chatroom) => {
+            const matchingMember = chatroom.members.find(
+              (member) => member.name === username
             );
+            if (matchingMember) {
+              return (
+                <div key={chatroom?.name}>
+                  <Link to={`/chat/${chatroom?.id}`}>
+                    <ChatCard item={chatroom} />
+                  </Link>
+                </div>
+              );
+            }
           })
         ) : (
-          <div className="text-black font-bold">No chats yet...</div>
+          <div className="text-black font-bold">No chatroom yet...</div>
         )}
       </div>
     </>

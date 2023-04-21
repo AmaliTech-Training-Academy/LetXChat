@@ -1,11 +1,9 @@
 import React from "react";
-import mno from "../../assets/mno.png";
 
 
 function ChatCard({item}) {
-  // console.log(item.recent_message.time);
   const recentMessage = item?.recent_message
-  console.log(recentMessage?.time);
+// console.log(recentMessage);
 
   return (
     <div className="relative flex items-center w-[280px] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">
@@ -14,7 +12,7 @@ function ChatCard({item}) {
       </div>
       <div className="flex flex-1 flex-col gap-1 justify-between h-max cursor-pointer">
         <div className="flex items-center justify-between">
-          <span className="font-medium text-sm">{item.name}</span>
+          <span className="font-medium text-sm">{item?.name}</span>
           <span className="font-medium text-[10px] mr-1">{recentMessage?.time}</span>
         </div>
         <div className="flex max-w-[200px]">
@@ -24,7 +22,7 @@ function ChatCard({item}) {
         </div>
       </div>
       <div className="absolute bottom-3 right-3 min-w-max h-3 p-1 bg-[#53352DE5] rounded-full font-semibold text-[9px] text-white flex justify-center items-center">
-        {recentMessage?.message.length}
+        {recentMessage?.message?.length}
       </div>
     </div>
   );

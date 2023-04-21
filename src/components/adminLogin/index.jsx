@@ -1,3 +1,5 @@
+import styled from "@emotion/styled";
+import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Button,
@@ -7,22 +9,19 @@ import {
   InputAdornment,
   OutlinedInput,
   TextField,
-  styled,
 } from "@mui/material";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React from "react";
+import { adminLoginSchema, loginSchema } from "../../schemas";
 import { useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
-import { loginSchema } from "../../schemas";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../feature/authActions";
+import { ADMIN_URL } from "../../defaultValues/DefaultValues";
+import axios from "axios";
+import { Navigate } from "react-router";
 import Cookies from "js-cookie";
-import { fetchUserInfo } from "../../feature/userSlice";
+import { toast } from "react-toastify";
 
 const Container = styled(Box)({
-  width: "100vw",
   height: "100vh",
   display: "flex",
   justifyContent: "center",
@@ -156,34 +155,42 @@ const LoadingButtonStyles = styled(LoadingButton)({
   },
 });
 
-const Login = () => {
+const AdminLogin = () => {
   // Show Password
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
 
-  const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   // Submit Form
   const onSubmit = async (values, actions) => {
-    dispatch(loginUser(values));
-    setTimeout(() => {
-      actions.resetForm();
-    }, 3000);
+    setIsLoading(true);
+    let config = {
+      method: "post",
+      url: `${ADMIN_URL}`,
+      headers: {
+        Accept: "application/vnd.api+json",
+        "Content-Type": "application/vnd.api+json",
+      },
+      data: values,
+
+    };
+    axios(config)
+    .then(function(response) {
+        setIsLoading(false)
+        Cookies.set('adminToken', response.data.token)
+        const SUCCESS_MESSAGE = response.data.message;
+        toast.success(SUCCESS_MESSAGE, {autoClose: 3000,});
+    }).catch(error => {
+        const ERROR_MESSAGE = error.response.data.message;
+        toast.warn(ERROR_MESSAGE);
+        console.log(error.response);
+    })
+
+    // setTimeout(() => {
+    //   actions.resetForm();
+    // }, 4000);
   };
-
-  const userToken = Cookies.get("userToken");
-  useEffect(() => {
-    if (userToken) {
-      dispatch(fetchUserInfo(userToken));
-      navigate("/chat");
-    }
-  }, [userToken, dispatch]);
-
-
-
-  // Formik Validation
 
   const {
     values,
@@ -195,35 +202,39 @@ const Login = () => {
     isSubmitting,
   } = useFormik({
     initialValues: {
-      emailID: "",
+      email: "",
       password: "",
     },
-    validationSchema: loginSchema,
+    validationSchema: adminLoginSchema,
     onSubmit,
   });
+
+  if (Cookies.get("adminToken")) {
+    return <Navigate to="/admin-dashboard" />;
+  }
 
   return (
     <Container component="main">
       <FormContainer autoComplete="off" onSubmit={handleSubmit}>
         <Box component="h2" sx={TitleStyle}>
-          Log In
+          Admin Log In
         </Box>
 
         <Box component="section" sx={FieldsContainer}>
           <Box sx={TextComponent}>
             <Box component="label" htmlFor="email">
-              Email/ Chat ID*
+              email*
             </Box>
             <TextFieldStyle
               type="text"
-              id="emailID"
-              name="emailID"
+              id="email"
+              name="email"
               placeholder="Enter your email or ID"
-              value={values.emailID}
+              value={values.email}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={touched.emailID && Boolean(errors.emailID)}
-              helperText={touched.emailID && errors.emailID}
+              error={touched.email && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
             />
           </Box>
           <Box sx={TextComponent}>
@@ -272,34 +283,14 @@ const Login = () => {
           </Box>
 
           <Box component="section" sx={SignUpLogin}>
-           
-              <ButtonStyles type="submit">
-                {
-                  loading === true || isSubmitting ? "Loading..." : 'Log In'
-                }
-              </ButtonStyles>
-        
-            <p>
-              Don't have an account?{" "}
-              <Link
-                to="/signup"
-                style={{ color: "#3683F5", cursor: "pointer" }}
-              >
-                Sign Up
-              </Link>
-            </p>
-            <p>
-              Are you and Admin?{" "}
-              <Link
-                to="/admin-login"
-                style={{
-                  color: "#3683F5",
-                  cursor: "pointer",
-                }}
-              >
-                Login as Admin
-              </Link>
-            </p>
+            {isSubmitting ? (
+              <LoadingButtonStyles
+                loading
+                variant="outlined"
+              ></LoadingButtonStyles>
+            ) : (
+              <ButtonStyles type="submit">Log In</ButtonStyles>
+            )}
           </Box>
         </Box>
       </FormContainer>
@@ -307,4 +298,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

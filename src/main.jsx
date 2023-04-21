@@ -10,6 +10,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 let persistor = persistStore(store)
 
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
