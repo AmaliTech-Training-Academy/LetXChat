@@ -5,42 +5,31 @@ import SignUp from "../components/signup/SignUp";
 import Login from "../components/login/Login";
 import About from "../components/about/About";
 import Contact from "../components/contact/Contact";
-import MainLayout from "../components/layouts/MainLayout";
+import MainLayout from "../layouts/MainLayout";
 import Sidebar from "../components/sidebar/Sidebar";
 import Settings from "../components/sidebar/Settings";
 import CreateGroup from "../components/sidebar/CreateGroup";
-import SidebarLayout from "../components/layouts/SidebarLayout";
+import SidebarLayout from "../layouts/SidebarLayout";
 import PrivateRoute from "../PrivateRoute";
 import Chat from "../pages/chat/Chat";
 import ChatComponent from "../pages/ChatComponent";
-import SignUpLayout from "../layout/signup/SignUpLayout";
+import SignUpLayout from "../layouts/SignUpLayout";
 import RegModal from "../components/regModal/RegModal";
 import AdminLogin from "../components/adminLogin";
+import Admin from "../pages/admin/Admin";
+import AdminLayout from "../layouts/AdminLayout";
+import NewChatroom from "../components/admin/NewChatroom";
 function Router() {
   return (
-    // <Routes>
-    //     <Route path='/' element={<MainLayout />}>
-    //       <Route index element={<Home />} />
-    //       <Route path='/signup' element={<SignUp />}/>
-    //       <Route path='/login' element={<Login />}/>
-    //       <Route path='/about' element={<About />}/>
-    //       <Route path='/contact' element={<Contact />}/>
-    //     </Route>
-    //     <Route element={<PrivateRoute />}>
-    //       <Route path="/chat:id" element={<Chat />} />
-    //     </Route>
-    //     <Route path='/sidebar' element={<SidebarLayout />}>
-    //       <Route index element={<Sidebar />}/>
-    //       <Route path='/sidebar/settings' element={<Settings />}/>
-    //       <Route path='/sidebar/creategroup' element={<CreateGroup />}/>
-    //     </Route>
-    // </Routes>
-
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="/signup" element={<SignUpLayout />}>
           <Route path="/signup/signupmodal" element={<RegModal />} />
+        </Route>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Admin />} />
+          <Route path="/admin/createchatroom" element={<NewChatroom />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/admin-login" element={<AdminLogin />} />

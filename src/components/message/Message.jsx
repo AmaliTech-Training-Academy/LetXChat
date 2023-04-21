@@ -123,19 +123,26 @@ const Message = () => {
     },
   };
 
-
   const sortedMessages = [...messages].sort(
     (a, b) => new Date(a.created_at) - new Date(b.created_at)
   );
 
   useEffect(() => {
+    const chatMessages = sortedMessages.map(
+      ({ file, image, text, video, voiceNote, user, created_at }) => ({
+        file,
+        image,
+        text,
+        video,
+        voiceNote,
+        sender: user.fullname,
+        sender_image: user.image,
+        time: format(new Date(created_at), "p"),
+      })
+    );
 
-    const chatMessages = sortedMessages.map(({file, image, text, video, voiceNote,  user, created_at}) => ({file, image, text, video, voiceNote, sender: user.fullname, sender_image: user.image, 
-      time: format(new Date(created_at), 'p') }))
-   
-      setAllMessages(chatMessages)
-    }, [messages])
-
+    setAllMessages(chatMessages);
+  }, [messages]);
 
   console.log(allMessages);
 
@@ -149,7 +156,7 @@ const Message = () => {
     const channel = pusher.subscribe("chat");
     channel.bind("message", function (data) {
       // dispatch(addMessage([...allMessages, data] ));
-      setAllMessages(allMessages => [...allMessages, data])
+      setAllMessages((allMessages) => [...allMessages, data]);
     });
   }, []);
 
@@ -174,8 +181,6 @@ const Message = () => {
   if (!messages) {
     return <div>No message yet</div>;
   }
-
-
 
   return (
     <div>

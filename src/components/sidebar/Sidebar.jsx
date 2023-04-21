@@ -1,26 +1,16 @@
 import React from "react";
 import UserCard from "./UserCard";
 import Search from "./Search";
-import CreateGroupSection from "./CreateGroupSection";
 import ChatCard from "./ChatCard";
-import mno from "../../assets/mno.png";
-import kofi from "../../assets/kofi.png";
-import ama from "../../assets/ama.png";
-import king from "../../assets/king.png";
-import mum from "../../assets/mum.png";
-import chef from "../../assets/chef.png";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { AiOutlineHome } from "react-icons/ai";
-import { logout } from "../../feature/userSlice";
-import { clearToken } from "../../feature/chatSlice";
 
 function Sidebar() {
   const { allChatRooms } = useSelector((state) => state.chatrooms);
   const { loading, userInfo } = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleBackHome = () => {
     navigate("/");
