@@ -2,6 +2,7 @@ import React from "react";
 import previous from "../../assets/previous.png";
 import next from "../../assets/next.png";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 function Pagination({ usersPerPage, totalUsers, paginate, currentPage, setCurrentPage }) {
   const pageNumbers = [];
@@ -10,13 +11,27 @@ function Pagination({ usersPerPage, totalUsers, paginate, currentPage, setCurren
   }
 
   const moveToNextPage =() => {
-    const nextPage = currentPage + 1
-    setCurrentPage(nextPage)
+    if(pageNumbers.length <= 1) {
+      toast.warning("Can't move to next page")
+    }
+    else {
+      const nextPage = currentPage + 1
+      setCurrentPage(nextPage)
+    }
+  }
+  const moveToPreviousPage =() => {
+    if(pageNumbers.length <= 1) {
+      toast.warning("Can't move to previous page")
+    }
+    else {
+      const nextPage = currentPage - 1
+      setCurrentPage(nextPage)
+    }
   }
   return (
     <div className="w-full flex justify-center">
       <div className="flex my-6">
-        <div className="py-3 px-4 border-y-2 border-l-2 rounded-l-lg cursor-pointer flex items-center gap-3">
+        <div className="py-3 px-4 border-y-2 border-l-2 rounded-l-lg cursor-pointer flex items-center gap-3" onClick={moveToPreviousPage}>
           <div>
             <img src={previous} alt="<-" />
           </div>

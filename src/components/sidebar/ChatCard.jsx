@@ -19,12 +19,12 @@ function ChatCard({item}) {
         </div>
         <div className="flex max-w-[200px]">
           <span className="text-[#878787] text-xs">
-            {recentMessage?.message.split(" ").length >= 7 ? recentMessage?.message.split(" ").slice(0, 7).join(' ') + '...' : recentMessage?.message}
+            {/* {recentMessage?.message.split(" ").length >= 7 ? recentMessage?.message.split(" ").slice(0, 7).join(' ') + '...' : recentMessage?.message} */}
             </span>
         </div>
       </div>
       <div className="absolute bottom-3 right-3 min-w-max h-3 p-1 bg-[#53352DE5] rounded-full font-semibold text-[9px] text-white flex justify-center items-center">
-        {recentMessage?.message.length}
+        {/* {recentMessage?.message.length} */}
       </div>
     </div>
   );
