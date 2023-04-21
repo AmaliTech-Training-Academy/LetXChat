@@ -66,14 +66,15 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
     isSubmitting,
   } = useFormik({
     initialValues: {
-      username: "",
-      email: "",
+      username: user ? user.name : "",
+      email:  user ? user.email : "",
       password: "",
       password_confirmation: "",
     },
     validationSchema: userGeneralSettings,
     onSubmit,
   });
+
 
   return (
     <motion.section

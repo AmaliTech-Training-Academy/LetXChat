@@ -95,7 +95,7 @@ const Message = () => {
   const [messages, setMessages] = useState([]);
   const { pusherMessages } = useSelector((state) => state.chat);
   const PusherMessages = pusherMessages;
-  console.log(PusherMessages);
+  // console.log(PusherMessages);
  
  
   // The Focus should always stay at the bottom for Messages
@@ -163,7 +163,6 @@ const Message = () => {
         const chatVoiceNote = message?.voiceNote;
         const chatFile = message?.file;
         // const formattedDate = format(new Date(message?.created_at), "p");
-        console.log(message);
         return (
           <div key={message.text} className="text-[0.9rem]"></div>
         )

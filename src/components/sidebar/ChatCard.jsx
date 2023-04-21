@@ -3,7 +3,8 @@ import React from "react";
 
 function ChatCard({item}) {
   const recentMessage = item?.recent_message
-
+// console.log(recentMessage);
+console.log(item);
 
   return (
     <div key={item.name} className="relative flex items-center w-[280px] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">
@@ -16,7 +17,7 @@ function ChatCard({item}) {
           <span className="font-medium text-[10px] mr-1">{recentMessage?.time}</span>
         </div>
         <div className="flex max-w-[200px]">
-          <span className="text-[#878787] text-xs">{recentMessage?.message}</span>
+          <span className="text-[#878787] text-xs">{recentMessage?.text}</span>
         </div>
       </div>
       <div className="absolute bottom-3 right-3 min-w-max h-3 p-1 bg-[#53352DE5] rounded-full font-semibold text-[9px] text-white flex justify-center items-center">

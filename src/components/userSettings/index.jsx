@@ -16,7 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../feature/userSlice";
 import { clearToken } from "../../feature/chatSlice";
 import { useNavigate } from "react-router";
-import { motion } from "framer-motion";
+import { RiWechat2Line,  } from "react-icons/ri";
+import {  HiOutlineUser } from "react-icons/hi";
 
 import GeneralSettings from "../generalSettings";
 
@@ -32,7 +33,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  height: "455px",
+  height: "480px",
   width: "478px",
   bgcolor: "#FFFFFF",
   borderRadius: "12px",
@@ -45,8 +46,8 @@ const style = {
 const UserSettings = ({ openSettings, setOpenSettings }) => {
   const handleClose = () => setOpenSettings(false);
   const [openGeneral, setOpenGeneral] = useState(false);
-  const {userInfo} = useSelector(state => state.user)
-const userImage = userInfo.image
+  const { userInfo } = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const LogoutFunc = () => {
@@ -54,6 +55,10 @@ const userImage = userInfo.image
     dispatch(clearToken());
     navigate("/");
   };
+
+  const userImage = userInfo.image;
+  const userChatId = userInfo.chat_id;
+  const fullName = userInfo.name
 
   return (
     <div>
@@ -73,7 +78,16 @@ const userImage = userInfo.image
           <div className="w-[76px] h-[76px] rounded-full mx-auto mt-[14px]">
             <img src={userImage} alt="Profile Pic" />
           </div>
-          <div className="w-full h-[175px] mt-[30px] shadow-2xl shadow-[rgba(0, 0, 0, 0.25)] rounded-[12px] text-[#101828] pl-[18px] pr-[12px] py-[13px]">
+
+          <div className="w-full h-[210px] mt-[30px] shadow-2xl shadow-[rgba(0, 0, 0, 0.25)] rounded-[12px] text-[#101828] pl-[18px] pr-[12px] pb-[13px]">
+            <div className="mx-auto mt-[14px]  flex gap-[16px] items-center h-[40px]">
+                <HiOutlineUser className="text-[#667085] text-lg" />
+                <p className="cursor-default">Name:</p> <span>{fullName}</span>
+            </div>
+            <div className="mx-auto flex gap-[16px] items-center h-[44px]">
+                <RiWechat2Line className="text-[#667085] text-lg" />
+                <p className="cursor-default">Chat ID:</p> <span>{userChatId}</span>
+            </div>
             <div
               onClick={() => setOpenGeneral(true)}
               className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer"

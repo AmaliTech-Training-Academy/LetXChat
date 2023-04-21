@@ -162,7 +162,7 @@ const Login = () => {
   const handleShowPassword = () => setShowPassword((show) => !show);
 
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   // Submit Form
@@ -272,15 +272,13 @@ const Login = () => {
           </Box>
 
           <Box component="section" sx={SignUpLogin}>
-            {loading || isSubmitting ? (
-              <LoadingButtonStyles
-                loading
-                variant="outlined"
-              ></LoadingButtonStyles>
-            ) : (
-              <ButtonStyles type="submit">Log In</ButtonStyles>
-            )}
-
+           
+              <ButtonStyles type="submit">
+                {
+                  loading === true || isSubmitting ? "Loading..." : 'Log In'
+                }
+              </ButtonStyles>
+        
             <p>
               Don't have an account?{" "}
               <Link

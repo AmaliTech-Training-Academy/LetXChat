@@ -4,6 +4,7 @@ import ChatMessage from "../../components/chatMessage/ChatMessage";
 import Input from "../../components/input/Input";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import PreviewMessages from "../../components/previewMessages";
 
 const Container = styled(Box)({
   height: "100vh",
@@ -33,6 +34,7 @@ const ChatPage = ({chatRoom}) => {
     <Container component="main">
       <ChatHead chatRoom={chatRoom} />
       <ChatMessage />
+      {/* <PreviewMessages /> */}
       <Input chatRoom={chatRoom} />
     </Container>
   );

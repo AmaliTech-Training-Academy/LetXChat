@@ -104,7 +104,6 @@ const Input = ({ chatRoom }) => {
   const [mediaRecorder, setMediaRecorder] = useState(null);
 
   const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.user.userInfo);
 
   const addEmoji = (e) => {
     setText(text + e.native);

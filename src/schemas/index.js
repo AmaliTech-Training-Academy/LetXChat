@@ -55,15 +55,14 @@ export const adminLoginSchema = yup.object().shape({
 });
 
 export const userGeneralSettings = yup.object().shape({
-   username: yup.string().trim().required("This field is required"),
+   username: yup.string().trim(),
     email: yup
     .string()
     .trim()
     .email("Invalid email")
     .matches(amalitechemail, {
       message: "email address must be from amalitech domain",
-    })
-    .required("This field is required"),
+    }),
   password: yup
     .string()
     .trim()
