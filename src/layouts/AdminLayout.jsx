@@ -1,5 +1,4 @@
 import React from 'react'
-import AdminNavbar from '../components/admin/AdminNavbar'
 import EditChatroomModal from '../components/admin/modals/EditChatroomModal'
 import Delete from '../components/admin/modals/Delete'
 import Users from '../components/admin/modals/Users'
@@ -14,7 +13,6 @@ function AdminLayout() {
       {deleteModalState && <Delete />}
       {viewUsersModalState && <Users />}
       <div className="w-full max-w-[1640px]">
-        <AdminNavbar />
         <Outlet />
         </div>
     </div>

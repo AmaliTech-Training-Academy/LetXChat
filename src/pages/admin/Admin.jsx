@@ -4,6 +4,7 @@ import Chatrooms from "../../components/admin/Chatrooms";
 import Pagination from "../../components/admin/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import {getChatrooms, getAllUsers} from "../../feature/adminSlice"
+import AdminNavbar from "../../components/admin/AdminNavbar";
 
 const users = [
   {
@@ -177,6 +178,8 @@ function Admin() {
   }, [])
 
   return (
+    <>
+    <AdminNavbar />
     <div className="md:mx-11">
           <Cards />
           <Chatrooms currentChatrooms={currentChatrooms}/>
@@ -185,8 +188,10 @@ function Admin() {
             totalUsers={chatrooms.data?.length}
             paginate={paginate}
             currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />}
     </div>
+    </>
   );
 }
 
