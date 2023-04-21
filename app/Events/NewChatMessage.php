@@ -21,6 +21,7 @@ class NewChatMessage implements ShouldBroadcast
     public function __construct(
         public $sender,
         public $sender_image,
+        public $time,
         public $text,
         public $image,
         public $video,

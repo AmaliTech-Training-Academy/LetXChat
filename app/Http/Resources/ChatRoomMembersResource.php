@@ -40,7 +40,7 @@ class ChatRoomMembersResource extends JsonResource
         $recent = ChatMessage::where('chat_room_id', $roomID)->latest()->first();
         if(!$recent) return null;
         return [
-            'message' => $recent->message,
+            'message' => $recent->text,
             'time' => strtoupper(Carbon::parse($recent->created_at)->format('g:i a'))
         ];
     }

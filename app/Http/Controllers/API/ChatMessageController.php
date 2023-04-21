@@ -6,6 +6,7 @@ use App\Events\NewChatMessage;
 use App\Http\Controllers\Controller;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -93,6 +94,7 @@ class ChatMessageController extends Controller
         broadcast(new NewChatMessage(
             Auth::user()->fullname,
             Auth::user()->image,
+            Carbon::now()->format('g:i a'),
             $request->text,
             $image,
             $video,
@@ -103,6 +105,7 @@ class ChatMessageController extends Controller
         return response()->json([
             'sender' => Auth::user()->fullname,
             'sender_image' =>  Auth::user()->image,
+            'time' => Carbon::now()->format('g:i a'),
             'text' => $newMessage->text,
             'image' =>  $newMessage->image,
             'video' => [
