@@ -12,7 +12,7 @@ import Right from "../../assets/Right.png";
 import Logout from "../../assets/Logout.png";
 import SignUpCamera from "../../assets/SignUpCamera.png";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../feature/userSlice";
 import { clearToken } from "../../feature/chatSlice";
 import { useNavigate } from "react-router";
@@ -45,7 +45,8 @@ const style = {
 const UserSettings = ({ openSettings, setOpenSettings }) => {
   const handleClose = () => setOpenSettings(false);
   const [openGeneral, setOpenGeneral] = useState(false);
-
+  const {userInfo} = useSelector(state => state.user)
+const userImage = userInfo.image
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const LogoutFunc = () => {
@@ -70,7 +71,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
             Settings
           </div>
           <div className="w-[76px] h-[76px] rounded-full mx-auto mt-[14px]">
-            <img src={ProfilePic} alt="Profile Pic" />
+            <img src={userImagegit } alt="Profile Pic" />
           </div>
           <div className="w-full h-[175px] mt-[30px] shadow-2xl shadow-[rgba(0, 0, 0, 0.25)] rounded-[12px] text-[#101828] pl-[18px] pr-[12px] py-[13px]">
             <div

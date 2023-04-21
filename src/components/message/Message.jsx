@@ -31,7 +31,7 @@ const MessageContent = styled(Box)({
   background: "#878787",
   position: "relative",
   color: "#FFFFFF",
-  overflow: 'hidden'
+  overflow: "hidden",
 });
 
 const Text = styled("p")({
@@ -44,7 +44,7 @@ const Author = styled("p")({
   color: "#252525",
   fontSize: "14px",
   padding: "2px 5px",
-  background: '#e2e2e2'
+  background: "#e2e2e2",
 });
 
 const Time = styled("p")({
@@ -70,7 +70,7 @@ const OwnerMessageContent = styled(Box)({
   flexDirection: "column",
   gap: "10px",
   alignItems: "flex-start",
-  background: "rgba(83, 53, 45, 0.9)",
+  background: "rgba(83, 53, 45, 0.7)",
   position: "relative",
   color: "#FFFFFF",
   width: "46%",
@@ -93,14 +93,16 @@ const OwnerText = styled("p")({
 
 const Message = () => {
   const [messages, setMessages] = useState([]);
-  const [sender, setSender] = useState("");
-  const [chatroomId, setChatroomId] = useState(null);
-
+  const { pusherMessages } = useSelector((state) => state.chat);
+  const PusherMessages = pusherMessages;
+  console.log(PusherMessages);
+ 
+ 
   // The Focus should always stay at the bottom for Messages
   const messagesRef = useRef(null);
   useEffect(() => {
     messagesRef.current?.scrollIntoView();
-  }, [messages]);
+  }, [messages, PusherMessages]);
 
   const { id } = useParams();
   const userToken = Cookies.get("userToken");
@@ -122,7 +124,6 @@ const Message = () => {
     axios
       .request(config)
       .then((response) => {
-        console.log(response.data);
         setMessages(response.data);
         return response.data;
       })
@@ -132,19 +133,42 @@ const Message = () => {
 
     messages &&
       messages?.map((el) => {
-        setSender(el.user.fullname);
         setChatroomId(el.chat_room_id);
         return el;
       });
+
+
   }, [id]);
 
   if (!messages) {
     return <div>No message yet</div>;
   }
 
+  // Get Pusher Messages from redux store
+
+  const sortedPusherMessages = [...PusherMessages].sort(
+    (a, b) => new Date(a.created_at) - new Date(b.created_at)
+  );
+
   const sortedMessages = [...messages].sort(
     (a, b) => new Date(a.created_at) - new Date(b.created_at)
   );
+
+  {
+    sortedPusherMessages &&
+      sortedPusherMessages?.map((message) => {
+        const userImage = message?.user?.image;
+        const chatImage = message?.image;
+        const chatVideo = message?.video;
+        const chatVoiceNote = message?.voiceNote;
+        const chatFile = message?.file;
+        // const formattedDate = format(new Date(message?.created_at), "p");
+        console.log(message);
+        return (
+          <div key={message.text} className="text-[0.9rem]"></div>
+        )
+      });
+  }
 
   return (
     <>
@@ -169,8 +193,8 @@ const Message = () => {
                       />
                     </MessageInfo>
                     <MessageContent>
-                      <Author>{el.user.username}</Author>
-                      <Text>{el.message}</Text>
+                      <Author>@{el.user.username}</Author>
+                      <Text>{el.text}</Text>
                       {el.image && (
                         <img
                           src={`${FILE_URL}${chatImage}`}
@@ -242,7 +266,7 @@ const Message = () => {
                 <div key={el.user.fullname}>
                   <OwnerContainer component="article">
                     <OwnerMessageContent>
-                      <OwnerText>{el.message}</OwnerText>
+                      <OwnerText>{el.text}</OwnerText>
                       {el.image && (
                         <img
                           src={`${FILE_URL}${chatImage}`}
@@ -320,7 +344,6 @@ const Message = () => {
           );
         })}
       <div ref={messagesRef} />
-      
     </>
 
     // <div></div>
