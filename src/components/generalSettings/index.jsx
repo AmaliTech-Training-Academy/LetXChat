@@ -127,7 +127,7 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
                 </p>
               </div>
             </div>
-            <div className="text-[#344054] text-[14px] flex flex-col gap-[8px] w-[47%] mb-[2rem]">
+            <div className="text-[#344054] text-[14px] flex flex-col gap-[8px] w-[47%]">
               <p>Email</p>
               <div
                 className={`h-[36px] border rounded-[5px] flex items-center px-2 gap-[9px] relative ${

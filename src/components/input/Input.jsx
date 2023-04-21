@@ -9,12 +9,10 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { BsMicMute } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage } from "../../feature/chatMessageSlice";
-
+    
 import uploadVideo from "../../assets/uploadVideo.png";
 
 import { CHATROOMS_URL } from "../../defaultValues/DefaultValues";
-import Pusher from "pusher-js";
 import Cookies from "js-cookie";
 import axios from "axios";
 
@@ -127,18 +125,7 @@ const Input = ({ chatRoom }) => {
     };
   });
 
-  useEffect(() => {
-    // Initialize Pusher Js
 
-    const pusher = new Pusher(import.meta.env.VITE_PUSHER_API_KEY, {
-      cluster: import.meta.env.VITE_PUSHER_CLUSTER,
-      encrypted: true,
-    });
-    const channel = pusher.subscribe("chat");
-    channel.bind("message", function (data) {
-      dispatch(addMessage(data));
-    });
-  }, []);
 
   // Send Message When your press Ctrl and enter key
   const handleKeyDown = (event) => {

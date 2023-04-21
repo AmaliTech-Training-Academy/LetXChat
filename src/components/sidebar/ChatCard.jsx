@@ -4,7 +4,6 @@ import React from "react";
 function ChatCard({item}) {
   const recentMessage = item?.recent_message
 // console.log(recentMessage);
-console.log(item);
 
   return (
     <div key={item.name} className="relative flex items-center w-[280px] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">

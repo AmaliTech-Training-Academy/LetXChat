@@ -67,10 +67,8 @@ export const userGeneralSettings = yup.object().shape({
     .string()
     .trim()
     .min(8)
-    .matches(passwordRules, { message: "Please create a stronger password" })
-    .required("This field is required"),
+    .matches(passwordRules, { message: "Please create a stronger password" }),
   password_confirmation: yup
     .string()
     .oneOf([yup.ref("password"), null], "Passwords must match")
-    .required("This field is required"),
 });

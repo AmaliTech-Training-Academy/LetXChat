@@ -25,7 +25,6 @@ function Sidebar() {
   const handleBackHome = () => {
     navigate("/");
   };
-
   const username = userInfo?.name;
 
   if (loading) {

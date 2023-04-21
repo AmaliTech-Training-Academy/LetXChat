@@ -1,7 +1,7 @@
 import { Box, styled } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { FiDownload } from "react-icons/fi";
 import axios from "axios";
@@ -9,7 +9,9 @@ import { useParams } from "react-router";
 import { CHATROOMS_URL, FILE_URL } from "../../defaultValues/DefaultValues";
 import Cookies from "js-cookie";
 import { useState } from "react";
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
+import Pusher from "pusher-js";
+import { addMessage } from "../../feature/chatMessageSlice";
 
 const Container = styled(Box)({
   display: "flex",
@@ -93,16 +95,17 @@ const OwnerText = styled("p")({
 
 const Message = () => {
   const [messages, setMessages] = useState([]);
+  const [allMessages, setAllMessages] = useState([]);
   const { pusherMessages } = useSelector((state) => state.chat);
   const PusherMessages = pusherMessages;
+  const dispatch = useDispatch();
   // console.log(PusherMessages);
- 
- 
+
   // The Focus should always stay at the bottom for Messages
   const messagesRef = useRef(null);
   useEffect(() => {
     messagesRef.current?.scrollIntoView();
-  }, [messages, PusherMessages]);
+  }, [allMessages]);
 
   const { id } = useParams();
   const userToken = Cookies.get("userToken");
@@ -120,11 +123,42 @@ const Message = () => {
     },
   };
 
+
+  const sortedMessages = [...messages].sort(
+    (a, b) => new Date(a.created_at) - new Date(b.created_at)
+  );
+
+  useEffect(() => {
+
+    const chatMessages = sortedMessages.map(({file, image, text, video, voiceNote,  user, created_at}) => ({file, image, text, video, voiceNote, sender: user.fullname, sender_image: user.image, 
+      time: format(new Date(created_at), 'p') }))
+   
+      setAllMessages(chatMessages)
+    }, [messages])
+
+
+  console.log(allMessages);
+
+  useEffect(() => {
+    // Initialize Pusher Js
+
+    const pusher = new Pusher(import.meta.env.VITE_PUSHER_API_KEY, {
+      cluster: import.meta.env.VITE_PUSHER_CLUSTER,
+      encrypted: true,
+    });
+    const channel = pusher.subscribe("chat");
+    channel.bind("message", function (data) {
+      // dispatch(addMessage([...allMessages, data] ));
+      setAllMessages(allMessages => [...allMessages, data])
+    });
+  }, []);
+
   useEffect(() => {
     axios
       .request(config)
       .then((response) => {
         setMessages(response.data);
+        // dispatch(addMessage(response.data))
         return response.data;
       })
       .catch((error) => {
@@ -133,219 +167,198 @@ const Message = () => {
 
     messages &&
       messages?.map((el) => {
-        setChatroomId(el.chat_room_id);
         return el;
       });
-
-
   }, [id]);
 
   if (!messages) {
     return <div>No message yet</div>;
   }
 
-  // Get Pusher Messages from redux store
 
-  const sortedPusherMessages = [...PusherMessages].sort(
-    (a, b) => new Date(a.created_at) - new Date(b.created_at)
-  );
-
-  const sortedMessages = [...messages].sort(
-    (a, b) => new Date(a.created_at) - new Date(b.created_at)
-  );
-
-  {
-    sortedPusherMessages &&
-      sortedPusherMessages?.map((message) => {
-        const userImage = message?.user?.image;
-        const chatImage = message?.image;
-        const chatVideo = message?.video;
-        const chatVoiceNote = message?.voiceNote;
-        const chatFile = message?.file;
-        // const formattedDate = format(new Date(message?.created_at), "p");
-        return (
-          <div key={message.text} className="text-[0.9rem]"></div>
-        )
-      });
-  }
 
   return (
-    <>
-      {sortedMessages &&
-        sortedMessages.map((el) => {
-          const userImage = el.user.image;
-          const chatImage = el.image;
-          const chatVideo = el.video;
-          const chatVoiceNote = el.voiceNote;
-          const chatFile = el.file;
-          const formattedDate = format(new Date(el.created_at), "p");
-          return (
-            <div key={el.id} className="text-[0.9rem]">
-              {el.user.fullname !== username && (
-                <div key={el.user.fullname}>
-                  <Container component="article">
-                    <MessageInfo>
-                      <img
-                        src={`${FILE_URL}${userImage}`}
-                        style={{ width: "2.5rem", objectFit: "cover" }}
-                        alt="User Image"
-                      />
-                    </MessageInfo>
-                    <MessageContent>
-                      <Author>@{el.user.username}</Author>
-                      <Text>{el.text}</Text>
-                      {el.image && (
+    <div>
+      <>
+        {allMessages &&
+          allMessages.map((el, index) => {
+            const userImage = el.image;
+            const chatImage = el.image;
+            const chatVideo = el.video;
+            const chatVoiceNote = el.voiceNote;
+            const chatFile = el.file;
+            return (
+              <div key={index} className="text-[0.9rem]">
+                {el.sender !== username && (
+                  <div key={el.sender}>
+                    <Container component="article">
+                      <MessageInfo>
                         <img
-                          src={`${FILE_URL}${chatImage}`}
-                          style={{
-                            marginBottom: "25px",
-                            width: "98%",
-                            marginInline: "auto",
-                            borderRadius: "10px",
-                          }}
-                          alt="image"
+                          src={`${FILE_URL}${userImage}`}
+                          style={{ width: "2.5rem", objectFit: "cover" }}
+                          alt="User Image"
                         />
-                      )}
-
-                      {el.video && (
-                        <>
-                          <p className="mb-[-0.5rem] text-sm text-zinc-300">
-                            Video name:{" "}
-                            {chatVideo.substring(7, 30).slice(".", -4)}
-                          </p>
-                          <video style={{ marginBottom: "1.2rem" }} controls>
-                            <source
-                              src={`${FILE_URL}${chatVideo}`}
-                              type="video/mp4"
-                            />
-                          </video>
-                        </>
-                      )}
-
-                      {el.voiceNote && (
-                        <audio controls>
-                          <source
-                            src={`${FILE_URL}${chatVoiceNote}`}
-                            type="audio/mp3"
+                      </MessageInfo>
+                      <MessageContent>
+                        <Author>@{el.sender}</Author>
+                        <Text>{el.text}</Text>
+                        {el.image && (
+                          <img
+                            src={`${FILE_URL}${chatImage}`}
+                            style={{
+                              marginBottom: "25px",
+                              width: "98%",
+                              marginInline: "auto",
+                              borderRadius: "10px",
+                            }}
+                            alt="image"
                           />
-                        </audio>
-                      )}
+                        )}
 
-                      {el.file && (
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "10px",
-                            margin: "1rem 0.5rem",
-                            marginTop: "0",
-                            alignItems: "center",
-                          }}
-                        >
-                          <p className="mb-[-0.5rem] text-sm text-zinc-300">
-                            File name: {chatFile.substring(6, 20).split(".")}
-                          </p>
-                          <a
-                            href={`${FILE_URL}${chatFile}`}
-                            download={chatFile.substring(6)}
-                          >
-                            <FiDownload
-                              style={{ color: "#3683F5", fontSize: "1.5rem" }}
-                            />
-                          </a>
-                        </div>
-                      )}
+                        {el.video && (
+                          <>
+                            <p className="mb-[-0.5rem] text-sm text-zinc-300">
+                              Video name:{" "}
+                              {chatVideo.substring(7, 30).slice(".", -4)}
+                            </p>
+                            <video style={{ marginBottom: "1.2rem" }} controls>
+                              <source
+                                src={`${FILE_URL}${chatVideo}`}
+                                type="video/mp4"
+                              />
+                            </video>
+                          </>
+                        )}
 
-                      <Time>{formattedDate}</Time>
-                    </MessageContent>
-                  </Container>
-                </div>
-              )}
-
-              {el.user.fullname === username && (
-                <div key={el.user.fullname}>
-                  <OwnerContainer component="article">
-                    <OwnerMessageContent>
-                      <OwnerText>{el.text}</OwnerText>
-                      {el.image && (
-                        <img
-                          src={`${FILE_URL}${chatImage}`}
-                          style={{
-                            marginBottom: "25px",
-                            width: "10rem",
-                            // height: '20rem',
-                            marginInline: "auto",
-                            borderRadius: "10px",
-                          }}
-                          alt="image"
-                        />
-                      )}
-
-                      {el.video && (
-                        <>
-                          <p className="mb-[-0.5rem] text-sm text-zinc-300">
-                            Video name:{" "}
-                            {chatVideo.substring(7, 30).slice(".", -4)}
-                          </p>
-                          <video style={{ marginBottom: "1.2rem" }} controls>
+                        {el.voiceNote && (
+                          <audio controls>
                             <source
-                              src={`${FILE_URL}${chatVideo}`}
-                              type="video/mp4"
+                              src={`${FILE_URL}${chatVoiceNote}`}
+                              type="audio/mp3"
                             />
-                          </video>
-                        </>
-                      )}
+                          </audio>
+                        )}
 
-                      {el.voiceNote && (
-                        <audio
-                          controls
-                          src={`${FILE_URL}${chatVoiceNote}`}
-                          style={{ marginBottom: "2rem" }}
-                        >
-                          <a
-                            href={`${FILE_URL}${chatVoiceNote}`}
-                            download="recording.ogg"
+                        {el.file && (
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "10px",
+                              margin: "1rem 0.5rem",
+                              marginTop: "0",
+                              alignItems: "center",
+                            }}
                           >
-                            Download Recording
-                          </a>
-                        </audio>
-                      )}
+                            <p className="mb-[-0.5rem] text-sm text-zinc-300">
+                              File name: {chatFile.substring(6, 20).split(".")}
+                            </p>
+                            <a
+                              href={`${FILE_URL}${chatFile}`}
+                              download={chatFile.substring(6)}
+                            >
+                              <FiDownload
+                                style={{
+                                  color: "#3683F5",
+                                  fontSize: "1.5rem",
+                                }}
+                              />
+                            </a>
+                          </div>
+                        )}
 
-                      {el.file && (
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "10px",
-                            margin: "1rem 0.5rem",
-                            marginTop: "0",
-                            alignItems: "center",
-                          }}
-                        >
-                          <p className="mb-[-0.5rem] text-sm text-zinc-300">
-                            File name: {chatFile.substring(6, 20).split(".")}
-                          </p>
-                          <a
-                            href={`${FILE_URL}${chatFile}`}
-                            download={chatFile.substring(6)}
+                        <Time>{el.time}</Time>
+                      </MessageContent>
+                    </Container>
+                  </div>
+                )}
+
+                {el.sender === username && (
+                  <div key={username}>
+                    <OwnerContainer component="article">
+                      <OwnerMessageContent>
+                        <OwnerText>{el.text}</OwnerText>
+                        {el.image && (
+                          <img
+                            src={`${FILE_URL}${chatImage}`}
+                            style={{
+                              marginBottom: "25px",
+                              width: "10rem",
+                              // height: '20rem',
+                              marginInline: "auto",
+                              borderRadius: "10px",
+                            }}
+                            alt="image"
+                          />
+                        )}
+
+                        {el.video && (
+                          <>
+                            <p className="mb-[-0.5rem] text-sm text-zinc-300">
+                              Video name:{" "}
+                              {chatVideo.substring(7, 30).slice(".", -4)}
+                            </p>
+                            <video style={{ marginBottom: "1.2rem" }} controls>
+                              <source
+                                src={`${FILE_URL}${chatVideo}`}
+                                type="video/mp4"
+                              />
+                            </video>
+                          </>
+                        )}
+
+                        {el.voiceNote && (
+                          <audio
+                            controls
+                            src={`${FILE_URL}${chatVoiceNote}`}
+                            style={{ marginBottom: "2rem" }}
                           >
-                            <FiDownload
-                              style={{ color: "#3683F5", fontSize: "1.5rem" }}
-                            />
-                          </a>
-                        </div>
-                      )}
+                            <a
+                              href={`${FILE_URL}${chatVoiceNote}`}
+                              download="recording.ogg"
+                            >
+                              Download Recording
+                            </a>
+                          </audio>
+                        )}
 
-                      <OwnerTime>{formattedDate}</OwnerTime>
-                    </OwnerMessageContent>
-                  </OwnerContainer>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      <div ref={messagesRef} />
-    </>
+                        {el.file && (
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "10px",
+                              margin: "1rem 0.5rem",
+                              marginTop: "0",
+                              alignItems: "center",
+                            }}
+                          >
+                            <p className="mb-[-0.5rem] text-sm text-zinc-300">
+                              File name: {chatFile.substring(6, 20).split(".")}
+                            </p>
+                            <a
+                              href={`${FILE_URL}${chatFile}`}
+                              download={chatFile.substring(6)}
+                            >
+                              <FiDownload
+                                style={{
+                                  color: "#3683F5",
+                                  fontSize: "1.5rem",
+                                }}
+                              />
+                            </a>
+                          </div>
+                        )}
 
-    // <div></div>
+                        <OwnerTime>{el.time}</OwnerTime>
+                      </OwnerMessageContent>
+                    </OwnerContainer>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        <div ref={messagesRef} />
+      </>
+    </div>
   );
 };
 
