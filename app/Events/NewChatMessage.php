@@ -26,6 +26,7 @@ class NewChatMessage implements ShouldBroadcast
         public $image,
         public $video,
         public $voiceNote,
+        public $audioUrl,
         public $file
     )
     {

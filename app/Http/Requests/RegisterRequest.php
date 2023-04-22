@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'fullname' => 'required|string|max:50|regex:/^[a-zA-Z0-9]/i',
-            'username' => 'required|unique:users,username|string|max:50|regex:/^[a-zA-Z0-9]/i',
+            'username' => 'required|unique:users,username|string|max:50|regex:/^[a-zA-Z0-9](?:_?[a-zA-Z0-9])*[a-zA-Z0-9]$/',
             'email' => ['required','unique:users,email','regex:/[a-z]+\.+[a-z]+@amalitech\.(com|org)$/m'],
             'image' => 'required',
             'password' => 'required|min:8|confirmed',

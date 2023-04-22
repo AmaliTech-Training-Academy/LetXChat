@@ -88,6 +88,7 @@ class ChatMessageController extends Controller
             'image' => $image,
             'video' => $video,
             'voiceNote' => $audio,
+            'audioUrl' => $request->audioUrl,
             'file' => $file
         ]);
 
@@ -99,6 +100,7 @@ class ChatMessageController extends Controller
             $image,
             $video,
             $audio,
+            $request->audioUrl,
             $file
         ))->toOthers();
 
