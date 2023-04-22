@@ -20,8 +20,7 @@ export const fetchChatRooms = createAsyncThunk(
 
     try {
       const res = await axios(config);
-      // Cookies.set('chatrooms', res.data.chatrooms)
-      // localStorage.setItem('userChatrooms', res.data.data)
+ 
       return res.data.data;
     } catch (error) {
       console.error(error.message);

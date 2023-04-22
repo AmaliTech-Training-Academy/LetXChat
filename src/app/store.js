@@ -8,13 +8,9 @@ import chatReducer from "../feature/chatMessageSlice";
 import chatroomsReducer from "../feature/chatRooms";
 import audioReducer from '../feature/audioSlice'
 
-const persistConfig = {
-  key: "root",
-  version: 1,
-  storage,
-};
+  
 
-const reducer = combineReducers({
+const rootReducer = combineReducers({
   admin: adminReducer,
   user: userReducer,
   auth: authReducer,
@@ -23,8 +19,7 @@ const reducer = combineReducers({
   audio: audioReducer
 });
 
-const persistedReducer = persistReducer(persistConfig, reducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
 });

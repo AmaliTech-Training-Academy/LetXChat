@@ -205,11 +205,8 @@ const SignUp = () => {
 
     // actions.resetForm();
 
-
-
     dispatch(registerUser(values));
   };
-  console.log(success);
 
 useEffect(() => {
     // redirect user to confirmation modal if registration was successful

@@ -5,7 +5,7 @@ function Search({settings}) {
   const [searchInput, setSearchInput] = useState('')
 
   return (
-    <div className={`${!settings ? 'mt-14 rounded-xl' : 'mt-0 rounded-lg'} w-[295px] h-9 bg-white mx-auto flex items-center`}>
+    <div className={`${!settings ? 'mt-6 rounded-xl' : 'mt-0 rounded-lg'} w-[295px] h-9 bg-white mx-auto flex items-center`}>
         {!settings && <div className='w-[25px] h-[25px] ml-2'>
             <img src={search} alt="" className='w-full h-full object-cover'/>
         </div>}

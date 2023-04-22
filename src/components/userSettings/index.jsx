@@ -20,6 +20,7 @@ import { RiWechat2Line,  } from "react-icons/ri";
 import {  HiOutlineUser } from "react-icons/hi";
 
 import GeneralSettings from "../generalSettings";
+import Cookies from "js-cookie";
 
 const StyledModal = styled(Modal)({
   "& .MuiBackdrop-root": {
@@ -56,7 +57,6 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
     navigate("/");
   };
 
-  const userImage = userInfo.image;
   const userChatId = userInfo.chat_id;
   const fullName = userInfo.name
 
@@ -76,7 +76,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
             Settings
           </div>
           <div className="w-[76px] h-[76px] rounded-full mx-auto mt-[14px]">
-            <img src={userImage} alt="Profile Pic" />
+            <img src={userInfo.image} alt="Profile Pic" />
           </div>
 
           <div className="w-full h-[210px] mt-[30px] shadow-2xl shadow-[rgba(0, 0, 0, 0.25)] rounded-[12px] text-[#101828] pl-[18px] pr-[12px] pb-[13px]">

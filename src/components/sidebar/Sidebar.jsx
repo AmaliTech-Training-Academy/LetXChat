@@ -17,6 +17,9 @@ function Sidebar() {
   };
   const username = userInfo?.name;
 
+  const chatrooms = Array.from(allChatRooms)
+  chatrooms.sort((a, b) => a.name.localeCompare(b.name));
+
   if (loading) {
     return (
       <div
@@ -40,20 +43,22 @@ function Sidebar() {
   return (
     <>
       <div
-        className="mt-[1rem] ml-2 cursor-pointer text-sm"
+        className="mt-[1rem] w-[300px] mx-auto cursor-pointer text-sm"
         onClick={handleBackHome}
       >
-        <span>&#8592;</span> Back Home
+
+        <span >&#8592;</span> Back Home
       </div>
 
       <UserCard />
       <Search />
-      <div className="w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
-        {allChatRooms?.length ? (
-          allChatRooms?.map((chatroom) => {
+      <div className="w-full h-full mt-6 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
+        {chatrooms?.length ? (
+          chatrooms?.map((chatroom) => {
             const matchingMember = chatroom.members.find(
               (member) => member.name === username
             );
+
             if (matchingMember) {
               return (
                 <div key={chatroom?.name}>
