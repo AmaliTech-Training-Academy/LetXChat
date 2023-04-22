@@ -118,6 +118,7 @@ class ChatMessageController extends Controller
                 'name' => $audioName,
                 'url' =>  $newMessage->voiceNote
             ],
+            'audioUrl' => $newMessage->audioUrl,
             'file' => [
                 'name' => $fileName,
                 'url' =>  $newMessage->file
