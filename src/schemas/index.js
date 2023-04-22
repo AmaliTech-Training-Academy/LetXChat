@@ -55,7 +55,7 @@ export const adminLoginSchema = yup.object().shape({
 });
 
 export const userGeneralSettings = yup.object().shape({
-   username: yup.string().trim(),
+  fullname: yup.string().trim(),
     email: yup
     .string()
     .trim()

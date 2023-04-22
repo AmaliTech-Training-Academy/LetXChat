@@ -22,7 +22,7 @@ const NoMessageCont = styled(Box)({
 })
 
 const ChatComponent = () => {
-  const { allChatRooms } = useSelector((state) => state.chatrooms);
+  const { allChatRooms } = useSelector((state) => state.userChatrooms);
   // const Rooms = allChatRooms?.find(
   //   (chatroom) => chatroom?.id === parseInt(id)
   // );

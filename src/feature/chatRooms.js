@@ -6,23 +6,22 @@ import Cookies from "js-cookie";
 const CHATROOMS_API = CHATROOMS_URL;
 
 export const fetchChatRooms = createAsyncThunk(
-  "chatrooms/fetchChatRooms",
+  "userChatrooms/fetchChatRooms",
   async () => {
-    const UserInfo = Cookies.get("userInfo");
+    const UserToken = Cookies.get("userToken");
 
     let config = {
       method: "get",
       url: CHATROOMS_API,
       headers: {
-        Authorization: `Bearer ${UserInfo}`,
+        Authorization: `Bearer ${UserToken}`,
       },
     };
 
     try {
       const res = await axios(config);
       // Cookies.set('chatrooms', res.data.chatrooms)
-      localStorage.setItem('chatrooms', res.data.data)
-
+      // localStorage.setItem('userChatrooms', res.data.data)
       return res.data.data;
     } catch (error) {
       console.error(error.message);
@@ -38,7 +37,7 @@ const initialState = {
 }
 
 const chatRoomsSlice = createSlice({
-    name: 'chatrooms',
+    name: 'userChatrooms',
     initialState,
     reducers: {},
     extraReducers: (builder) => {

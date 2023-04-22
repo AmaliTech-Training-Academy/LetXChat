@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { fetchChatRooms } from "./feature/chatRooms";
 
-
 function App() {
   const dispatch = useDispatch();
 
@@ -16,8 +15,6 @@ function App() {
   useEffect(() => {
     dispatch(fetchChatRooms(userToken));
   }, [dispatch, userToken]);
-
- 
 
   return (
     <div className="App">

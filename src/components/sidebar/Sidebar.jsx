@@ -8,7 +8,7 @@ import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 function Sidebar() {
-  const { allChatRooms } = useSelector((state) => state.chatrooms);
+  const { allChatRooms } = useSelector((state) => state.userChatrooms);
   const { loading, userInfo } = useSelector((state) => state.user);
   const navigate = useNavigate();
 

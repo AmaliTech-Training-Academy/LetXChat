@@ -14,8 +14,8 @@ const Container = styled(Box)({
 
 const Chat = () => {
   const { id } = useParams();
-  const { loading } = useSelector((state) => state.user || state.chatrooms);
-  const { allChatRooms } = useSelector((state) => state.chatrooms);
+  const { loading } = useSelector((state) => state.user || state.userChatrooms);
+  const { allChatRooms } = useSelector((state) => state.userChatrooms);
 
 
  

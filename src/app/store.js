@@ -6,6 +6,7 @@ import authReducer from "../feature/chatSlice";
 import userReducer from "../feature/userSlice";
 import chatReducer from "../feature/chatMessageSlice";
 import chatroomsReducer from "../feature/chatRooms";
+import audioReducer from '../feature/audioSlice'
 
 const persistConfig = {
   key: "root",
@@ -18,7 +19,8 @@ const reducer = combineReducers({
   user: userReducer,
   auth: authReducer,
   chat: chatReducer,
-  chatrooms: chatroomsReducer,
+  userChatrooms: chatroomsReducer,
+  audio: audioReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
