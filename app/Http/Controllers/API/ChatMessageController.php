@@ -92,7 +92,7 @@ class ChatMessageController extends Controller
         ]);
 
         broadcast(new NewChatMessage(
-            Auth::user()->fullname,
+            Auth::user()->username,
             Auth::user()->image,
             Carbon::now()->format('g:i a'),
             $request->text,
@@ -103,7 +103,7 @@ class ChatMessageController extends Controller
         ))->toOthers();
 
         return response()->json([
-            'sender' => Auth::user()->fullname,
+            'sender' => Auth::user()->username,
             'sender_image' =>  Auth::user()->image,
             'time' => Carbon::now()->format('g:i a'),
             'text' => $newMessage->text,
