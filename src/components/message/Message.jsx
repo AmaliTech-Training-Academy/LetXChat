@@ -98,7 +98,6 @@ const Message = () => {
   const [messages, setMessages] = useState([]);
   const [allMessages, setAllMessages] = useState([]);
 
-
   // The Focus should always stay at the bottom for Messages
   const messagesRef = useRef(null);
   useEffect(() => {
@@ -108,7 +107,7 @@ const Message = () => {
   const { id } = useParams();
   const userToken = Cookies.get("userToken");
   const { userInfo } = useSelector((state) => state.user);
-  let username = userInfo.name;
+  let username = userInfo.username;
 
   let config = {
     method: "get",
@@ -120,6 +119,7 @@ const Message = () => {
       Authorization: `Bearer ${userToken}`,
     },
   };
+
 
   const sortedMessages = [...messages].sort(
     (a, b) => new Date(a.created_at) - new Date(b.created_at)
@@ -133,14 +133,16 @@ const Message = () => {
         text,
         video,
         voiceNote,
-        sender: user.fullname,
+        sender: user.username,
         sender_image: user.image,
         time: format(new Date(created_at), "p"),
       })
     );
 
+
     setAllMessages(chatMessages);
   }, [messages]);
+
 
   useEffect(() => {
     // Initialize Pusher Js
@@ -155,6 +157,8 @@ const Message = () => {
       setAllMessages((allMessages) => [...allMessages, data]);
     });
   }, []);
+
+  console.log(allMessages);
 
   useEffect(() => {
     axios
@@ -177,24 +181,22 @@ const Message = () => {
     return <div>No message yet</div>;
   }
 
-  const recordedAudio = useSelector((state) => state.audio);
-  console.log(recordedAudio);
-
   return (
     <div>
       <>
         {allMessages &&
           allMessages.map((el, index) => {
-            const userImage = el.image;
+            const userImage = el.sender_image;
             const chatImage = el.image;
             const chatVideo = el.video;
             const chatVoiceNote = el.voiceNote;
-
-            // Formatting files
+            const chatAudio = el?.audioUrl;
             const chatFile = el.file;
+            // Formatting files
+
             const maxLength = 15;
             const regex = /(?:\.([^.]+))?$/;
-            const fileType = regex.exec(chatFile)[1]
+            const fileType = regex.exec(chatFile)[1];
 
             const longFileName = chatFile?.split("/").pop();
             const fileName =
@@ -204,7 +206,6 @@ const Message = () => {
                   "..." +
                   fileType;
 
-            console.log(fileName);
             let icon;
             if (fileType === "pdf") {
               icon = (
@@ -237,11 +238,12 @@ const Message = () => {
                         />
                       </MessageInfo>
                       <MessageContent>
-                        <Author>@{el.sender}</Author>
+                        <Author>{el.sender}</Author>
                         <Text>{el.text}</Text>
                         {el.image && (
                           <img
                             src={`${FILE_URL}${chatImage}`}
+                            // src={chatImage}
                             style={{
                               marginBottom: "25px",
                               width: "98%",
@@ -281,31 +283,15 @@ const Message = () => {
                         )}
 
                         {el.file && (
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: "10px",
-                              margin: "1rem 0.5rem",
-                              marginTop: "0",
-                              alignItems: "center",
-                            }}
-                          >
-                            <p className="mb-[-0.5rem] text-sm text-zinc-300">
-                              File name: {chatFile.substring(6, 20).split(".")}
-                            </p>
-                            <div className="w-[3rem] h-[3rem] text-red-400 bg-blue-400">
-                              {icon}
-                            </div>
+                          <div className="text-sm text-zinc-300 flex gap-3 mb-4 px-2 py-1 items-end italic cursor-default bg-[#53352d1f] w-[94%] m-auto rounded">
+                            {icon}
+                            {fileName}
                             <a
                               href={`${FILE_URL}${chatFile}`}
                               download={chatFile.substring(6)}
+                              target="_blank"
                             >
-                              <FiDownload
-                                style={{
-                                  color: "#3683F5",
-                                  fontSize: "1.5rem",
-                                }}
-                              />
+                              <AiOutlineCloudDownload className="text-zinc-200 text-xl hover:scale-125 transition duration-300 ease-in-out cursor-pointer" />
                             </a>
                           </div>
                         )}
@@ -335,7 +321,11 @@ const Message = () => {
                               Video name:{" "}
                               {chatVideo.substring(7, 30).slice(".", -4)}
                             </p>
-                            <video style={{ marginBottom: "1.2rem" }} controls className="px-2">
+                            <video
+                              style={{ marginBottom: "1.2rem" }}
+                              controls
+                              className="px-2"
+                            >
                               <source
                                 src={`${FILE_URL}${chatVideo}`}
                                 type="video/mp4"
@@ -349,11 +339,13 @@ const Message = () => {
                             <audio
                               controls
                               // src={`${FILE_URL}${chatVoiceNote}`}
-                              // src={chatVoiceNote}
-                              src={recordedAudio}
+                              // src={url}
+                              // src={URL.createObjectURL(`${FILE_URL}${chatVoiceNote}`)}
+
                               style={{ marginBottom: "2rem", width: "100%" }}
                               className="px-2"
                             >
+                              <source src={chatVoiceNote} type="audio/mpeg" />
                               <a
                                 href={`${FILE_URL}${chatVoiceNote}`}
                                 download="recording.ogg"

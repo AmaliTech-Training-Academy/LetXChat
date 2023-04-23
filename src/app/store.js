@@ -1,6 +1,4 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage";
-import { persistReducer } from "redux-persist";
 import adminReducer from "../feature/adminSlice";
 import authReducer from "../feature/chatSlice";
 import userReducer from "../feature/userSlice";

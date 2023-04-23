@@ -3,22 +3,37 @@ import UserCard from "./UserCard";
 import Search from "./Search";
 import ChatCard from "./ChatCard";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { CHATROOMS_URL } from "../../defaultValues/DefaultValues";
+import axios from "axios";
+import { useState } from "react";
+import { useEffect } from "react";
+import { fetchChatRooms } from "../../feature/chatRooms";
 
 function Sidebar() {
   const { allChatRooms } = useSelector((state) => state.userChatrooms);
   const { loading, userInfo } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
+  const userToken = Cookies.get("userToken")
+  useEffect(() => {
+
+    dispatch(fetchChatRooms(userToken))
+  }, [])
+  
+  
 
   const handleBackHome = () => {
     navigate("/");
   };
   const username = userInfo?.name;
 
-  const chatrooms = Array.from(allChatRooms)
-  chatrooms.sort((a, b) => a.name.localeCompare(b.name));
+    const chatrooms = Array.from(allChatRooms);
+    chatrooms.sort((a, b) => a.name.localeCompare(b.name));
 
   if (loading) {
     return (
@@ -46,8 +61,7 @@ function Sidebar() {
         className="mt-[1rem] w-[300px] mx-auto cursor-pointer text-sm"
         onClick={handleBackHome}
       >
-
-        <span >&#8592;</span> Back Home
+        <span>&#8592;</span> Back Home
       </div>
 
       <UserCard />

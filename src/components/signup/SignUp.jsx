@@ -326,7 +326,7 @@ useEffect(() => {
               </Box>
               <TextFieldStyle
                 id="username"
-                placeholder="@Ekowsmith"
+                placeholder="Ekowsmith"
                 value={values.username}
                 onBlur={handleBlur}
                 onChange={handleChange}

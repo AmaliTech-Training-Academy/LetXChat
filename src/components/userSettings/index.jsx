@@ -90,7 +90,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
             </div>
             <div
               onClick={() => setOpenGeneral(true)}
-              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer"
+              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer hover:bg-zinc-100 transition duration-300 ease-in-out"
             >
               <img src={General} alt="General Icon" />
               <div className="pr-[16px] border-b border-b-[#D9D9D9] w-full h-full flex items-center justify-between">
@@ -101,7 +101,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
 
             <div
               onClick={LogoutFunc}
-              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer"
+              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer hover:bg-zinc-100 transition duration-300 ease-in-out"
             >
               <img src={Logout} alt="Logout Icon" />
               <div className="pr-[16px] w-full h-full flex items-center justify-between">

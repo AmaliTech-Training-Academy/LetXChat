@@ -88,25 +88,13 @@ const Input = ({ chatRoom }) => {
   const [file, setFile] = useState(null);
   const [video, setVideo] = useState(null);
   const [recording, setRecording] = useState(false);
-  const [newBlob, setNewBlob] = useState(null);
-  const [audioUrl, setAudioUrl] = useState("");
-  // const [mediaRecorder, setMediaRecorder] = useState(null);
-  const [chunks, setChunks] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [audioData, setAudioData] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const mediaRecorder = useRef(null);
-  const [stream, setStream] = useState(null);
-  const [audioChunks, setAudioChunks] = useState([]);
-  const [audio, setAudio] = useState(null);
 
   const dispatch = useDispatch();
 
-  console.log(newBlob);
-  console.log(audio);
-  useEffect(() => {
-    dispatch(setRecordedAudio(audio));
-
-  }, [audio])
+ 
 
   const addEmoji = (e) => {
     setText(text + e.native);
@@ -140,37 +128,33 @@ const Input = ({ chatRoom }) => {
   const handleStartRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      setStream(stream);
+      const recorder = new MediaRecorder(stream);
+
+      let chunks = [];
+      recorder.addEventListener("dataavailable", (event) => {
+        chunks.push(event.data);
+      });
+
+      recorder.addEventListener("stop", () => {
+        const blob = new Blob(chunks, { type: "audio/mp3" });
+        const url = URL.createObjectURL(blob);
+        setAudioData({ blob, url });
+      });
+
+      recorder.start();
+      setMediaRecorder(recorder);
       setRecording(true);
-      const media = new MediaRecorder(stream, { type: "audio/webm" });
-      mediaRecorder.current = media;
-      mediaRecorder.current.start();
-      let localAudioChunks = [];
-      mediaRecorder.current.ondataavailable = (event) => {
-        if (typeof event.data === "undefined") return;
-        if (event.data.size === 0) return;
-        localAudioChunks.push(event.data);
-      };
-      setAudioChunks(localAudioChunks);
     } catch (error) {
-      console.error("Error accessing microphone:", error);
+      console.error(error);
     }
   };
 
-  console.log(recording);
-
   const handleStopRecording = () => {
-    setRecording(false);
-    mediaRecorder.current.stop();
-    mediaRecorder.current.onstop = () => {
-      const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-      setNewBlob(audioBlob)
-      console.log(audioBlob);
-      const audioUrl = URL.createObjectURL(audioBlob);
-      console.log(audioUrl);
-      setAudio(audioUrl);
-      setAudioChunks([]);
-    };
+    if (mediaRecorder) {
+      mediaRecorder.stop();
+      setMediaRecorder(null);
+      setRecording(false);
+    }
   };
 
   const handleFileUpload = (event) => {
@@ -194,16 +178,19 @@ const Input = ({ chatRoom }) => {
 
     const id = chatRoom.id;
 
+    
+    const audioBlob = await fetch(audioData).then((r) => r.blob());
+    const audioFile = new File([audioBlob], 'voice.wav', { type: 'audio/wav' });
+    console.log(audioFile.type);
+
     try {
       let formData = new FormData();
-      formData.append("text", text);
-      formData.append("voiceNote", newBlob);
-      formData.append('audioUrl', audioUrl)
+      // formData.append("text", text);
+      formData.append("voiceNote", audioData.blob);
+      // formData.append("voiceNote", audioFile);
       formData.append("video", video);
       formData.append("file", file);
       formData.append("image", image);
-
-
 
       let config = {
         headers: {
@@ -219,28 +206,20 @@ const Input = ({ chatRoom }) => {
         config
       );
 
+      console.log(res);
+
       setText("");
       setImage("");
       setFile(null);
-      setAudio(null)
       setVideo(null);
-      setNewBlob(null)
-      setAudioUrl(null);
-      setSelectedFile(null);
+      setAudioData(null)
       setIsSubmitting(false);
     } catch (err) {
-      console.error("Upload failed", err.response.data);
+      console.error("Upload failed", err);
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (audioUrl) {
-        dispatch(setRecordedAudio(audioUrl));
-        URL.revokeObjectURL(audioUrl);
-      }
-    };
-  }, [audioUrl]);
+
 
   return (
     <Container component="section">
@@ -342,19 +321,7 @@ const Input = ({ chatRoom }) => {
           </button>
         </FilesAndSend>
       </InputCon>
-      {audio && (
-        <>
-          <audio src={audio} controls />
-          <button
-            onClick={() => {
-              setAudioUrl(null);
-              setSelectedFile(null);
-            }}
-          >
-            Reset Audio
-          </button>
-        </>
-      )}
+      
     </Container>
   );
 };
