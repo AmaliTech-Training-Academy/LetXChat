@@ -9,6 +9,7 @@ use App\Models\ChatRoom;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ChatMessageController extends Controller
 {
@@ -36,6 +37,7 @@ class ChatMessageController extends Controller
             'video' => 'nullable',
             'voiceNote' => 'nullable',
             'file' => 'nullable'
+            // 'audioUrl'
         ]);
 
         // check if user is part of the current chatroom
@@ -77,10 +79,6 @@ class ChatMessageController extends Controller
             $audio = null;
         }
 
-        // $video =  $request->hasFile('video') ? $request->file('video')->store('videos') : null;
-        // $audio =  $request->hasFile('voiceNote') ? $request->file('voiceNote')->store('voiceNotes') : null;
-        // $file =  $request->hasFile('file') ? $request->file('file')->store('files') : null;
-
         $newMessage = ChatMessage::create([
             'user_id' => Auth::id(),
             'chat_room_id' => $roomId,
@@ -88,7 +86,6 @@ class ChatMessageController extends Controller
             'image' => $image,
             'video' => $video,
             'voiceNote' => $audio,
-            'audioUrl' => $request->audioUrl,
             'file' => $file
         ]);
 
@@ -100,9 +97,14 @@ class ChatMessageController extends Controller
             $image,
             $video,
             $audio,
-            $request->audioUrl,
             $file
         ))->toOthers();
+
+        // $toAduioFile = $newMessage->voiceNote->contents;
+        // // dd($toAduioFile);
+        // $filename = uniqid() . '.mp3';
+        // Storage::put($filename, $toAduioFile);
+
 
         return response()->json([
             'sender' => Auth::user()->username,
@@ -118,7 +120,6 @@ class ChatMessageController extends Controller
                 'name' => $audioName,
                 'url' =>  $newMessage->voiceNote
             ],
-            'audioUrl' => $newMessage->audioUrl,
             'file' => [
                 'name' => $fileName,
                 'url' =>  $newMessage->file

@@ -24,7 +24,7 @@ class ChatMessage extends Model
         'image',
         'video',
         'voiceNote',
-        'audioUrl',
+        // 'audioUrl',
         'file'
     ];
 
