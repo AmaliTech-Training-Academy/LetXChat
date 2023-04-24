@@ -87,15 +87,15 @@ const Input = ({ chatRoom }) => {
   const [image, setImage] = useState("");
   const [file, setFile] = useState(null);
   const [video, setVideo] = useState(null);
-  const [recording, setRecording] = useState(false);
-  const [mediaRecorder, setMediaRecorder] = useState(null);
-  const [audioData, setAudioData] = useState(null);
+  const [audioData, setAudioData] = useState(new Blob());
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recording, setRecording] = useState(false);
+  // const [mediaRecorder, setMediaRecorder] = useState(null);
+  // const [audioUrl, setAudioUrl] = useState(null);
 
-  const dispatch = useDispatch();
-
- 
-
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [audioBlob, setAudioBlob] = useState(null);
   const addEmoji = (e) => {
     setText(text + e.native);
   };
@@ -125,34 +125,61 @@ const Input = ({ chatRoom }) => {
     }
   };
 
-  const handleStartRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
+  // const handleStartRecording = async () => {
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  //     const recorder = new MediaRecorder(stream);
+
+  //     let chunks = [];
+  //     recorder.addEventListener("dataavailable", (event) => {
+  //       chunks.push(event.data);
+  //     });
+
+  //     recorder.addEventListener("stop", () => {
+  //       const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+  //       const url = URL.createObjectURL(blob);
+  //       setAudioData({ blob, url });
+  //     });
+
+  //     recorder.start();
+  //     setMediaRecorder(recorder);
+  //     setRecording(true);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const handleStopRecording = () => {
+  //   if (mediaRecorder) {
+  //     mediaRecorder.stop();
+  //     setMediaRecorder(null);
+  //     setRecording(false);
+  //   }
+  // };
+
+  const handleStartRecording = () => {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(stream => {
+      const newMediaRecorder = new MediaRecorder(stream);
+      setMediaRecorder(newMediaRecorder);
+      newMediaRecorder.start();
+      setRecording(true);
 
       let chunks = [];
-      recorder.addEventListener("dataavailable", (event) => {
+      newMediaRecorder.addEventListener('dataavailable', (event) => {
         chunks.push(event.data);
       });
 
-      recorder.addEventListener("stop", () => {
-        const blob = new Blob(chunks, { type: "audio/mp3" });
-        const url = URL.createObjectURL(blob);
-        setAudioData({ blob, url });
+      newMediaRecorder.addEventListener('stop', () => {
+        const newAudioBlob = new Blob(chunks, { type: 'audio/webm' });
+        setAudioBlob(newAudioBlob);
+        setAudioUrl(URL.createObjectURL(newAudioBlob));
       });
-
-      recorder.start();
-      setMediaRecorder(recorder);
-      setRecording(true);
-    } catch (error) {
-      console.error(error);
-    }
+    });
   };
-
   const handleStopRecording = () => {
     if (mediaRecorder) {
       mediaRecorder.stop();
-      setMediaRecorder(null);
       setRecording(false);
     }
   };
@@ -178,25 +205,25 @@ const Input = ({ chatRoom }) => {
 
     const id = chatRoom.id;
 
-    
-    const audioBlob = await fetch(audioData).then((r) => r.blob());
-    const audioFile = new File([audioBlob], 'voice.wav', { type: 'audio/wav' });
-    console.log(audioFile.type);
-
     try {
+      const fileName = `audio-${Date.now()}.webm`;
       let formData = new FormData();
-      // formData.append("text", text);
-      formData.append("voiceNote", audioData.blob);
-      // formData.append("voiceNote", audioFile);
+    
+      
+      if (audioBlob) {
+        
+        formData.append("voiceNote", audioBlob, fileName);
+      }
+    
+      formData.append("text", text);
       formData.append("video", video);
       formData.append("file", file);
       formData.append("image", image);
 
+
       let config = {
         headers: {
-          // "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
-          // Accept: "application/json",
         },
       };
 
@@ -206,20 +233,19 @@ const Input = ({ chatRoom }) => {
         config
       );
 
-      console.log(res);
+      console.log(res.data);
 
       setText("");
       setImage("");
       setFile(null);
       setVideo(null);
-      setAudioData(null)
+      setAudioBlob(null)
+      setAudioUrl(null);
       setIsSubmitting(false);
     } catch (err) {
       console.error("Upload failed", err);
     }
   };
-
-
 
   return (
     <Container component="section">
@@ -321,7 +347,6 @@ const Input = ({ chatRoom }) => {
           </button>
         </FilesAndSend>
       </InputCon>
-      
     </Container>
   );
 };

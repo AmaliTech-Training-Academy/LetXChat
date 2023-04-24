@@ -125,6 +125,7 @@ const Message = () => {
     (a, b) => new Date(a.created_at) - new Date(b.created_at)
   );
 
+
   useEffect(() => {
     const chatMessages = sortedMessages.map(
       ({ file, image, text, video, voiceNote, user, created_at }) => ({
@@ -139,10 +140,8 @@ const Message = () => {
       })
     );
 
-
     setAllMessages(chatMessages);
   }, [messages]);
-
 
   useEffect(() => {
     // Initialize Pusher Js
@@ -153,12 +152,12 @@ const Message = () => {
     });
     const channel = pusher.subscribe("chat");
     channel.bind("message", function (data) {
-      // dispatch(addMessage([...allMessages, data] ));
+      console.log(data);
       setAllMessages((allMessages) => [...allMessages, data]);
     });
   }, []);
 
-  console.log(allMessages);
+  console.log(messages);
 
   useEffect(() => {
     axios
@@ -190,8 +189,9 @@ const Message = () => {
             const chatImage = el.image;
             const chatVideo = el.video;
             const chatVoiceNote = el.voiceNote;
-            const chatAudio = el?.audioUrl;
             const chatFile = el.file;
+
+
             // Formatting files
 
             const maxLength = 15;
@@ -277,7 +277,10 @@ const Message = () => {
                         )}
 
                         {el.voiceNote && (
-                          <audio className="w-full px-[5px]" controls>
+                          <audio
+                            className="w-full px-[5px] mb-[1.2rem] mt-[-1rem]"
+                            controls
+                          >
                             <source src={`${FILE_URL}${chatVoiceNote}`} />
                           </audio>
                         )}
@@ -338,14 +341,13 @@ const Message = () => {
                           <>
                             <audio
                               controls
-                              // src={`${FILE_URL}${chatVoiceNote}`}
-                              // src={url}
-                              // src={URL.createObjectURL(`${FILE_URL}${chatVoiceNote}`)}
+                             
 
-                              style={{ marginBottom: "2rem", width: "100%" }}
+                              style={{ marginBottom: "1.5rem", width: "100%" }}
                               className="px-2"
                             >
-                              <source src={chatVoiceNote} type="audio/mpeg" />
+                              <source src={`${FILE_URL}${chatVoiceNote}`} />
+
                               <a
                                 href={`${FILE_URL}${chatVoiceNote}`}
                                 download="recording.ogg"
