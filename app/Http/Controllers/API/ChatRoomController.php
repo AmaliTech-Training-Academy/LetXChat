@@ -8,8 +8,7 @@ use App\Http\Resources\ChatRoomResource;
 use App\Models\ChatRoom;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
+
 
 class ChatRoomController extends Controller
 {
@@ -18,7 +17,7 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        return ChatRoomResource::collection(ChatRoom::query()->with('users')->paginate(10));
+        return ChatRoomResource::collection(ChatRoom::with('users')->get());
     }
 
     /**
