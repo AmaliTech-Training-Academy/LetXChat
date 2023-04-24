@@ -100,12 +100,6 @@ class ChatMessageController extends Controller
             $file
         ))->toOthers();
 
-        // $toAduioFile = $newMessage->voiceNote->contents;
-        // // dd($toAduioFile);
-        // $filename = uniqid() . '.mp3';
-        // Storage::put($filename, $toAduioFile);
-
-
         return response()->json([
             'sender' => Auth::user()->username,
             'sender_image' =>  Auth::user()->image,
