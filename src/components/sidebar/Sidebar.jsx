@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UserCard from "./UserCard";
 import Search from "./Search";
 import ChatCard from "./ChatCard";
@@ -7,10 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { CHATROOMS_URL } from "../../defaultValues/DefaultValues";
-import axios from "axios";
-import { useState } from "react";
-import { useEffect } from "react";
 import { fetchChatRooms } from "../../feature/chatRooms";
 
 function Sidebar() {
