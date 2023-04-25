@@ -6,7 +6,6 @@ import GroupDetails from "../../components/groupDetails/GroupDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-
 const Container = styled(Box)({
   display: "flex",
   height: "100vh",
@@ -14,11 +13,9 @@ const Container = styled(Box)({
 
 const Chat = () => {
   const { id } = useParams();
-  const { loading } = useSelector((state) => state.user || state.chatrooms);
-  const { allChatRooms } = useSelector((state) => state.chatrooms);
-
-
- 
+  const { loading } = useSelector((state) => state.user || state.userChatrooms);
+  const { allChatRooms } = useSelector((state) => state.userChatrooms);
+  const dispatch = useDispatch();
 
   if (loading) {
     return (

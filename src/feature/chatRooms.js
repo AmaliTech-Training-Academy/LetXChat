@@ -3,59 +3,66 @@ import axios from "axios";
 import { CHATROOMS_URL } from "../defaultValues/DefaultValues";
 import Cookies from "js-cookie";
 
-const CHATROOMS_API = CHATROOMS_URL;
+// const userToken = Cookies.get("userToken");
+// let config = {
+//   method: "get",
+//   url: `${CHATROOMS_URL}`,
+//   headers: {
+//     Authorization: `Bearer ${userToken}`,
+//   },
+// };
+const getHeaders = () => {
+  const userToken = Cookies.get("userToken");
+  return {
+    Authorization: `Bearer ${userToken}`,
+  };
+};
 
+const getUserInfo = Cookies.get("userInfo");
+const userInfo = JSON.parse(getUserInfo);
+const username = userInfo?.username;
 export const fetchChatRooms = createAsyncThunk(
-  "chatrooms/fetchChatRooms",
+  "userChatrooms/fetchChatRooms",
   async () => {
-    const UserInfo = Cookies.get("userInfo");
-
-    let config = {
-      method: "get",
-      url: CHATROOMS_API,
-      headers: {
-        Authorization: `Bearer ${UserInfo}`,
-      },
-    };
-
+    const headers = getHeaders();
     try {
-      const res = await axios(config);
-      // Cookies.set('chatrooms', res.data.chatrooms)
-      localStorage.setItem('chatrooms', res.data.data)
+      const res = await axios(CHATROOMS_URL, { headers });
 
       return res.data.data;
     } catch (error) {
       console.error(error.message);
+      return error.message;
     }
   }
 );
 
-
 const initialState = {
-   allChatRooms: [],
-    loading: true,
-    error: null
-}
+  allChatRooms: [],
+  loading: true,
+  error: null,
+};
 
 const chatRoomsSlice = createSlice({
-    name: 'chatrooms',
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder.addCase(fetchChatRooms.pending, (state) => {
-            state.loading = true
-        })
+  name: "userChatrooms",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchChatRooms.pending, (state) => {
+        state.loading = true;
+      })
 
-        .addCase(fetchChatRooms.fulfilled, (state, {payload}) => {
-            state.loading = false
-            state.allChatRooms = payload
-        })
+      .addCase(fetchChatRooms.fulfilled, (state, { payload }) => {
+        state.loading = false;
 
-        .addCase(fetchChatRooms.rejected, (state, action) => {
-            state.loading = false
+        state.allChatRooms = payload;
+      })
+
+      .addCase(fetchChatRooms.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message;
-        })
-    }
-})
+      });
+  },
+});
 
-export default chatRoomsSlice.reducer
+export default chatRoomsSlice.reducer;

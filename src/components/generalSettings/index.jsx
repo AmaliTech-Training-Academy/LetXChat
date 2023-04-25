@@ -66,7 +66,7 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
     isSubmitting,
   } = useFormik({
     initialValues: {
-      username: user ? user.name : "",
+      fullname: user ? user.name : "",
       email:  user ? user.email : "",
       password: "",
       password_confirmation: "",
@@ -105,17 +105,17 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
               <p>Name</p>
               <div
                 className={`h-[36px] border rounded-[5px] flex items-center px-2 gap-[9px] relative ${
-                  errors.username && touched.username ? "border-[#FDA29B]" : ""
+                  errors.fullname && touched.fullname ? "border-[#FDA29B]" : ""
                 }`}
               >
                 <input
                   type="text"
                   className="h-full w-full"
                   placeholder="Jordan Ablorh"
-                  error={errors.username}
-                  touch={touched.username}
-                  id="username"
-                  value={values.username}
+                  error={errors.fullname}
+                  touch={touched.fullname}
+                  id="fullname"
+                  value={values.fullname}
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
@@ -123,7 +123,7 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
               </div>
               <div className="h-[1.2rem]">
                 <p className="text-[#F04438]">
-                  {touched.username && errors.username}
+                  {touched.fullname && errors.fullname}
                 </p>
               </div>
             </div>
