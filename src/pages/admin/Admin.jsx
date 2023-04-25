@@ -5,20 +5,17 @@ import Pagination from "../../components/admin/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import {getChatrooms, getAllUsers} from "../../feature/adminSlice"
 import AdminNavbar from "../../components/admin/AdminNavbar";
-import Cookies from "js-cookie";
-import axios from "axios";
 
 function Admin() {
   // const [data, setData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerpage, setUsersPerpage] = useState(10);
+  const [usersPerpage] = useState(10);
   const [searchInput, setSearchInput] = useState('')
   // const [currentChatrooms, setCurrentChatrooms] = useState([])
 
   const {chatrooms} = useSelector(state => state.admin)
   const dispatch = useDispatch()
 
-  //Get current page
   const indexOfLastUser = currentPage * usersPerpage;
   const indexOfFirstUser = indexOfLastUser - usersPerpage;
   let currentChatrooms = chatrooms.data?.slice(indexOfFirstUser, indexOfLastUser)
@@ -27,24 +24,18 @@ function Admin() {
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
   // useEffect(() => {
-  //   if(searchInput) {
-  //     setCurrentChatrooms(chatrooms.data?.filter(ele => ele.name.toLowerCase().includes(searchInput.toLowerCase())));
-  //   }
-  // }, [searchInput])
+    // if(!searchInput) {
+      // setCurrentChatrooms(chatrooms.data?.slice(indexOfFirstUser, indexOfLastUser))
+    // }
+    // else {
+    //   setCurrentChatrooms(chatrooms.data.filter(ele => ele.name.toLowerCase().includes(searchInput.toLowerCase())))
+    // }
+  // }, [])
 
   useEffect(() => {
-    // console.log(adminToken);
-    // getData()
-    // if(currentChatrooms.length > 0) {
-    //   setCurrentChatrooms(chatrooms.data?.slice(indexOfFirstUser, indexOfLastUser))
-    // }
-    // setCurrentChatrooms()
     dispatch(getChatrooms())
     dispatch(getAllUsers())
-    // setData(chatrooms.data);
-    // console.log(chatrooms.data);
   }, [])
 
   return (

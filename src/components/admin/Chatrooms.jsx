@@ -1,17 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ChatroomHeader from "./ChatroomHeader";
 import Chatroom from "./Chatroom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import no_data from '../../assets/no-data.svg'
 
 function Chatrooms({ currentChatrooms }) {
   const { isLoading } = useSelector((state) => state.admin);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(isLoading);
-  }, [isLoading]);
 
   return (
     <div className="mt-11">

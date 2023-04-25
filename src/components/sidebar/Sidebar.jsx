@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import UserCard from "./UserCard";
 import Search from "./Search";
 import ChatCard from "./ChatCard";
@@ -6,10 +6,9 @@ import ChatCard from "./ChatCard";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 function Sidebar() {
-  const [matchedChatrooms, setMatchedChatrooms] = useState([])
+  const [, setMatchedChatrooms] = useState([])
   const { allChatRooms } = useSelector((state) => state.chatrooms);
   const { loading, userInfo } = useSelector((state) => state.user);
   const navigate = useNavigate();

@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import search from '../../assets/Search.svg'
 
 function Search({settings, setMatchedChatrooms}) {
-  const [searchInput, setSearchInput] = useState('')
-
-  useEffect(() => {
-    console.log(searchInput);
-  }, [searchInput])
 
   const handleSearch = (e) => {
     setMatchedChatrooms()

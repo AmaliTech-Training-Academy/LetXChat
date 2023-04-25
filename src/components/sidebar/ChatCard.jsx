@@ -1,20 +1,8 @@
-import React, { useEffect, useState } from "react";
-import mno from "../../assets/mno.png";
-import { useParams } from "react-router";
-import { useSelector } from "react-redux";
+import React from "react";
 
 
 function ChatCard({item}) {
-  const {id} = useParams()
-  const {allChatrooms} = useSelector(state => state.chatrooms)
-  const [clickedChatroom, setClickedChatroom] = useState(null)
-  // console.log(item.recent_message.time);
   const recentMessage = item?.recent_message
-  // console.log(recentMessage?.time);
-  
-  // useEffect(() => {
-  //   console.log(clickedChatroom);
-  // }, [clickedChatroom])
 
   return (
     <div className="relative flex items-center w-[280px] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">

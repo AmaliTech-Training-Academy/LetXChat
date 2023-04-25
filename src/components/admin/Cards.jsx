@@ -14,7 +14,7 @@ function Cards() {
       <Card title="Total Users" users={allUsers?.total} image={total_users}/>
       <Card title="Active Users" users={allUsers?.active_users} image={active_users}/>
       <Card title="Pending Request" users={allUsers?.pending_request} image={pending_users}/>
-      <Card title="Chat Room" users={chatrooms.data?.length} image={chat_room}/>
+      <Card title="ChatRooms" users={chatrooms.data?.length} image={chat_room}/>
     </div>
   );
 }

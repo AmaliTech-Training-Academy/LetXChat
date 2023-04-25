@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import upload from "../../assets/upload-vector.svg";
 import backArraow from "../../assets/previous.png"
 import UserSearch from "./UserSearch";
@@ -92,9 +92,6 @@ function NewChatroom() {
       )
     );
   };
-  // useEffect(() => {
-  //     console.log(addedUsers);
-  // }, [addedUsers])
 
   return (
     <>

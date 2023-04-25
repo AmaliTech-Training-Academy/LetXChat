@@ -2,7 +2,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Router from "./routes/Router";
 import { useDispatch } from "react-redux";
-import { fetchUserInfo } from "./feature/userSlice";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { fetchChatRooms } from "./feature/chatRooms";

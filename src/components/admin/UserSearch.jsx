@@ -1,7 +1,6 @@
 import React from 'react'
 import trash from "../../assets/trash.svg"
 import { toast } from 'react-toastify';
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {addUserToChatroom, getChatrooms, getAllUsers} from '../../feature/adminSlice'
 import axios from 'axios'
@@ -56,16 +55,12 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
       toast.warning("Can't add users right now")
       console.log(error)
     }
-    // console.log(newMatchedUsers);
   }
 
   const handleDelete = async () => {
     if(page !== 'users') {
       // const newAddUsers = addedUsers.filter(ele => ele.id !== item.id)
       console.log(addedUsers);
-      // console.log([...matchedUsers, item]);
-      // setAddedUsers(newAddUsers)
-      // setMatchedUsers([...matchedUsers, item])
     }
     else {
       const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatroom/${singleChatroom.id}/${item.id}`, {headers})
@@ -77,14 +72,6 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
       }
     }
   }
-
-  // useEffect(() => {
-    // console.log(item);
-    // console.log(singleChatroom);
-  // }, [])
-  // useEffect(() => {
-  //   console.log(matchedUsers);
-  // }, [matchedUsers])
   return (
     <div className={`w-full ${added ? '' : 'border-b'} flex justify-between items-center text-xs mt-2 pb-1`}>
         <div className='flex items-center gap-4'>
