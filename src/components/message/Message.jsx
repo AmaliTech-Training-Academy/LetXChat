@@ -340,18 +340,11 @@ const Message = () => {
                             <audio
                               controls
                              
-
                               style={{ marginBottom: "1.5rem", width: "100%" }}
                               className="px-2"
                             >
                               <source src={`${FILE_URL}${chatVoiceNote}`} />
 
-                              <a
-                                href={`${FILE_URL}${chatVoiceNote}`}
-                                download="recording.ogg"
-                              >
-                                Download Recording
-                              </a>
                             </audio>
                           </>
                         )}
