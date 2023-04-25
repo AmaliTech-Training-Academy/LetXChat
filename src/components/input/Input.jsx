@@ -9,12 +9,14 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { BsMicMute } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-    
+import { AiOutlineClockCircle } from "react-icons/ai";
 import uploadVideo from "../../assets/uploadVideo.png";
 
 import { CHATROOMS_URL } from "../../defaultValues/DefaultValues";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { setRecordedAudio } from "../../feature/audioSlice";
+import { toast } from "react-toastify";
 
 const Container = styled(Box)({
   height: "10vh",
@@ -78,17 +80,6 @@ const FilesAndSend = styled("div")({
   alignItems: "center",
 });
 
-const SendMessage = styled("button")({
-  background: "#53352D",
-  height: "50px",
-  width: "50px",
-  borderRadius: "50%",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-});
-
 const Input = ({ chatRoom }) => {
   const [showEmoji, setShowEmoji] = useState(false);
 
@@ -96,13 +87,15 @@ const Input = ({ chatRoom }) => {
   const [image, setImage] = useState("");
   const [file, setFile] = useState(null);
   const [video, setVideo] = useState(null);
+  const [audioData, setAudioData] = useState(new Blob());
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [recording, setRecording] = useState(false);
-  const [audioBlob, setAudioBlob] = useState(null);
-  const [audioUrl, setAudioUrl] = useState("");
+  // const [mediaRecorder, setMediaRecorder] = useState(null);
+  // const [audioUrl, setAudioUrl] = useState(null);
+
+  const [audioUrl, setAudioUrl] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
-
-  const dispatch = useDispatch();
-
+  const [audioBlob, setAudioBlob] = useState(null);
   const addEmoji = (e) => {
     setText(text + e.native);
   };
@@ -125,8 +118,6 @@ const Input = ({ chatRoom }) => {
     };
   });
 
-
-
   // Send Message When your press Ctrl and enter key
   const handleKeyDown = (event) => {
     if (event.keyCode === 13 && event.ctrlKey) {
@@ -134,34 +125,63 @@ const Input = ({ chatRoom }) => {
     }
   };
 
-  const handleToggleRecording = () => {
-    if (recording) {
+  // const handleStartRecording = async () => {
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  //     const recorder = new MediaRecorder(stream);
+
+  //     let chunks = [];
+  //     recorder.addEventListener("dataavailable", (event) => {
+  //       chunks.push(event.data);
+  //     });
+
+  //     recorder.addEventListener("stop", () => {
+  //       const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+  //       const url = URL.createObjectURL(blob);
+  //       setAudioData({ blob, url });
+  //     });
+
+  //     recorder.start();
+  //     setMediaRecorder(recorder);
+  //     setRecording(true);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const handleStopRecording = () => {
+  //   if (mediaRecorder) {
+  //     mediaRecorder.stop();
+  //     setMediaRecorder(null);
+  //     setRecording(false);
+  //   }
+  // };
+
+  const handleStartRecording = () => {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(stream => {
+      const newMediaRecorder = new MediaRecorder(stream);
+      setMediaRecorder(newMediaRecorder);
+      newMediaRecorder.start();
+      setRecording(true);
+
+      let chunks = [];
+      newMediaRecorder.addEventListener('dataavailable', (event) => {
+        chunks.push(event.data);
+      });
+
+      newMediaRecorder.addEventListener('stop', () => {
+        const newAudioBlob = new Blob(chunks, { type: 'audio/webm' });
+        setAudioBlob(newAudioBlob);
+        setAudioUrl(URL.createObjectURL(newAudioBlob));
+      });
+    });
+  };
+  const handleStopRecording = () => {
+    if (mediaRecorder) {
       mediaRecorder.stop();
-    } else {
-      navigator.mediaDevices
-        .getUserMedia({ audio: true })
-        .then((stream) => {
-          const recorder = new MediaRecorder(stream);
-          let chunks = [];
-          recorder.addEventListener("dataavailable", (event) => {
-            chunks.push(event.data);
-          });
-          recorder.addEventListener("stop", () => {
-            const blob = new Blob(chunks, {
-              type: "audio/ogg/mp3/webm; codecs=opus",
-            });
-            const url = URL.createObjectURL(blob);
-            setAudioBlob(blob);
-            setAudioUrl(url);
-          });
-          setMediaRecorder(recorder);
-          recorder.start();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      setRecording(false);
     }
-    setRecording(!recording);
   };
 
   const handleFileUpload = (event) => {
@@ -181,21 +201,29 @@ const Input = ({ chatRoom }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    setIsSubmitting(true);
+
     const id = chatRoom.id;
 
     try {
+      const fileName = `audio-${Date.now()}.webm`;
       let formData = new FormData();
+    
+      
+      if (audioBlob) {
+        
+        formData.append("voiceNote", audioBlob, fileName);
+      }
+    
       formData.append("text", text);
-      formData.append("voiceNote", audioUrl);
       formData.append("video", video);
       formData.append("file", file);
       formData.append("image", image);
 
+
       let config = {
         headers: {
-          // "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
-          // Accept: "application/json",
         },
       };
 
@@ -205,13 +233,17 @@ const Input = ({ chatRoom }) => {
         config
       );
 
+      console.log(res.data);
+
       setText("");
       setImage("");
       setFile(null);
       setVideo(null);
-      setAudioUrl("");
+      setAudioBlob(null)
+      setAudioUrl(null);
+      setIsSubmitting(false);
     } catch (err) {
-      console.error("Upload failed", err.response.data);
+      console.error("Upload failed", err);
     }
   };
 
@@ -233,11 +265,12 @@ const Input = ({ chatRoom }) => {
       </div>
 
       <InputCon onSubmit={handleSubmit} method="post">
-        <div
-          style={{ cursor: "pointer", color: "#FFFFFF" }}
-          onClick={handleToggleRecording}
-        >
-          {recording ? <BsMicMute /> : <img src={Mic} alt="Microphone" />}
+        <div style={{ cursor: "pointer", color: "#FFFFFF" }}>
+          {recording ? (
+            <BsMicMute onClick={handleStopRecording} />
+          ) : (
+            <img src={Mic} alt="Microphone" onClick={handleStartRecording} />
+          )}
         </div>
 
         <InputText
@@ -253,7 +286,7 @@ const Input = ({ chatRoom }) => {
             <input
               type="file"
               id="file"
-              accept=".pdf,.doc,.docx,.xls,.xlsx"
+              accept=".txt,.pdf,.doc,.docx,.xls,.xlsx"
               onChange={handleFileUpload}
               style={{ display: "none" }}
             />
@@ -295,9 +328,23 @@ const Input = ({ chatRoom }) => {
             onClick={() => setShowEmoji(!showEmoji)}
           />
 
-          <SendMessage type="submit">
-            <img src={Send} alt="Send message" />
-          </SendMessage>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`bg-[#53352D] w-[50px] h-[50px] rounded-full cursor-pointer flex items-center justify-center ${
+              isSubmitting ? "cursor-wait" : ""
+            }`}
+          >
+            {isSubmitting ? (
+              <AiOutlineClockCircle className="text-white text-2xl" />
+            ) : (
+              <img
+                src={Send}
+                alt="Send message"
+                className="scale-95 hover:scale-110 transition duration-300 ease-in-out"
+              />
+            )}
+          </button>
         </FilesAndSend>
       </InputCon>
     </Container>

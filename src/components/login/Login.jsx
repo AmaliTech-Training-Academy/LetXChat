@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../feature/authActions";
 import Cookies from "js-cookie";
 import { fetchUserInfo } from "../../feature/userSlice";
+import { fetchChatRooms } from "../../feature/chatRooms";
 
 const Container = styled(Box)({
   width: "100vw",
@@ -180,6 +181,9 @@ const Login = () => {
       navigate("/chat");
     }
   }, [userToken, dispatch]);
+
+
+ 
 
 
 

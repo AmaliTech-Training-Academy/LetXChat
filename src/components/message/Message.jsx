@@ -12,6 +12,8 @@ import { useState } from "react";
 import { format, formatISO } from "date-fns";
 import Pusher from "pusher-js";
 import { addMessage } from "../../feature/chatMessageSlice";
+import { FaFilePdf, FaFileWord, FaFileExcel } from "react-icons/fa";
+import { AiOutlineCloudDownload } from "react-icons/ai";
 
 const Container = styled(Box)({
   display: "flex",
@@ -52,7 +54,7 @@ const Author = styled("p")({
 const Time = styled("p")({
   position: "absolute",
   right: "0.4rem",
-  bottom: "0.2rem",
+  bottom: "0",
   fontSize: "0.7rem",
 });
 
@@ -70,7 +72,6 @@ const OwnerMessageContent = styled(Box)({
   maxWidth: "80%",
   display: "flex",
   flexDirection: "column",
-  gap: "10px",
   alignItems: "flex-start",
   background: "rgba(83, 53, 45, 0.7)",
   position: "relative",
@@ -82,24 +83,20 @@ const OwnerMessageContent = styled(Box)({
 const OwnerTime = styled("p")({
   position: "absolute",
   right: "0.4rem",
-  bottom: "0.2rem",
+  bottom: "0",
   fontSize: "0.7rem",
 });
 
 const OwnerText = styled("p")({
   whiteSpace: "break-spaces",
-  padding: "5px",
-  paddingBottom: "20px",
+  padding: "20px",
+  paddingTop: "10px",
   borderRadius: "10px",
 });
 
 const Message = () => {
   const [messages, setMessages] = useState([]);
   const [allMessages, setAllMessages] = useState([]);
-  const { pusherMessages } = useSelector((state) => state.chat);
-  const PusherMessages = pusherMessages;
-  const dispatch = useDispatch();
-  // console.log(PusherMessages);
 
   // The Focus should always stay at the bottom for Messages
   const messagesRef = useRef(null);
@@ -110,7 +107,7 @@ const Message = () => {
   const { id } = useParams();
   const userToken = Cookies.get("userToken");
   const { userInfo } = useSelector((state) => state.user);
-  let username = userInfo.name;
+  let username = userInfo.username;
 
   let config = {
     method: "get",
@@ -123,9 +120,11 @@ const Message = () => {
     },
   };
 
+
   const sortedMessages = [...messages].sort(
     (a, b) => new Date(a.created_at) - new Date(b.created_at)
   );
+
 
   useEffect(() => {
     const chatMessages = sortedMessages.map(
@@ -135,7 +134,7 @@ const Message = () => {
         text,
         video,
         voiceNote,
-        sender: user.fullname,
+        sender: user.username,
         sender_image: user.image,
         time: format(new Date(created_at), "p"),
       })
@@ -143,8 +142,6 @@ const Message = () => {
 
     setAllMessages(chatMessages);
   }, [messages]);
-
-  console.log(allMessages);
 
   useEffect(() => {
     // Initialize Pusher Js
@@ -155,17 +152,16 @@ const Message = () => {
     });
     const channel = pusher.subscribe("chat");
     channel.bind("message", function (data) {
-      // dispatch(addMessage([...allMessages, data] ));
       setAllMessages((allMessages) => [...allMessages, data]);
     });
   }, []);
+
 
   useEffect(() => {
     axios
       .request(config)
       .then((response) => {
         setMessages(response.data);
-        // dispatch(addMessage(response.data))
         return response.data;
       })
       .catch((error) => {
@@ -187,11 +183,46 @@ const Message = () => {
       <>
         {allMessages &&
           allMessages.map((el, index) => {
-            const userImage = el.image;
+            const userImage = el.sender_image;
             const chatImage = el.image;
             const chatVideo = el.video;
             const chatVoiceNote = el.voiceNote;
             const chatFile = el.file;
+
+
+            // Formatting files
+
+            const maxLength = 15;
+            const regex = /(?:\.([^.]+))?$/;
+            const fileType = regex.exec(chatFile)[1];
+
+            const longFileName = chatFile?.split("/").pop();
+            const fileName =
+              longFileName?.length <= maxLength
+                ? longFileName
+                : longFileName?.substring(0, maxLength - fileType.length - 3) +
+                  "..." +
+                  fileType;
+
+            let icon;
+            if (fileType === "pdf") {
+              icon = (
+                <FaFilePdf className="text-red-500 bg-white rounded w-[1rem] h-[1.5rem]" />
+              );
+            } else if (
+              fileType === "txt" ||
+              fileType === "doc" ||
+              fileType === "docx"
+            ) {
+              icon = (
+                <FaFileWord className="text-blue-500 bg-white rounded w-[1rem] h-[1.5rem]" />
+              );
+            } else if (fileType === "xls" || fileType === "xlsx") {
+              icon = (
+                <FaFileExcel className="text-green-500 bg-white rounded w-[1rem] h-[1.5rem]" />
+              );
+            }
+
             return (
               <div key={index} className="text-[0.9rem]">
                 {el.sender !== username && (
@@ -205,16 +236,18 @@ const Message = () => {
                         />
                       </MessageInfo>
                       <MessageContent>
-                        <Author>@{el.sender}</Author>
+                        <Author>{el.sender}</Author>
                         <Text>{el.text}</Text>
                         {el.image && (
                           <img
                             src={`${FILE_URL}${chatImage}`}
+                            // src={chatImage}
                             style={{
                               marginBottom: "25px",
                               width: "98%",
                               marginInline: "auto",
                               borderRadius: "10px",
+                              paddingInline: "5px",
                             }}
                             alt="image"
                           />
@@ -226,7 +259,13 @@ const Message = () => {
                               Video name:{" "}
                               {chatVideo.substring(7, 30).slice(".", -4)}
                             </p>
-                            <video style={{ marginBottom: "1.2rem" }} controls>
+                            <video
+                              style={{
+                                marginBottom: "1.2rem",
+                                paddingInline: "5px",
+                              }}
+                              controls
+                            >
                               <source
                                 src={`${FILE_URL}${chatVideo}`}
                                 type="video/mp4"
@@ -236,37 +275,24 @@ const Message = () => {
                         )}
 
                         {el.voiceNote && (
-                          <audio controls>
-                            <source
-                              src={`${FILE_URL}${chatVoiceNote}`}
-                              type="audio/mp3"
-                            />
+                          <audio
+                            className="w-full px-[5px] mb-[1.2rem] mt-[-1rem]"
+                            controls
+                          >
+                            <source src={`${FILE_URL}${chatVoiceNote}`} />
                           </audio>
                         )}
 
                         {el.file && (
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: "10px",
-                              margin: "1rem 0.5rem",
-                              marginTop: "0",
-                              alignItems: "center",
-                            }}
-                          >
-                            <p className="mb-[-0.5rem] text-sm text-zinc-300">
-                              File name: {chatFile.substring(6, 20).split(".")}
-                            </p>
+                          <div className="text-sm text-zinc-300 flex gap-3 mb-4 px-2 py-1 items-end italic cursor-default bg-[#53352d1f] w-[94%] m-auto rounded">
+                            {icon}
+                            {fileName}
                             <a
                               href={`${FILE_URL}${chatFile}`}
                               download={chatFile.substring(6)}
+                              target="_blank"
                             >
-                              <FiDownload
-                                style={{
-                                  color: "#3683F5",
-                                  fontSize: "1.5rem",
-                                }}
-                              />
+                              <AiOutlineCloudDownload className="text-zinc-200 text-xl hover:scale-125 transition duration-300 ease-in-out cursor-pointer" />
                             </a>
                           </div>
                         )}
@@ -285,24 +311,22 @@ const Message = () => {
                         {el.image && (
                           <img
                             src={`${FILE_URL}${chatImage}`}
-                            style={{
-                              marginBottom: "25px",
-                              width: "10rem",
-                              // height: '20rem',
-                              marginInline: "auto",
-                              borderRadius: "10px",
-                            }}
+                            className="rounded-[10px] mx-auto w-5/6 mb-[25px]"
                             alt="image"
                           />
                         )}
 
                         {el.video && (
                           <>
-                            <p className="mb-[-0.5rem] text-sm text-zinc-300">
+                            <p className="mb-[0.5rem] pl-3 text-sm text-zinc-300">
                               Video name:{" "}
                               {chatVideo.substring(7, 30).slice(".", -4)}
                             </p>
-                            <video style={{ marginBottom: "1.2rem" }} controls>
+                            <video
+                              style={{ marginBottom: "1.2rem" }}
+                              controls
+                              className="px-2"
+                            >
                               <source
                                 src={`${FILE_URL}${chatVideo}`}
                                 type="video/mp4"
@@ -312,43 +336,29 @@ const Message = () => {
                         )}
 
                         {el.voiceNote && (
-                          <audio
-                            controls
-                            src={`${FILE_URL}${chatVoiceNote}`}
-                            style={{ marginBottom: "2rem" }}
-                          >
-                            <a
-                              href={`${FILE_URL}${chatVoiceNote}`}
-                              download="recording.ogg"
+                          <>
+                            <audio
+                              controls
+                             
+                              style={{ marginBottom: "1.5rem", width: "100%" }}
+                              className="px-2"
                             >
-                              Download Recording
-                            </a>
-                          </audio>
+                              <source src={`${FILE_URL}${chatVoiceNote}`} />
+
+                            </audio>
+                          </>
                         )}
 
                         {el.file && (
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: "10px",
-                              margin: "1rem 0.5rem",
-                              marginTop: "0",
-                              alignItems: "center",
-                            }}
-                          >
-                            <p className="mb-[-0.5rem] text-sm text-zinc-300">
-                              File name: {chatFile.substring(6, 20).split(".")}
-                            </p>
+                          <div className="text-sm text-zinc-300 flex gap-3 mb-4 px-2 py-1 items-end italic cursor-default bg-[#53352d1f] w-[94%] m-auto rounded">
+                            {icon}
+                            {fileName}
                             <a
                               href={`${FILE_URL}${chatFile}`}
                               download={chatFile.substring(6)}
+                              target="_blank"
                             >
-                              <FiDownload
-                                style={{
-                                  color: "#3683F5",
-                                  fontSize: "1.5rem",
-                                }}
-                              />
+                              <AiOutlineCloudDownload className="text-zinc-200 text-xl hover:scale-125 transition duration-300 ease-in-out cursor-pointer" />
                             </a>
                           </div>
                         )}
@@ -361,8 +371,8 @@ const Message = () => {
               </div>
             );
           })}
-        <div ref={messagesRef} />
       </>
+      <div ref={messagesRef} />
     </div>
   );
 };

@@ -205,7 +205,6 @@ const SignUp = () => {
 
     // actions.resetForm();
 
-
     dispatch(registerUser(values));
   };
 
@@ -327,7 +326,7 @@ useEffect(() => {
               </Box>
               <TextFieldStyle
                 id="username"
-                placeholder="@Ekowsmith"
+                placeholder="Ekowsmith"
                 value={values.username}
                 onBlur={handleBlur}
                 onChange={handleChange}

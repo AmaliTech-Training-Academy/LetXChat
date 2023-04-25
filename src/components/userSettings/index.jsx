@@ -20,6 +20,7 @@ import { RiWechat2Line,  } from "react-icons/ri";
 import {  HiOutlineUser } from "react-icons/hi";
 
 import GeneralSettings from "../generalSettings";
+import Cookies from "js-cookie";
 
 const StyledModal = styled(Modal)({
   "& .MuiBackdrop-root": {
@@ -56,7 +57,6 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
     navigate("/");
   };
 
-  const userImage = userInfo.image;
   const userChatId = userInfo.chat_id;
   const fullName = userInfo.name
 
@@ -76,7 +76,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
             Settings
           </div>
           <div className="w-[76px] h-[76px] rounded-full mx-auto mt-[14px]">
-            <img src={userImage} alt="Profile Pic" />
+            <img src={userInfo.image} alt="Profile Pic" />
           </div>
 
           <div className="w-full h-[210px] mt-[30px] shadow-2xl shadow-[rgba(0, 0, 0, 0.25)] rounded-[12px] text-[#101828] pl-[18px] pr-[12px] pb-[13px]">
@@ -90,7 +90,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
             </div>
             <div
               onClick={() => setOpenGeneral(true)}
-              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer"
+              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer hover:bg-zinc-100 transition duration-300 ease-in-out"
             >
               <img src={General} alt="General Icon" />
               <div className="pr-[16px] border-b border-b-[#D9D9D9] w-full h-full flex items-center justify-between">
@@ -101,7 +101,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
 
             <div
               onClick={LogoutFunc}
-              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer"
+              className="flex items-center gap-[16px] h-[44px] mb-[13px] cursor-pointer hover:bg-zinc-100 transition duration-300 ease-in-out"
             >
               <img src={Logout} alt="Logout Icon" />
               <div className="pr-[16px] w-full h-full flex items-center justify-between">

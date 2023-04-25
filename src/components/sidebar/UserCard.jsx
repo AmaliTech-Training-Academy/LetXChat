@@ -8,41 +8,26 @@ import { useState } from "react";
 import UserSettings from "../userSettings";
 
 function UserCard({ settings }) {
-  
-  const {userInfo} = useSelector(state => state.user)
+  const { userInfo } = useSelector((state) => state.user);
 
-  // User Settings 
-  const [openSettings, setOpenSettings] = useState(false)
+  // User Settings
+  const [openSettings, setOpenSettings] = useState(false);
   const handleOpen = () => setOpenSettings(true);
 
   return (
     <div
       className={`${
         settings
-          ? `bg-[#ffffff] w-[346px] h-[100px] gap-4 mt-20`
-          : `bg-[#EDEDED] w-[300px] h-[100px] justify-between mt-9 cursor-pointer`
+          ? `bg-[#ffffff] w-[346px] h-[110px] gap-4`
+          : `bg-[#EDEDED] w-[300px] h-[110px] justify-between mt-9 cursor-pointer`
       } rounded-xl mx-auto flex items-center`}
     >
       <div
         className={`${
-          settings
-            ? `w-[70px] h-[70px] ml-[23px] relative`
-            : ` w-16 h-16 ml-[10px]`
+          settings ? `w-[70px] h-[70px] ml-[23px]` : ` w-16 h-16 ml-[10px] mb-4`
         } rounded-full`}
       >
-        <img
-          src={userInfo?.image}
-          alt="User Profile"
-          className="w-full h-full object-cover"
-        />
-        {settings && (
-          <>
-            <input type="file" id="profile_photo" accept="image/*" hidden/>
-            <label htmlFor="profile_photo" className="bg-black absolute rounded bottom-[2px] -right-[1px] cursor-pointer">
-              <img src={upload} alt="" className="" />
-            </label>
-          </>
-        )}
+        <img src={userInfo?.image} alt="User Profile" className="scale-95" />
       </div>
       <div className="flex flex-col max-w-[200px] break-words">
         <span className={`${settings ? "font-bold" : "font-medium text-xs"}`}>
@@ -60,9 +45,11 @@ function UserCard({ settings }) {
         </div>
       )}
 
-        {/* User Settings Modal  */}
-        <UserSettings openSettings={openSettings} setOpenSettings={setOpenSettings}  />
-
+      {/* User Settings Modal  */}
+      <UserSettings
+        openSettings={openSettings}
+        setOpenSettings={setOpenSettings}
+      />
     </div>
   );
 }
