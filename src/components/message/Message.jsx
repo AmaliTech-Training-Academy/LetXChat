@@ -152,12 +152,10 @@ const Message = () => {
     });
     const channel = pusher.subscribe("chat");
     channel.bind("message", function (data) {
-      console.log(data);
       setAllMessages((allMessages) => [...allMessages, data]);
     });
   }, []);
 
-  console.log(messages);
 
   useEffect(() => {
     axios

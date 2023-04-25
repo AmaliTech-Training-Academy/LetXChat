@@ -16,24 +16,35 @@ import { fetchChatRooms } from "../../feature/chatRooms";
 function Sidebar() {
   const { allChatRooms } = useSelector((state) => state.userChatrooms);
   const { loading, userInfo } = useSelector((state) => state.user);
+
+  const [newRooms, setNewRooms] = useState([]);
+
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const userToken = Cookies.get("userToken")
+  const userToken = Cookies.get("userToken");
   useEffect(() => {
-
-    dispatch(fetchChatRooms(userToken))
-  }, [])
-  
-  
+    dispatch(fetchChatRooms(userToken));
+  }, [dispatch]);
 
   const handleBackHome = () => {
     navigate("/");
   };
+
   const username = userInfo?.name;
 
-    const chatrooms = Array.from(allChatRooms);
-    chatrooms.sort((a, b) => a.name.localeCompare(b.name));
+  useEffect(() => {
+    if (allChatRooms.length > 0) {
+      const filtered = allChatRooms.filter((chatroom) => {
+        const member = chatroom.members.map((member) => member.name);
+        return member.includes(username);
+      });
+      setNewRooms(filtered);
+    }
+  }, [allChatRooms, username]);
+
+
+  const chatrooms = newRooms.sort((a, b) => a.name.localeCompare(b.name));
 
   if (loading) {
     return (
@@ -69,19 +80,13 @@ function Sidebar() {
       <div className="w-full h-full mt-6 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
         {chatrooms?.length ? (
           chatrooms?.map((chatroom) => {
-            const matchingMember = chatroom.members.find(
-              (member) => member.name === username
+            return (
+              <div key={chatroom?.name}>
+                <Link to={`/chat/${chatroom?.id}`}>
+                  <ChatCard item={chatroom} />
+                </Link>
+              </div>
             );
-
-            if (matchingMember) {
-              return (
-                <div key={chatroom?.name}>
-                  <Link to={`/chat/${chatroom?.id}`}>
-                    <ChatCard item={chatroom} />
-                  </Link>
-                </div>
-              );
-            }
           })
         ) : (
           <div className="text-black font-bold">No chatroom yet...</div>
