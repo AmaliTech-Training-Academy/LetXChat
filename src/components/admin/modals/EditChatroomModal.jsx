@@ -7,6 +7,7 @@ import axios from 'axios'
 import upload from '../../../assets/Upload-Vector.svg'
 import close from '../../../assets/close-svg.svg'
 import { toast } from 'react-toastify'
+import Cookies from 'js-cookie'
 
 function EditChatroomModal() {
     const [name, setName] = useState('')
@@ -15,6 +16,12 @@ function EditChatroomModal() {
     const [saving, setSaving] = useState(false)
     const dispatch = useDispatch()
     const {singleChatroom} =useSelector(state => state.admin)
+
+    const adminToken = Cookies.get('adminToken')
+
+    const headers = {
+        Authorization: `Bearer ${adminToken}`
+    }
 
     useEffect(() => {
         setName(singleChatroom.name)
@@ -37,7 +44,7 @@ function EditChatroomModal() {
         profileImage && data.set('image', profileImage)
         // console.log(data);
             try {
-                const response = await axios.post(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`, data)
+                const response = await axios.post(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`, data, {headers})
                 // console.log(response)
                 if(response.status === 200) {
                     toast.success("Chatroom edited successfully")

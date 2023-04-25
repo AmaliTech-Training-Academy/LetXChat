@@ -19,6 +19,7 @@ import AdminLogin from "../components/adminLogin";
 import Admin from "../pages/admin/Admin";
 import AdminLayout from "../layouts/AdminLayout";
 import NewChatroom from "../components/admin/NewChatroom";
+import AdminPrivateRoute from "../components/admin/AdminPrivateRoute";
 function Router() {
   return (
     <Routes>
@@ -27,9 +28,13 @@ function Router() {
         <Route path="/signup" element={<SignUpLayout />}>
           <Route path="/signup/signupmodal" element={<RegModal />} />
         </Route>
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin-dashboard" element={
+        <AdminPrivateRoute >
+          <AdminLayout />
+        </AdminPrivateRoute>
+        }>
           <Route index element={<Admin />} />
-          <Route path="/admin/createchatroom" element={<NewChatroom />} />
+          <Route path="/admin-dashboard/createchatroom" element={<NewChatroom />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/admin-login" element={<AdminLogin />} />
@@ -46,7 +51,7 @@ function Router() {
       >
         <Route path="/chat/:id" element={<Chat />} />
       </Route>
-      <Route path="*" element={<MainLayout />} />
+      <Route path="*" element={<Home />} />
     </Routes>
   );
 }

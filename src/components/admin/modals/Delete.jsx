@@ -4,15 +4,21 @@ import {hideDeleteModal, getChatrooms} from "../../../feature/adminSlice"
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import Cookies from 'js-cookie'
 
 function Delete() {
   const dispatch = useDispatch()
   const {singleChatroom} = useSelector(state => state.admin)
 
+  const adminToken = Cookies.get("adminToken")
+
   const handleDelete = async (e) => {
     e.preventDefault()
+    const headers = {
+      Authorization: `Bearer ${adminToken}`
+    }
     // console.log(singleChatroom.id)
-    const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`)
+    const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`, {headers})
     // console.log(response)
     if(response.status === 200) {
       toast.success('Chatroom deleted successfully')

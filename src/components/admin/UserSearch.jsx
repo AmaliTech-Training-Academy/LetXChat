@@ -5,10 +5,17 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {addUserToChatroom, getChatrooms, getAllUsers} from '../../feature/adminSlice'
 import axios from 'axios'
+import Cookies from 'js-cookie';
 
 function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMatchedUsers, page}) {
   const {singleChatroom} = useSelector(state => state.admin)
   const dispatch = useDispatch()
+
+  const adminToken = Cookies.get('adminToken')
+
+  const headers = {
+    Authorization: `Bearer ${adminToken}`
+  }
 
   const updateUsers = () => {
     dispatch(addUserToChatroom(item.id))
@@ -33,7 +40,7 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
           toast.warning("User already added")
         }
         else {
-          const response = await axios.post('https://letxchat.takoraditraining.com/api/v1/request', dataObj)
+          const response = await axios.post('https://letxchat.takoraditraining.com/api/v1/request', dataObj, {headers})
           if(response.status === 200) {
             updateUsers()
             toast.success("User added successfully")
@@ -61,7 +68,7 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
       // setMatchedUsers([...matchedUsers, item])
     }
     else {
-      const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatroom/${singleChatroom.id}/${item.id}`)
+      const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatroom/${singleChatroom.id}/${item.id}`, {headers})
       // console.log(response)
       if(response.status === 200) {
         setAddedUsers(addedUsers.filter(ele => ele.id !== item.id));
@@ -86,7 +93,7 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
             </div>
             <div className='flex flex-col'>
             <span>{item.fullname}</span>
-            <span className='text-[#667085]'>{item.email}</span>
+            <span className='text-[#667085]'>{added && item.email.length >= 20 ? item.email.slice(0, 18) + '...' : item.email}</span>
             </div>
         </div>
         {added && <img src={trash} alt="remove" className=' mr-2' onClick={handleDelete}/>}

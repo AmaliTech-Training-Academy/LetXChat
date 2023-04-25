@@ -6,18 +6,18 @@ import { Link } from "react-router-dom";
 import no_data from '../../assets/no-data.svg'
 
 function Chatrooms({ currentChatrooms }) {
-  // const { AddChatroomModalState } = useSelector((state) => state.admin);
+  const { isLoading } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   console.log(currentChatrooms);
-  // }, []);
+  useEffect(() => {
+    console.log(isLoading);
+  }, [isLoading]);
 
   return (
     <div className="mt-11">
       <div className="mb-5 flex justify-between items-center font-bold text-[#101828]">
         <span className="text-2xl">Chatrooms</span>
-        <Link to='/admin/createchatroom'
+        <Link to='/admin-dashboard/createchatroom'
           className="px-7 py-4 bg-[#5B9BF4E5] rounded-lg font-medium text-white text-2xl"
           // onClick={() => dispatch(showAddChatroomModal())}
         >

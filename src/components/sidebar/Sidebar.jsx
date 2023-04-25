@@ -6,8 +6,10 @@ import ChatCard from "./ChatCard";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Sidebar() {
+  const [matchedChatrooms, setMatchedChatrooms] = useState([])
   const { allChatRooms } = useSelector((state) => state.chatrooms);
   const { loading, userInfo } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -47,7 +49,7 @@ function Sidebar() {
       </div>
 
       <UserCard />
-      <Search />
+      <Search setMatchedChatrooms={setMatchedChatrooms}/>
       <div className="w-full h-full mt-8 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
         {allChatRooms?.length ? (
           allChatRooms?.map((chatroom) => {

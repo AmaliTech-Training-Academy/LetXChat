@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 function NewChatroom() {
   const [name, setName] = useState("");
@@ -19,23 +20,30 @@ function NewChatroom() {
 
   const navigate = useNavigate();
 
+  const base_url = 'https://letxchat.takoraditraining.com/api/v1/'
+
+  const adminToken = Cookies.get("adminToken")
+
+  const headers = {
+    Authorization: `Bearer ${adminToken}`
+  }
+
+
   const addUsers = async () => {
     let usernames = [];
     addedUsers.forEach((ele) => usernames.push(ele.fullname));
-    const dataObj = {};
-    dataObj.user_names = usernames;
-    dataObj.chat_room = name;
+    const usersData = {};
+    usersData.user_names = usernames;
+    usersData.chat_room = name;
+
     try {
-      const response = await axios.post(
-        "https://letxchat.takoraditraining.com/api/v1/request",
-        dataObj
-      );
+      const response = await axios.post(`${base_url}request`, usersData, {headers});
       console.log(response);
       if (response.status === 200) {
         setName("");
         setDescription("");
         setProfileImage("");
-        navigate("/admin");
+        navigate("/admin-dashboard");
       }
       toast.success(response.data.message);
     } catch (error) {
@@ -46,22 +54,24 @@ function NewChatroom() {
   const handleClick = async (e) => {
     e.preventDefault();
     setCreating(true);
-    const data = new FormData();
-    data.set("name", name);
-    data.set("description", description);
-    data.set("image", profileImage);
+    const chatroomData = new FormData()
+    chatroomData.set("name", name);
+    chatroomData.set("description", description);
+    chatroomData.set("image", profileImage);
 
     if (name && description && profileImage) {
       try {
-        const response = await axios.post(
-          "https://letxchat.takoraditraining.com/api/v1/chatrooms",
-          data
-        );
+        const response = await axios.post(`${base_url}chatrooms`, chatroomData, {headers});
+        console.log(response);
         if (response.status === 201) {
           toast.success("Chatroom created successfully");
           if (addedUsers.length > 0) {
             addUsers();
           }
+        }
+        else {
+          toast.warning("Can't create Chatroms now")
+          setCreating(false)
         }
       } catch (error) {
         throw new Error(error);
@@ -88,7 +98,7 @@ function NewChatroom() {
 
   return (
     <>
-    <Link to="/admin" className="flex items-center gap-3 mt-8 ml-10 w-max">
+    <Link to="/admin-dashboard" className="flex items-center gap-3 mt-8 ml-10 w-max">
         <img src={backArraow} alt="" />
          go back
     </Link>
@@ -195,7 +205,7 @@ function NewChatroom() {
           )}
           <div className=" mt-8 w-full flex justify-end gap-4">
             <Link
-              to="/admin"
+              to="/admin-dashboard"
               className=" py-3 px-8 border rounded-lg hover:bg-gray-100"
             >
               Cancel
