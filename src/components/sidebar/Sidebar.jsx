@@ -23,7 +23,6 @@ function Sidebar() {
 
   const userToken = Cookies.get("userToken");
 
-  console.log(refresh);
   useEffect(() => {
     if(refresh) {
       dispatch(fetchChatRooms(userToken));
