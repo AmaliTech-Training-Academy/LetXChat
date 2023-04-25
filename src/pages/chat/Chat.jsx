@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import ChatPage from "../chatPage/ChatPage";
 import GroupDetails from "../../components/groupDetails/GroupDetails";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 
 const Container = styled(Box)({

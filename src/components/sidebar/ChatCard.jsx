@@ -20,9 +20,9 @@ function ChatCard({item}) {
             </span>
         </div>
       </div>
-      <div className="absolute bottom-3 right-3 min-w-max h-3 p-1 bg-[#53352DE5] rounded-full font-semibold text-[9px] text-white flex justify-center items-center">
+      {/* <div className="absolute bottom-3 right-3 min-w-max h-3 p-1 bg-[#53352DE5] rounded-full font-semibold text-[9px] text-white flex justify-center items-center">
         {recentMessage?.message?.length}
-      </div>
+      </div> */}
     </div>
   );
 }

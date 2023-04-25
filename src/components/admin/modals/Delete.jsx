@@ -1,6 +1,6 @@
 import React from 'react'
 import close from "../../../assets/close-svg.svg"
-import {hideDeleteModal, getChatrooms} from "../../../feature/adminSlice"
+import {hideDeleteModal, getChatrooms, setRefresh} from "../../../feature/adminSlice"
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -24,6 +24,7 @@ function Delete() {
       toast.success('Chatroom deleted successfully')
       dispatch(getChatrooms())
       dispatch(hideDeleteModal())
+      dispatch(setRefresh(true))
     }
     else {
       toast.warning('Chatroom delete unsucessfull');

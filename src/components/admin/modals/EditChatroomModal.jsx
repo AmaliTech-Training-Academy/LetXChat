@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 // import upload from "../../../assets/upload-image.png"
 // import close from "../../../assets/close-button.png"
 import { useSelector, useDispatch } from 'react-redux'
-import {hideEditChatroomModal, getChatrooms} from '../../../feature/adminSlice'
+import {hideEditChatroomModal, getChatrooms, setRefresh} from '../../../feature/adminSlice'
 import axios from 'axios'
 import upload from '../../../assets/Upload-Vector.svg'
 import close from '../../../assets/close-svg.svg'
@@ -50,6 +50,7 @@ function EditChatroomModal() {
                     toast.success("Chatroom edited successfully")
                     dispatch(getChatrooms())
                     dispatch(hideEditChatroomModal())
+                    dispatch(setRefresh(true))
                 }
                 else {
                     toast.warning("Chatroom edit wasn't successfull")

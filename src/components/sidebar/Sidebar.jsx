@@ -8,10 +8,12 @@ import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { fetchChatRooms } from "../../feature/chatRooms";
+import { setRefresh } from "../../feature/adminSlice";
 
 function Sidebar() {
   const [, setMatchedChatrooms] = useState([])
   const { allChatRooms } = useSelector((state) => state.userChatrooms);
+  const { refresh } = useSelector((state) => state.admin);
   const { loading, userInfo } = useSelector((state) => state.user);
 
   const [newRooms, setNewRooms] = useState([]);
@@ -20,9 +22,18 @@ function Sidebar() {
   const dispatch = useDispatch();
 
   const userToken = Cookies.get("userToken");
+
+  console.log(refresh);
   useEffect(() => {
-    dispatch(fetchChatRooms(userToken));
-  }, [dispatch]);
+    if(refresh) {
+      dispatch(fetchChatRooms(userToken));
+      dispatch(setRefresh(false))
+    }
+  }, [refresh]);
+
+  useEffect(() => {
+      dispatch(fetchChatRooms(userToken));
+  }, []);
 
   const handleBackHome = () => {
     navigate("/");

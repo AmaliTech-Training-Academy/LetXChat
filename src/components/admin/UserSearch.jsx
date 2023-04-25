@@ -2,7 +2,7 @@ import React from 'react'
 import trash from "../../assets/trash.svg"
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux'
-import {addUserToChatroom, getChatrooms, getAllUsers} from '../../feature/adminSlice'
+import {addUserToChatroom, getChatrooms, getAllUsers, setRefresh} from '../../feature/adminSlice'
 import axios from 'axios'
 import Cookies from 'js-cookie';
 
@@ -45,6 +45,7 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
             toast.success("User added successfully")
             dispatch(getChatrooms())
             dispatch(getAllUsers())
+            dispatch(setRefresh(true))
           }
         }
       }
@@ -69,6 +70,7 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
         setAddedUsers(addedUsers.filter(ele => ele.id !== item.id));
         toast.success("User deleted successfully")
         dispatch(getChatrooms())
+        dispatch(setRefresh(true))
       }
     }
   }

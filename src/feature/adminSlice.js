@@ -13,7 +13,8 @@ const initialState = {
     deleteModalState: false,
     isLoading: true,
     loadingMembers: true,
-    loadingUsers: true
+    loadingUsers: true,
+    refresh: false
 }
 
 const baseUrl = 'https://letxchat.takoraditraining.com/api/v1/'
@@ -88,6 +89,9 @@ const adminSlice = createSlice({
         },
         addUserToChatroom: (state, {payload}) => {
             state.allUsers.users = state.allUsers.users.filter(ele => ele.id !== payload)
+        },
+        setRefresh: (state, {payload}) => {
+            state.refresh = payload
         }
     },
     extraReducers: {
@@ -113,6 +117,6 @@ const adminSlice = createSlice({
     }
 })
 
-export const {showEditChatroomModal, hideEditChatroomModal, showDeleteModal, hideDeleteModal, showViewUsersModal, hideViewUsersModal, getSingleChatroom, getMembers, addUserToChatroom} = adminSlice.actions
+export const {showEditChatroomModal, hideEditChatroomModal, showDeleteModal, hideDeleteModal, showViewUsersModal, hideViewUsersModal, getSingleChatroom, getMembers, addUserToChatroom, setRefresh} = adminSlice.actions
 
 export default adminSlice.reducer

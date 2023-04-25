@@ -4,8 +4,9 @@ import backArraow from "../../assets/previous.png"
 import UserSearch from "./UserSearch";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import {setRefresh} from "../../feature/adminSlice"
 import Cookies from "js-cookie";
 
 function NewChatroom() {
@@ -19,6 +20,7 @@ function NewChatroom() {
   const { allUsers } = useSelector((state) => state.admin);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const base_url = 'https://letxchat.takoraditraining.com/api/v1/'
 
@@ -38,7 +40,6 @@ function NewChatroom() {
 
     try {
       const response = await axios.post(`${base_url}request`, usersData, {headers});
-      console.log(response);
       if (response.status === 200) {
         setName("");
         setDescription("");
@@ -62,12 +63,12 @@ function NewChatroom() {
     if (name && description && profileImage) {
       try {
         const response = await axios.post(`${base_url}chatrooms`, chatroomData, {headers});
-        console.log(response);
         if (response.status === 201) {
           toast.success("Chatroom created successfully");
           if (addedUsers.length > 0) {
             addUsers();
           }
+          dispatch(setRefresh(true))
         }
         else {
           toast.warning("Can't create Chatroms now")
