@@ -6,11 +6,11 @@
 
 A chat system where users can login/sign up to access the system then, the user has access to a chatroom based on the project they are working on to start conversations. The user’s profile can be viewed and edited too. 
 
-The whole chatting style is like messenger, the message is sent after pressing the Enter key/clicking submit. Users can share texts, images, voice notes and videos.
+The whole chatting style is like messenger, the message is sent after pressing the Ctrl and Enter keys/clicking submit button. Users can share texts, images, voice notes and videos.
 
 ## Tech Stacks
 
-**Frontend (Client):** React, React Router, @ReduxJs/ Toolkit Tailwind CSS, MUI, Pusher Js, Axios, React-Toastify, and Js Cookie
+**Frontend (Client):** React, React Router, @ReduxJs/Toolkit, Tailwind CSS, MUI, Pusher Js, Axios, React-Toastify, and Js Cookie
 
 **Backend (Server):** PHP, Laravel, Pusher
 
@@ -24,37 +24,8 @@ The whole chatting style is like messenger, the message is sent after pressing t
 5. Update user info and logout
 6. Display all chat rooms with details on admin dashboard
 7. Delete chatroom from the database
-
-# Preview
-
-<table align="center">
-    <tr>
-        <td>
-            <img src="./src/Previews/login.png" width=800px height=150px>
-        </td>
-        <td>
-            <img src="./src/Previews/dashboard.png" width=800px height=150px>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <img src="./src/Previews/add.png" width=800px height=150px>
-        </td>
-        <td>
-            <img src="./src/Previews/edit.png" width=800px height=150px>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <img src="./src/Previews/price.png" width=800px height=150px>
-        </td>
-        <td>
-            <img src="./src/Previews/image.png" width=800px height=150px>
-        </td>
-    </tr>
-
-</table>
-
+8. Assigning users to a chatroom by admin
+9. Editing chatroom details by admin
 
 
 # Project Setup
