@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-// import upload from "../../../assets/upload-image.png"
-// import close from "../../../assets/close-button.png"
 import { useSelector, useDispatch } from 'react-redux'
 import {hideEditChatroomModal, getChatrooms, setRefresh} from '../../../feature/adminSlice'
 import axios from 'axios'
@@ -26,14 +24,7 @@ function EditChatroomModal() {
     useEffect(() => {
         setName(singleChatroom.name)
         setDescription(singleChatroom.description)
-        console.log(singleChatroom);
     }, [])
-    // useEffect(() => {
-    //     console.log(name);
-    // }, [name])
-    // useEffect(() => {
-    //     console.log(description);
-    // }, [description])
 
     const handleClick = async (e) => {
         e.preventDefault()
@@ -42,10 +33,8 @@ function EditChatroomModal() {
         name && data.set('name', name)
         description && data.set('description', description)
         profileImage && data.set('image', profileImage)
-        // console.log(data);
             try {
                 const response = await axios.post(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`, data, {headers})
-                // console.log(response)
                 if(response.status === 200) {
                     toast.success("Chatroom edited successfully")
                     dispatch(getChatrooms())
@@ -58,7 +47,6 @@ function EditChatroomModal() {
             } catch (error) {
                 toast.warning(error)
             }
-        console.log(name, description, profileImage)
     }
     
   return (

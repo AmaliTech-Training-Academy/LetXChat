@@ -21,16 +21,8 @@ function Users() {
     }
 
     useEffect(() => {
-        // console.log(singleChatroom)
         setAddedUsers(allUsers.users.filter(ele => singleChatroom.members.some(ele2 => ele2.name === ele.fullname)))
-        // console.log(addedUsers);
-        // console.log(allUsers);
-        // console.log(matchedUsers);
     }, [])
-
-    // useEffect(() => {
-    //     console.log(matchedUsers);
-    // }, [matchedUsers])
 
   return (
     <div className="fixed h-screen w-full bg-[#344054b2] backdrop-blur z-10 flex justify-center items-center">

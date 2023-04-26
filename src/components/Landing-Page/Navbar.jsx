@@ -1,12 +1,22 @@
 import React from 'react'
 import logo from '../../assets/logo.png'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 function Navbar() {
   const location = useLocation()
+  const navigate = useNavigate()
+  
   if(location.pathname !== '/') {
     return null
   };
+
+  const userToken = Cookies.get("userToken")
+
+  const logout = () => {
+    Cookies.remove("userToken")
+    navigate("/")
+  }
 
   return (
     <div className='w-full h-20 bg-[#FDF4F4] flex justify-center items-center px-24'>
@@ -20,8 +30,9 @@ function Navbar() {
               <Link to='/contact' className='text-xl cursor-pointer relative hover:text-[#53352D] after:absolute after:h-[2px] after:w-full after:bottom-0 after:inset-x-0 after:bg-[#53352D] after:scale-x-0 after:content-[""] hover:after:scale-x-100 after:origin-bottom-left after:transition-all'>Contact</Link>
           </ul>
           <div className='flex gap-5'>
-              <Link to='/login' className='border-2 border-[#53352D] py-2 px-4 rounded-lg text-[#53352D] hover:text-white hover:bg-[#53352D]'>Sign in</Link>
-              <Link to='/signup' className='py-2 px-4 border-2 border-[#53352D] rounded-lg text-[#53352D] hover:text-white hover:bg-[#53352D]'>Register</Link>
+              {!userToken ? <><Link to='/login' className='border-2 border-[#53352D] py-2 px-4 rounded-lg text-[#53352D] hover:text-white hover:bg-[#53352D]'>Sign in</Link>
+              <Link to='/signup' className='py-2 px-4 border-2 border-[#53352D] rounded-lg text-[#53352D] hover:text-white hover:bg-[#53352D]'>Register</Link></> :
+              <button className='py-2 px-4 border-2 border-[#53352D] rounded-lg text-[#53352D] hover:text-white hover:bg-[#53352D]' onClick={logout}>Logout</button>}
           </div>
       </nav>
     </div>

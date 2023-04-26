@@ -17,9 +17,7 @@ function Delete() {
     const headers = {
       Authorization: `Bearer ${adminToken}`
     }
-    // console.log(singleChatroom.id)
     const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`, {headers})
-    // console.log(response)
     if(response.status === 200) {
       toast.success('Chatroom deleted successfully')
       dispatch(getChatrooms())
