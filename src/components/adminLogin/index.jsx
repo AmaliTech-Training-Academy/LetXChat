@@ -11,9 +11,8 @@ import {
   TextField,
 } from "@mui/material";
 import { useFormik } from "formik";
-import React from "react";
-import { adminLoginSchema, loginSchema } from "../../schemas";
-import { useState } from "react";
+import React, {useState} from "react";
+import { adminLoginSchema } from "../../schemas";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { ADMIN_URL } from "../../defaultValues/DefaultValues";
 import axios from "axios";
@@ -160,7 +159,7 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [setIsLoading] = useState(false);
 
   // Submit Form
   const onSubmit = async (values, actions) => {
@@ -178,7 +177,6 @@ const AdminLogin = () => {
     axios(config)
     .then(function(response) {
         setIsLoading(false)
-        console.log(response);
         Cookies.set('adminToken', response.data.token)
         const SUCCESS_MESSAGE = response.data.message;
         toast.success(SUCCESS_MESSAGE, {autoClose: 3000,});
@@ -187,10 +185,6 @@ const AdminLogin = () => {
         toast.warn(ERROR_MESSAGE);
         console.log(error.response);
     })
-
-    // setTimeout(() => {
-    //   actions.resetForm();
-    // }, 4000);
   };
 
   const {

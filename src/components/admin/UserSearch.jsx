@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import trash from "../../assets/trash.svg"
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,6 +15,10 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
   const headers = {
     Authorization: `Bearer ${adminToken}`
   }
+
+  useEffect(() => {
+    console.log(addedUsers);
+  }, [addedUsers])
 
   const updateUsers = () => {
     dispatch(addUserToChatroom(item.id))

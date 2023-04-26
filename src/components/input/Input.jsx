@@ -8,15 +8,12 @@ import Attach from "../../assets/Attach.png";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { BsMicMute } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import uploadVideo from "../../assets/uploadVideo.png";
 
 import { CHATROOMS_URL } from "../../defaultValues/DefaultValues";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { setRecordedAudio } from "../../feature/audioSlice";
-import { toast } from "react-toastify";
 
 const Container = styled(Box)({
   height: "10vh",
@@ -87,13 +84,10 @@ const Input = ({ chatRoom }) => {
   const [image, setImage] = useState("");
   const [file, setFile] = useState(null);
   const [video, setVideo] = useState(null);
-  const [audioData, setAudioData] = useState(new Blob());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recording, setRecording] = useState(false);
-  // const [mediaRecorder, setMediaRecorder] = useState(null);
-  // const [audioUrl, setAudioUrl] = useState(null);
 
-  const [audioUrl, setAudioUrl] = useState(null);
+  const [setAudioUrl] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioBlob, setAudioBlob] = useState(null);
   const addEmoji = (e) => {
@@ -124,38 +118,6 @@ const Input = ({ chatRoom }) => {
       handleSubmit(event);
     }
   };
-
-  // const handleStartRecording = async () => {
-  //   try {
-  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  //     const recorder = new MediaRecorder(stream);
-
-  //     let chunks = [];
-  //     recorder.addEventListener("dataavailable", (event) => {
-  //       chunks.push(event.data);
-  //     });
-
-  //     recorder.addEventListener("stop", () => {
-  //       const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-  //       const url = URL.createObjectURL(blob);
-  //       setAudioData({ blob, url });
-  //     });
-
-  //     recorder.start();
-  //     setMediaRecorder(recorder);
-  //     setRecording(true);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // const handleStopRecording = () => {
-  //   if (mediaRecorder) {
-  //     mediaRecorder.stop();
-  //     setMediaRecorder(null);
-  //     setRecording(false);
-  //   }
-  // };
 
   const handleStartRecording = () => {
     navigator.mediaDevices.getUserMedia({ audio: true })
@@ -232,8 +194,6 @@ const Input = ({ chatRoom }) => {
         formData,
         config
       );
-
-      console.log(res.data);
 
       setText("");
       setImage("");

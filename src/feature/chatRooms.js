@@ -2,25 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { CHATROOMS_URL } from "../defaultValues/DefaultValues";
 import Cookies from "js-cookie";
-
-// const userToken = Cookies.get("userToken");
-// let config = {
-//   method: "get",
-//   url: `${CHATROOMS_URL}`,
-//   headers: {
-//     Authorization: `Bearer ${userToken}`,
-//   },
-// };
 const getHeaders = () => {
   const userToken = Cookies.get("userToken");
   return {
     Authorization: `Bearer ${userToken}`,
   };
 };
-
-// const getUserInfo = Cookies.get("userInfo");
-// const userInfo = getUserInfo ? JSON.parse(getUserInfo) : null;
-// const username = userInfo?.username;
 export const fetchChatRooms = createAsyncThunk(
   "userChatrooms/fetchChatRooms",
   async () => {

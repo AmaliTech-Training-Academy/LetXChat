@@ -26,14 +26,7 @@ function EditChatroomModal() {
     useEffect(() => {
         setName(singleChatroom.name)
         setDescription(singleChatroom.description)
-        console.log(singleChatroom);
     }, [])
-    // useEffect(() => {
-    //     console.log(name);
-    // }, [name])
-    // useEffect(() => {
-    //     console.log(description);
-    // }, [description])
 
     const handleClick = async (e) => {
         e.preventDefault()
@@ -42,10 +35,8 @@ function EditChatroomModal() {
         name && data.set('name', name)
         description && data.set('description', description)
         profileImage && data.set('image', profileImage)
-        // console.log(data);
             try {
                 const response = await axios.post(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`, data, {headers})
-                // console.log(response)
                 if(response.status === 200) {
                     toast.success("Chatroom edited successfully")
                     dispatch(getChatrooms())
@@ -70,13 +61,10 @@ function EditChatroomModal() {
                     <img src={close} alt="close" className='w-full h-full object-cover cursor-pointer' />
                 </div>
             </div>
-            {/* <label htmlFor="name" className='mb-2'>Name</label> */}
             <label htmlFor="name" className=''>Chatroom Name</label>
             <input type="text" id='name' name='name' value={name} placeholder='Enter name' className='p-4 rounded-lg border-2 shadow-sm' onChange={(e) => setName(e.target.value)}/>
-            {/* <label htmlFor="description" className=' mt-5 mb-2'>Description</label> */}
             <label htmlFor="description">Description</label>
             <input type='text' name="description" id="description" value={description} placeholder='Enter description' className='p-4 rounded-lg border-2 shadow-sm' onChange={(e) => setDescription(e.target.value)}/>
-            {/* <label htmlFor="image" className=' mt-5 mb-2'>image</label> */}
             <div className='flex items-center justify-between'>
                 <div className='flex gap-5'>
                 <label className=' w-8 h-8' htmlFor="image">

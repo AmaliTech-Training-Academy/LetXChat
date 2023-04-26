@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import search from "../../assets/Search.svg";
 
 function Search({ settings }) {
-  const [searchInput, setSearchInput] = useState("");
+  const [setSearchInput] = useState("");
 
   return (
     <div

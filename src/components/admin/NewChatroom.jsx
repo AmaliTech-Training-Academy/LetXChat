@@ -68,9 +68,18 @@ function NewChatroom() {
           if (addedUsers.length > 0) {
             addUsers();
           }
+          else {
+            setCreating(false)
+            toast.warn("No users added to this chatroom")
+            setName("");
+            setDescription("");
+            setProfileImage("");
+            navigate("/admin-dashboard");
+          }
           dispatch(setRefresh(true))
         }
         else {
+          setCreating(false)
           toast.warning("Can't create Chatroms now")
           setCreating(false)
         }
@@ -78,7 +87,10 @@ function NewChatroom() {
         throw new Error(error);
       }
     } else {
-      console.log("some fields are empty");
+      setCreating(false)
+      !name && toast.warn("name field can't empty");
+      !description && toast.warn("description field can't empty");
+      !profileImage && toast.warn("image field can't empty");
     }
   };
 
@@ -145,10 +157,6 @@ function NewChatroom() {
                 {addedUsers.map((item) => (
                   <UserSearch added={true} item={item} key={item.id} />
                 ))}
-                {/* <UserSearch added={true}/>
-                        <UserSearch added={true}/>
-                        <UserSearch added={true}/>
-                        <UserSearch added={true}/> */}
               </div>
             </>
           )}

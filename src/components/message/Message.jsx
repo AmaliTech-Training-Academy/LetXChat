@@ -1,17 +1,13 @@
 import { Box, styled } from "@mui/material";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
-
-import { FiDownload } from "react-icons/fi";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { useParams } from "react-router";
 import { CHATROOMS_URL, FILE_URL } from "../../defaultValues/DefaultValues";
 import Cookies from "js-cookie";
-import { useState } from "react";
-import { format, formatISO } from "date-fns";
+import { format } from "date-fns";
 import Pusher from "pusher-js";
-import { addMessage } from "../../feature/chatMessageSlice";
 import { FaFilePdf, FaFileWord, FaFileExcel } from "react-icons/fa";
 import { AiOutlineCloudDownload } from "react-icons/ai";
 
