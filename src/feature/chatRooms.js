@@ -18,9 +18,9 @@ const getHeaders = () => {
   };
 };
 
-const getUserInfo = Cookies.get("userInfo");
-const userInfo = JSON.parse(getUserInfo);
-const username = userInfo?.username;
+// const getUserInfo = Cookies.get("userInfo");
+// const userInfo = getUserInfo ? JSON.parse(getUserInfo) : null;
+// const username = userInfo?.username;
 export const fetchChatRooms = createAsyncThunk(
   "userChatrooms/fetchChatRooms",
   async () => {
