@@ -3,7 +3,6 @@ import React from "react";
 
 function ChatCard({item}) {
   const recentMessage = item?.recent_message
-// console.log(recentMessage);
 
   return (
     <div className="relative flex items-center w-[280px] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">
@@ -21,9 +20,9 @@ function ChatCard({item}) {
             </span>
         </div>
       </div>
-      <div className="absolute bottom-3 right-3 min-w-max h-3 p-1 bg-[#53352DE5] rounded-full font-semibold text-[9px] text-white flex justify-center items-center">
+      {/* <div className="absolute bottom-3 right-3 min-w-max h-3 p-1 bg-[#53352DE5] rounded-full font-semibold text-[9px] text-white flex justify-center items-center">
         {recentMessage?.message?.length}
-      </div>
+      </div> */}
     </div>
   );
 }

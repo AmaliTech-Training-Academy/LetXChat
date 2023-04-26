@@ -178,6 +178,7 @@ const AdminLogin = () => {
     axios(config)
     .then(function(response) {
         setIsLoading(false)
+        console.log(response);
         Cookies.set('adminToken', response.data.token)
         const SUCCESS_MESSAGE = response.data.message;
         toast.success(SUCCESS_MESSAGE, {autoClose: 3000,});

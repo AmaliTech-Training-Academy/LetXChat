@@ -10,7 +10,7 @@ function Chatroom({item}) {
 
   const viewMembers = () => {
     dispatch(showViewUsersModal())
-    dispatch(getMembers(item.members))
+    dispatch(getSingleChatroom(item))
   }
   const deleteChatroom = (e) => {
     // e.preventDefault()
@@ -28,7 +28,7 @@ function Chatroom({item}) {
   // }, [])
 
   return (
-    <div className="w-full flex justify-between items-center py-4 font-medium hover:bg-gray-100">
+    <div className="w-full flex justify-between items-center p-5 font-medium hover:shadow-md">
       <span className="flex-[1.43] font-medium text-[#101828]">
         {item.name}
       </span>
@@ -46,8 +46,8 @@ function Chatroom({item}) {
       </span>
       <div className="flex-[1.43] flex gap-5 justify-center text-white">
           <button className="border p-2 rounded-lg bg-[#5B9BF4] text-xs" onClick={viewMembers}>View members</button>
-          <img src={edit} alt="Edit" onClick={editChatroom}/>
-          <img src={trash} alt="Delete" onClick={deleteChatroom}/>
+          <img src={edit} alt="Edit" onClick={editChatroom} className=" cursor-pointer"/>
+          <img src={trash} alt="Delete" onClick={deleteChatroom} className=" cursor-pointer"/>
           {/* <button className="border p-2 rounded-lg bg-green-300">Edit</button>
           <button className="border p-2 rounded-lg bg-red-500" onClick={deleteChatroom}>Delete</button> */}
         {/* <span className={`${item.status === 'Active' ? 'bg-[#ECFDF3]' : 'bg-[#FEF3F2]'}  px-2 p-[2px] rounded-full text-xs cursor-pointer`}>

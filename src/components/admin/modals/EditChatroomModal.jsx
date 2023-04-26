@@ -2,22 +2,31 @@ import React, { useEffect, useState } from 'react'
 // import upload from "../../../assets/upload-image.png"
 // import close from "../../../assets/close-button.png"
 import { useSelector, useDispatch } from 'react-redux'
-import {hideEditChatroomModal} from '../../../feature/adminSlice'
+import {hideEditChatroomModal, getChatrooms, setRefresh} from '../../../feature/adminSlice'
 import axios from 'axios'
 import upload from '../../../assets/Upload-Vector.svg'
 import close from '../../../assets/close-svg.svg'
+import { toast } from 'react-toastify'
+import Cookies from 'js-cookie'
 
 function EditChatroomModal() {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [profileImage, setProfileImage] = useState(null)
+    const [saving, setSaving] = useState(false)
     const dispatch = useDispatch()
     const {singleChatroom} =useSelector(state => state.admin)
+
+    const adminToken = Cookies.get('adminToken')
+
+    const headers = {
+        Authorization: `Bearer ${adminToken}`
+    }
 
     useEffect(() => {
         setName(singleChatroom.name)
         setDescription(singleChatroom.description)
-        // console.log(singleChatroom);
+        console.log(singleChatroom);
     }, [])
     // useEffect(() => {
     //     console.log(name);
@@ -28,22 +37,28 @@ function EditChatroomModal() {
 
     const handleClick = async (e) => {
         e.preventDefault()
-        // const data = new FormData()
-        // data.set('name', name)
-        // data.set('description', description)
-        // data.set('image', profileImage)
-        // if (name && description && profileImage) {
-        //     try {
-        //         const response = await axios.post('https://letxchat.takoraditraining.com/api/v1/chatrooms', data)
-        //         console.log(response)
-        //     } catch (error) {
-        //         throw new Error(error)
-        //     }
-        // }
-        // else {
-        //     console.log("some fields are empty")
-        // }
-        // console.log(name, description, profileImage)
+        setSaving(true)
+        const data = new FormData()
+        name && data.set('name', name)
+        description && data.set('description', description)
+        profileImage && data.set('image', profileImage)
+        // console.log(data);
+            try {
+                const response = await axios.post(`https://letxchat.takoraditraining.com/api/v1/chatrooms/${singleChatroom.id}`, data, {headers})
+                // console.log(response)
+                if(response.status === 200) {
+                    toast.success("Chatroom edited successfully")
+                    dispatch(getChatrooms())
+                    dispatch(hideEditChatroomModal())
+                    dispatch(setRefresh(true))
+                }
+                else {
+                    toast.warning("Chatroom edit wasn't successfull")
+                }
+            } catch (error) {
+                toast.warning(error)
+            }
+        console.log(name, description, profileImage)
     }
     
   return (
@@ -57,21 +72,26 @@ function EditChatroomModal() {
             </div>
             {/* <label htmlFor="name" className='mb-2'>Name</label> */}
             <label htmlFor="name" className=''>Chatroom Name</label>
-            <input type="text" id='name' value={name} placeholder='Enter name' className='p-4 rounded-lg border-2 shadow-sm' onChange={(e) => setName(e.target.value)}/>
+            <input type="text" id='name' name='name' value={name} placeholder='Enter name' className='p-4 rounded-lg border-2 shadow-sm' onChange={(e) => setName(e.target.value)}/>
             {/* <label htmlFor="description" className=' mt-5 mb-2'>Description</label> */}
             <label htmlFor="description">Description</label>
             <input type='text' name="description" id="description" value={description} placeholder='Enter description' className='p-4 rounded-lg border-2 shadow-sm' onChange={(e) => setDescription(e.target.value)}/>
             {/* <label htmlFor="image" className=' mt-5 mb-2'>image</label> */}
-            <div className='flex items-center gap-5'>
+            <div className='flex items-center justify-between'>
+                <div className='flex gap-5'>
                 <label className=' w-8 h-8' htmlFor="image">
                     <img src={upload} alt="Uplod" className='w-full h-full object-contain cursor-pointer'/>
                 </label>
                 <span className='text-[#1570EFE5]'>{profileImage?.name || 'Upload new profile'}</span>
+                </div>
+                <div className=' w-16 h-16 rounded-full'>
+                    <img src={profileImage ? URL.createObjectURL(profileImage) : singleChatroom.image} alt="" className=' w-full h-full object-cover rounded-full'/>
+                </div>
             </div>
-            <input type="file" id='image' hidden onChange={(e) => {
+            <input type="file" id='image' name='image' hidden onChange={(e) => {
                 setProfileImage(e.target.files[0])
             }}/>
-            <button className='py-4 bg-[#1570EFE5] rounded text-lg font-semibold text-white' onClick={handleClick}>Save Changes</button>
+            <button className={`py-4 ${saving ? 'bg-[#7ab1ffe5]' : 'bg-[#1570EFE5]'} rounded text-lg font-semibold text-white`} onClick={handleClick}>{saving ? 'Saving...' : 'Save Changes'}</button>
         </form>
     </div>
   )

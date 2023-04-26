@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import UserCard from "./UserCard";
 import Search from "./Search";
 import ChatCard from "./ChatCard";
@@ -7,14 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { CHATROOMS_URL } from "../../defaultValues/DefaultValues";
-import axios from "axios";
-import { useState } from "react";
-import { useEffect } from "react";
 import { fetchChatRooms } from "../../feature/chatRooms";
+import { setRefresh } from "../../feature/adminSlice";
 
 function Sidebar() {
+  const [, setMatchedChatrooms] = useState([])
   const { allChatRooms } = useSelector((state) => state.userChatrooms);
+  const { refresh } = useSelector((state) => state.admin);
   const { loading, userInfo } = useSelector((state) => state.user);
 
   const [newRooms, setNewRooms] = useState([]);
@@ -23,9 +22,17 @@ function Sidebar() {
   const dispatch = useDispatch();
 
   const userToken = Cookies.get("userToken");
+
   useEffect(() => {
-    dispatch(fetchChatRooms(userToken));
-  }, [dispatch]);
+    if(refresh) {
+      dispatch(fetchChatRooms(userToken));
+      dispatch(setRefresh(false))
+    }
+  }, [refresh]);
+
+  useEffect(() => {
+      dispatch(fetchChatRooms(userToken));
+  }, []);
 
   const handleBackHome = () => {
     navigate("/");
@@ -76,7 +83,7 @@ function Sidebar() {
       </div>
 
       <UserCard />
-      <Search />
+      <Search setMatchedChatrooms={setMatchedChatrooms}/>
       <div className="w-full h-full mt-6 overflow-y-scroll bg-transparent my-auto flex flex-col gap-4 items-center">
         {chatrooms?.length ? (
           chatrooms?.map((chatroom) => {

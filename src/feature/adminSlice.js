@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const initialState = {
     chatrooms: [],
@@ -12,16 +13,25 @@ const initialState = {
     deleteModalState: false,
     isLoading: true,
     loadingMembers: true,
-    loadingUsers: true
+    loadingUsers: true,
+    refresh: false
 }
 
 const baseUrl = 'https://letxchat.takoraditraining.com/api/v1/'
 
+const getHeaders = () => {
+  const adminToken = Cookies.get("adminToken")
+  return {
+    Authorization: `Bearer ${adminToken}`
+  }
+}
+
 export const getChatrooms = createAsyncThunk('chatrooms/getChatrooms', 
     async () => {
+        const headers = getHeaders()
         try {
-            const response = axios(`${baseUrl}chatrooms?page=`)
-            return await response
+            const response = await axios(`${baseUrl}chatrooms?page=`, {headers})
+            return response
         } catch (error) {
             throw new Error(error)
         }
@@ -37,21 +47,11 @@ async () => {
       throw new Error(error)  
     }
 })
-
-// export const getSingleChatroom = createAsyncThunk('admin/getMembers',
-//     async (id) => {
-//         try {
-//             const response = await axios(`${baseUrl}chatrooms/${id}`)
-//             return response
-//         } catch (error) {
-//            throw new Error(error) 
-//         }
-//     }
-// )
 export const getAllUsers = createAsyncThunk('admin/getAllUsers',
     async () => {
+        const headers = getHeaders()
         try {
-            const response = await axios(`${baseUrl}users/status`)
+            const response = await axios(`${baseUrl}users/status`, {headers})
             return response
         } catch (error) {
            throw new Error(error) 
@@ -86,16 +86,13 @@ const adminSlice = createSlice({
         },
         getMembers: (state, { payload }) => {
             state.chatroomMembers = payload
+        },
+        addUserToChatroom: (state, {payload}) => {
+            state.allUsers.users = state.allUsers.users.filter(ele => ele.id !== payload)
+        },
+        setRefresh: (state, {payload}) => {
+            state.refresh = payload
         }
-        // toggleAddChatroom: (state) => {
-        //     state.showAddChatroomModal = !state.showAddChatroomModal
-        // },
-        // toggleAddChatroom: (state) => {
-        //     state.showAddChatroomModal = !state.showAddChatroomModal
-        // },
-        // toggleAddChatroom: (state) => {
-        //     state.showAddChatroomModal = !state.showAddChatroomModal
-        // },
     },
     extraReducers: {
         [getChatrooms.pending]: (state) => {
@@ -103,24 +100,16 @@ const adminSlice = createSlice({
         },
         [getChatrooms.fulfilled]: (state, {payload}) => {
             state.chatrooms = payload.data
+            state.isLoading = false
         },
         [getChatrooms.rejected]: (state) => {
-            state.chatrooms = false
+            state.isLoading = false
         },
-        // [getSingleChatroom.pending]: (state) => {
-        //     state.loadingMembers = true
-        // },
-        // [getSingleChatroom.fulfilled]: (state, {payload}) => {
-        //     state.singleChatroom = payload.data
-        // },
-        // [getSingleChatroom.rejected]: (state) => {
-        //     state.loadingMembers = false
-        // },
         [getAllUsers.pending]: (state) => {
             state.loadingUsers = true
         },
         [getAllUsers.fulfilled]: (state, {payload}) => {
-            state.allUsers = payload.data.users
+            state.allUsers = payload.data
         },
         [getAllUsers.rejected]: (state) => {
             state.loadingUsers = false
@@ -128,6 +117,6 @@ const adminSlice = createSlice({
     }
 })
 
-export const {showEditChatroomModal, hideEditChatroomModal, showDeleteModal, hideDeleteModal, showViewUsersModal, hideViewUsersModal, getSingleChatroom, getMembers} = adminSlice.actions
+export const {showEditChatroomModal, hideEditChatroomModal, showDeleteModal, hideDeleteModal, showViewUsersModal, hideViewUsersModal, getSingleChatroom, getMembers, addUserToChatroom, setRefresh} = adminSlice.actions
 
 export default adminSlice.reducer

@@ -1,9 +1,9 @@
 import { Skeleton, styled } from "@mui/material";
-import { Box, display } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import { Box } from "@mui/system";
+import React from "react";
 import ChatPage from "../chatPage/ChatPage";
 import GroupDetails from "../../components/groupDetails/GroupDetails";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 
 const Container = styled(Box)({
