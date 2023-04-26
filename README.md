@@ -12,7 +12,7 @@ The whole chatting style is like messenger, the message is sent after pressing t
 
 **Frontend (Client):** React, React Router, @ReduxJs/Toolkit, Tailwind CSS, MUI, Pusher Js, Axios, React-Toastify, and Js Cookie
 
-**Backend (Server):** PHP, Laravel, Pusher
+**Backend (Server):** Laravel, MySQL, and Pusher
 
 ## Features
 
