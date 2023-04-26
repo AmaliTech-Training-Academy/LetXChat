@@ -64,12 +64,10 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
 
   const handleDelete = async () => {
     if(page !== 'users') {
-      // const newAddUsers = addedUsers.filter(ele => ele.id !== item.id)
       console.log(addedUsers);
     }
     else {
       const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatroom/${singleChatroom.id}/${item.id}`, {headers})
-      // console.log(response)
       if(response.status === 200) {
         setAddedUsers(addedUsers.filter(ele => ele.id !== item.id));
         toast.success("User deleted successfully")
