@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import upload from "../../assets/upload-vector.svg";
+import upload from "../../assets/Upload-Vector.svg";
 import backArraow from "../../assets/previous.png"
 import UserSearch from "./UserSearch";
 import axios from "axios";
