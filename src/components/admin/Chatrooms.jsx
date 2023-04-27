@@ -14,7 +14,6 @@ function Chatrooms({ currentChatrooms }) {
         <span className="text-2xl">Chatrooms</span>
         <Link to='/admin-dashboard/createchatroom'
           className="px-7 py-4 bg-[#5B9BF4E5] rounded-lg font-medium text-white text-2xl"
-          // onClick={() => dispatch(showAddChatroomModal())}
         >
           Add Chatroom
         </Link>
