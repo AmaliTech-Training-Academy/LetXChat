@@ -30,14 +30,12 @@ class ChatMessageController extends Controller
     public function newMessage(Request $request, $roomId)
     {
 
-        // dd($request->all());
         $request->validate([
             'text' => 'nullable',
             'image' => 'nullable',
             'video' => 'nullable',
             'voiceNote' => 'nullable',
             'file' => 'nullable'
-            // 'audioUrl'
         ]);
 
         // check if user is part of the current chatroom
