@@ -58,15 +58,11 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
       }
     } catch (error) {
       toast.warning("Can't add users right now")
-      console.log(error)
     }
   }
 
   const handleDelete = async () => {
-    if(page !== 'users') {
-      console.log(addedUsers);
-    }
-    else {
+    if(page === 'users') {
       const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/chatroom/${singleChatroom.id}/${item.id}`, {headers})
       if(response.status === 200) {
         setAddedUsers(addedUsers.filter(ele => ele.id !== item.id));

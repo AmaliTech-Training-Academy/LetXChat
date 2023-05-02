@@ -18,7 +18,7 @@ function Footer() {
                     <img src={logo} alt="LOGO" className='w-full h-full object-cover'/>
                 </div> */}
                 <span className=' text-xl'>Lorem ipsum dolor sit amet<br/> consectetur adipiscing </span>
-                <div className='flex mt-16 gap-8'>
+                <div className='flex mt-16 gap-8 footer-svgs'>
                     {instagram_icon}
                     {facebook_icon}
                     {twitter_icon}

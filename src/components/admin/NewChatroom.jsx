@@ -48,7 +48,7 @@ function NewChatroom() {
       }
       toast.success(response.data.message);
     } catch (error) {
-      console.log(error);
+      toast.warn("Can't add users right now")
     }
   };
 
@@ -204,9 +204,6 @@ function NewChatroom() {
                   key={item.id}
                 />
               ))}
-              {/* <UserSearch />
-                    <UserSearch />
-                    <UserSearch /> */}
             </div>
           )}
           <div className=" mt-8 w-full flex justify-end gap-4">

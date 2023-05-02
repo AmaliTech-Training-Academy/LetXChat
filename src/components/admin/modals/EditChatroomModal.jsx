@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-// import upload from "../../../assets/upload-image.png"
-// import close from "../../../assets/close-button.png"
 import { useSelector, useDispatch } from 'react-redux'
 import {hideEditChatroomModal, getChatrooms, setRefresh} from '../../../feature/adminSlice'
 import axios from 'axios'
@@ -49,7 +47,6 @@ function EditChatroomModal() {
             } catch (error) {
                 toast.warning(error)
             }
-        console.log(name, description, profileImage)
     }
     
   return (
