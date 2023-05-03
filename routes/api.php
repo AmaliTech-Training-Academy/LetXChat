@@ -67,6 +67,7 @@ Route::prefix('v1')->group(function(){
 
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/admin/logout', [AdminController::class, 'logout']);
+        Route::delete('/users/{userId}', [AdminController::class, 'deleteUser']);
     });
 
 

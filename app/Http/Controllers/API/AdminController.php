@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminLoginRequest;
 use App\Http\Requests\AdminRequest;
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -56,5 +57,12 @@ class AdminController extends Controller
         auth()->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out Successful'], 200);
+    }
+
+    public function deleteUser($userId) 
+    {
+        $user = User::findOrFail($userId)->first();
+
+        return $user->delete();
     }
 }
