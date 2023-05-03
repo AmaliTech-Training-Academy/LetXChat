@@ -159,7 +159,7 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
 
-  const [setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Submit Form
   const onSubmit = async (values, actions) => {
