@@ -24,14 +24,14 @@ function UserCard({ settings }) {
     >
       <div
         className={`${
-          settings ? `w-[70px] h-[70px] ml-[23px]` : ` w-16 h-16 ml-[10px] mb-4`
+          settings ? `w-[70px] h-[70px] ml-[23px]` : ` w-16 ml-2 h-16`
         } rounded-full`}
       >
-        <img src={userInfo?.image} alt="User Profile" className="scale-95" />
+        <img src={userInfo?.image} alt="User Profile" className="scale-95 w-full h-full object-cover rounded-full" />
       </div>
       <div className="flex flex-col max-w-[200px] break-words">
         <span className={`${settings ? "font-bold" : "font-medium text-xs"}`}>
-          {userInfo?.email}
+          {userInfo?.email.length > 20 && userInfo?.email.slice(0, 20) + '...'}
         </span>
         {settings && <span className="text-[#878787]">@username</span>}
       </div>
