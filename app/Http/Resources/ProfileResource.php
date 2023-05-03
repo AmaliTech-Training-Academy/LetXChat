@@ -16,7 +16,7 @@ class ProfileResource extends JsonResource
     {
         return[
             'name' => $this->fullname,
-            'username' => $this->username,
+            'username' => '@'.$this->username,
             'chat_id' => $this->chat_id,
             'email' => $this->email,
             'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image
