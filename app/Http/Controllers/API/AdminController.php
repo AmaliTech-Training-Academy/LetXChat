@@ -61,7 +61,7 @@ class AdminController extends Controller
 
     public function deleteUser($userId) 
     {
-        $user = User::findOrFail($userId)->first();
+        $user = User::findOrFail($userId);
 
         return $user->delete();
     }
