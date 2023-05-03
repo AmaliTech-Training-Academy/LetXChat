@@ -34,7 +34,7 @@ class RequestController extends Controller
 
         // Retrieve the users details
         $userNames = $request->user_names;
-        $users = User::whereIn('Fullname', $userNames)->get();
+        $users = User::whereIn('username', $userNames)->get();
 
         if ($users->count() !== count($userNames)) {
             return response()->json(['message' => 'One or more users were not found'], 404);
@@ -54,20 +54,7 @@ class RequestController extends Controller
         }
 
         return response()->json(['message' => 'Users successfully added to the chatroom']);
-
-
-        // $user = User::firstWhere('Fullname',$request->user_name);
-        // $chatroom = ChatRoom::firstWhere('name',$request->chat_room);
-
-        // if (!$user) return response()->json(['message' => 'User Not Found'],404);
-        // if (!$chatroom) return response()->json(['message' => 'Chatroom Not Found'],404);
-
-        // if ($chatroom->hasUser($user))
-        //     return response()->json(['message' => 'Already joined ' . $chatroom->name], 409);
-
-        // $user->chatrooms()->attach($chatroom);
-
-        // return response()->json(['message' => 'Success']);
+        
     }
 
     /**
@@ -79,22 +66,4 @@ class RequestController extends Controller
         return new UserRoomsResource($userRooms);
     }
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, User $user)
-    // {
-    //     //
-    // }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    // public function destroy(User $user, ChatRoom $chatroom)
-    // {
-    //     dd($user,$chatroom);
-    //     if (!($chatroom->hasUser($user)))
-    //         return response()->json(['message'=>'User is not the current chatroom'],404);
-    //     $user->chatrooms()->detach($chatroom);
-    // }
 }
