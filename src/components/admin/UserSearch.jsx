@@ -16,10 +16,6 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
     Authorization: `Bearer ${adminToken}`
   }
 
-  useEffect(() => {
-    console.log(addedUsers);
-  }, [addedUsers])
-
   const updateUsers = () => {
     dispatch(addUserToChatroom(item.id))
     const newMatchedUsers = matchedUsers.filter(ele => ele.id !== item.id)
