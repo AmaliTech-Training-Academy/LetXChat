@@ -9,6 +9,7 @@ const initialState = {
     singleChatroom: [],
     EditChatroomModalState: false,
     viewUsersModalState: false,
+    viewAllUsersModalState: false,
     editModal: false,
     deleteModalState: false,
     isLoading: true,
@@ -31,7 +32,7 @@ export const getChatrooms = createAsyncThunk('chatrooms/getChatrooms',
         const headers = getHeaders()
         try {
             const response = await axios(`${baseUrl}chatrooms?page=`, {headers})
-            return response
+            return JSON.stringify(response)
         } catch (error) {
             throw new Error(error)
         }
@@ -52,7 +53,7 @@ export const getAllUsers = createAsyncThunk('admin/getAllUsers',
         const headers = getHeaders()
         try {
             const response = await axios(`${baseUrl}users/status`, {headers})
-            return response
+            return JSON.stringify(response)
         } catch (error) {
            throw new Error(error) 
         }
@@ -75,6 +76,12 @@ const adminSlice = createSlice({
         hideViewUsersModal: (state) => {
             state.viewUsersModalState = false
         },
+        showAllUsersModal: (state) => {
+            state.viewAllUsersModalState = true
+        },
+        hideAllUsersModal: (state) => {
+            state.viewAllUsersModalState = false
+        },
         showDeleteModal: (state) => {
             state.deleteModalState = true
         },
@@ -94,29 +101,31 @@ const adminSlice = createSlice({
             state.refresh = payload
         }
     },
-    extraReducers: {
-        [getChatrooms.pending]: (state) => {
+    extraReducers: (builder) => {
+        builder
+        .addCase(getChatrooms.pending, (state) => {
             state.isLoading = true
-        },
-        [getChatrooms.fulfilled]: (state, {payload}) => {
-            state.chatrooms = payload.data
+        })
+        .addCase(getChatrooms.fulfilled, (state, {payload}) => {
+            state.chatrooms = JSON.parse(payload).data.data
             state.isLoading = false
-        },
-        [getChatrooms.rejected]: (state) => {
+        })
+        .addCase(getChatrooms.rejected, (state) => {
             state.isLoading = false
-        },
-        [getAllUsers.pending]: (state) => {
+        })
+        .addCase(getAllUsers.pending, (state) => {
             state.loadingUsers = true
-        },
-        [getAllUsers.fulfilled]: (state, {payload}) => {
-            state.allUsers = payload.data
-        },
-        [getAllUsers.rejected]: (state) => {
+        })
+        .addCase(getAllUsers.fulfilled, (state, {payload}) => {
+            state.allUsers = JSON.parse(payload).data
             state.loadingUsers = false
-        }
+        })
+        .addCase(getAllUsers.rejected, (state) => {
+            state.loadingUsers = false
+        })
     }
 })
 
-export const {showEditChatroomModal, hideEditChatroomModal, showDeleteModal, hideDeleteModal, showViewUsersModal, hideViewUsersModal, getSingleChatroom, getMembers, addUserToChatroom, setRefresh} = adminSlice.actions
+export const {showEditChatroomModal, hideEditChatroomModal, showDeleteModal, hideDeleteModal, showViewUsersModal, hideViewUsersModal, getSingleChatroom, getMembers, addUserToChatroom, setRefresh, showAllUsersModal, hideAllUsersModal} = adminSlice.actions
 
 export default adminSlice.reducer

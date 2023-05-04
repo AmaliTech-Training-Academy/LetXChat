@@ -4,6 +4,7 @@ import Chatroom from "./Chatroom";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import no_data from '../../assets/no-data.svg'
+import {chatroomLoader} from '../../svg/Icons'
 
 function Chatrooms({ currentChatrooms }) {
   const { isLoading } = useSelector((state) => state.admin);
@@ -24,8 +25,12 @@ function Chatrooms({ currentChatrooms }) {
           return <Chatroom key={ele.id} item={ele} />;
         }) : 
         <div className=" h-96 flex flex-col items-center justify-center">
-          <img src={no_data} alt="" />
-          <span className=" font-semibold">No chatrooms to show</span>
+          {isLoading ? 
+            chatroomLoader :
+          <>
+            <img src={no_data} alt="" />
+            <span className=" font-semibold">No chatrooms to show</span>
+          </>}
         </div>
         }
       </div>
