@@ -1,6 +1,6 @@
 import { Skeleton, styled } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import ChatPage from "../chatPage/ChatPage";
 import GroupDetails from "../../components/groupDetails/GroupDetails";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,7 +15,7 @@ const Chat = () => {
   const { id } = useParams();
   const { loading } = useSelector((state) => state.user || state.userChatrooms);
   const { allChatRooms } = useSelector((state) => state.userChatrooms);
-  const dispatch = useDispatch();
+
 
   if (loading) {
     return (

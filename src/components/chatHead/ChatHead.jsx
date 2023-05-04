@@ -1,7 +1,9 @@
 import { styled } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { chatDetails } from "../../feature/chatMessageSlice";
 
 const Container = styled(Box)({
   paddingInline: "52px",
@@ -12,11 +14,7 @@ const Container = styled(Box)({
   borderBottom: "1px solid #D9D9D9",
 });
 
-const LeftSection = styled(Box)({
-  display: "flex",
-  alignItems: "center",
-  gap: "26px",
-});
+
 
 const Email = styled("a")({
   fontStyle: "bold",
@@ -26,20 +24,25 @@ const Email = styled("a")({
 });
 
 const ChatHead = ({ chatRoom }) => {
-
+const dispatch = useDispatch()
   const navigate = useNavigate()
+  const {openChatDetails} = useSelector(state => state.messages)
+
+const handleChatDetails = () => {
+  dispatch(chatDetails(!openChatDetails))
+}
 
 
   return (
     <Container component="section">
-      <LeftSection component="section">
+      <button onClick={() => handleChatDetails()} className="flex items-center gap-4">
         <img
           src={chatRoom?.image}
           style={{ width: "60px", height: "60px", borderRadius: "50%" }}
           alt="Profile pic"
         />
         <Email>{chatRoom?.name}</Email>
-      </LeftSection>
+      </button>
       <button
         style={{
           background: "gray",

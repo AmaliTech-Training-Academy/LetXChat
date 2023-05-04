@@ -10,10 +10,12 @@ import Picker from "@emoji-mart/react";
 import { BsMicMute } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import uploadVideo from "../../assets/uploadVideo.png";
-
+import { format } from "date-fns";
 import { CHATROOMS_URL } from "../../defaultValues/DefaultValues";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from 'uuid';
 
 const Container = styled(Box)({
   height: "10vh",
@@ -50,13 +52,14 @@ const InputText = styled("textarea")({
   paddingLeft: "4px",
   background: "transparent",
   fontStyle: "Bold",
-  color: "#FFFFFF",
+  color: "rgba(83, 53, 45, 0.7)",
   resize: "none",
   overflowY: "scroll",
   left: "5%",
   bottom: "0",
   zIndex: "30",
-  paddingBlock: "0.5rem",
+  paddingBlock: "10px",
+
   "&::placeholder": {
     color: "#FFFFFF",
   },
@@ -81,18 +84,28 @@ const Input = ({ chatRoom }) => {
   const [showEmoji, setShowEmoji] = useState(false);
 
   const [text, setText] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
   const [video, setVideo] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recording, setRecording] = useState(false);
-
   const [setAudioUrl] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioBlob, setAudioBlob] = useState(null);
+
+const dispatch = useDispatch()
+
   const addEmoji = (e) => {
     setText(text + e.native);
   };
+
+
+  const {userInfo} = useSelector(state => state.user)
+  const username = userInfo.username.slice(1)
+  const url = userInfo.image
+  const basePath = "https://takoraditraining.com/LetXChat/storage/app/public/";
+  const filePath = url.replace(basePath, "");
+  const userImage = filePath
 
   // Close Emoji Container when clicked outside
 
@@ -112,30 +125,31 @@ const Input = ({ chatRoom }) => {
     };
   });
 
-  // Send Message When your press Ctrl and enter key
+  // Send Message When your press enter key
   const handleKeyDown = (event) => {
-    if (event.keyCode === 13 && event.ctrlKey) {
+    if (event.key === "Enter" && event.shiftKey) {
+      setText(text + "");
+    } else if (event.key === "Enter") {
       handleSubmit(event);
     }
   };
 
   const handleStartRecording = () => {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-    .then(stream => {
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       const newMediaRecorder = new MediaRecorder(stream);
       setMediaRecorder(newMediaRecorder);
       newMediaRecorder.start();
       setRecording(true);
 
       let chunks = [];
-      newMediaRecorder.addEventListener('dataavailable', (event) => {
+      newMediaRecorder.addEventListener("dataavailable", (event) => {
         chunks.push(event.data);
       });
 
-      newMediaRecorder.addEventListener('stop', () => {
-        const newAudioBlob = new Blob(chunks, { type: 'audio/webm' });
+      newMediaRecorder.addEventListener("stop", () => {
+        const newAudioBlob = new Blob(chunks, { type: "audio/webm" });
         setAudioBlob(newAudioBlob);
-        setAudioUrl(URL.createObjectURL(newAudioBlob));
+        // setAudioUrl(URL.createObjectURL(newAudioBlob));
       });
     });
   };
@@ -163,25 +177,26 @@ const Input = ({ chatRoom }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setIsSubmitting(true);
-
     const id = chatRoom.id;
 
     try {
       const fileName = `audio-${Date.now()}.webm`;
       let formData = new FormData();
-    
-      
+      const currentTimestamp = new Date();
+      const messageId = uuidv4();
+
+
+      setIsSubmitting(true);
+
       if (audioBlob) {
-        
         formData.append("voiceNote", audioBlob, fileName);
       }
-    
+
+      formData.append("id", messageId);
       formData.append("text", text);
       formData.append("video", video);
       formData.append("file", file);
       formData.append("image", image);
-
 
       let config = {
         headers: {
@@ -195,17 +210,25 @@ const Input = ({ chatRoom }) => {
         config
       );
 
+
+
       setText("");
-      setImage("");
+      setImage(null);
       setFile(null);
       setVideo(null);
-      setAudioBlob(null)
-      setAudioUrl(null);
+      setAudioBlob(null);
+      // setAudioUrl(null);
       setIsSubmitting(false);
+
+
+  
+
     } catch (err) {
       console.error("Upload failed", err);
     }
   };
+
+  
 
   return (
     <Container component="section">

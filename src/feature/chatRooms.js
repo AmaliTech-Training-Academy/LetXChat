@@ -27,12 +27,15 @@ const initialState = {
   allChatRooms: [],
   loading: true,
   error: null,
+
 };
 
 const chatRoomsSlice = createSlice({
   name: "userChatrooms",
   initialState,
-  reducers: {},
+  reducers: {
+    
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchChatRooms.pending, (state) => {
@@ -51,5 +54,6 @@ const chatRoomsSlice = createSlice({
       });
   },
 });
+
 
 export default chatRoomsSlice.reducer;
