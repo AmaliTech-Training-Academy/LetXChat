@@ -19,6 +19,8 @@ class NewChatMessage implements ShouldBroadcast
      * Create a new event instance.
      */
     public function __construct(
+        public $id,
+        public $chatRoomId,
         public $sender,
         public $sender_image,
         public $time,
@@ -26,8 +28,7 @@ class NewChatMessage implements ShouldBroadcast
         public $image,
         public $video,
         public $voiceNote,
-        // public $audioUrl,
-        public $file
+        public $file,
     )
     {
 

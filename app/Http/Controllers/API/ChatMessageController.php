@@ -88,9 +88,11 @@ class ChatMessageController extends Controller
         ]);
 
         broadcast(new NewChatMessage(
+            $newMessage->id,
+            $roomId,
             Auth::user()->username,
             Auth::user()->image,
-            Carbon::now()->format('g:i a'),
+            $newMessage->created_at,
             $request->text,
             $image,
             $video,
@@ -99,9 +101,11 @@ class ChatMessageController extends Controller
         ))->toOthers();
 
         return response()->json([
+            'id' => $newMessage->id,
+            'chat_room_id' => $roomId,
             'sender' => Auth::user()->username,
             'sender_image' =>  Auth::user()->image,
-            'time' => Carbon::now()->format('g:i a'),
+            'time' => $newMessage->created_at,
             'text' => $newMessage->text,
             'image' =>  $newMessage->image,
             'video' => [
