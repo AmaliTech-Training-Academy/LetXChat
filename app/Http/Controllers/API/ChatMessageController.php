@@ -102,7 +102,7 @@ class ChatMessageController extends Controller
 
         return response()->json([
             'id' => $newMessage->id,
-            'chat_room_id' => $roomId,
+            'chatRoomId' => $roomId,
             'sender' => Auth::user()->username,
             'sender_image' =>  Auth::user()->image,
             'time' => $newMessage->created_at,
