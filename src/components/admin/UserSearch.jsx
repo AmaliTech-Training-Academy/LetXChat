@@ -14,7 +14,7 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
 
   const headers = {
     Authorization: `Bearer ${adminToken}`
-  }
+  }  
 
   const updateUsers = () => {
     dispatch(addUserToChatroom(item.id))
@@ -28,7 +28,7 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
     try {
       if(page === 'users') {
         let username = []
-        username.push(item.fullname)
+        username.push(item.username.slice(1))
         const dataObj = {}
         dataObj.user_names = username
         dataObj.chat_room = singleChatroom.name
@@ -39,6 +39,7 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
           toast.warning("User already added")
         }
         else {
+          // console.log(item.username.slice(1))
           const response = await axios.post('https://letxchat.takoraditraining.com/api/v1/request', dataObj, {headers})
           if(response.status === 200) {
             updateUsers()
@@ -67,6 +68,13 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
         dispatch(setRefresh(true))
       }
     }
+    if(page === "allUsers") {
+      const response = await axios.delete(`https://letxchat.takoraditraining.com/api/v1/users/${item.id}`, {headers})
+      if (response.status === 200) {
+        toast.success('User deleted successfully')
+        dispatch(getAllUsers())
+      }
+    }
   }
   return (
     <div className={`w-full ${added ? '' : 'border-b'} flex justify-between items-center text-xs mt-2 pb-1`}>
@@ -79,7 +87,7 @@ function UserSearch({added, item, addedUsers, setAddedUsers, matchedUsers, setMa
             <span className='text-[#667085]'>{added && item.email.length >= 20 ? item.email.slice(0, 18) + '...' : item.email}</span>
             </div>
         </div>
-        {added && <img src={trash} alt="remove" className=' mr-2' onClick={handleDelete}/>}
+        {added && <img src={trash} alt="remove" title='Delete User' className=' mr-2 cursor-pointer' onClick={handleDelete}/>}
         {!added && <button className=' px-2 py-1 bg-blue-600 text-white rounded-md' onClick={handleClick}>Add</button>}
     </div>
   )

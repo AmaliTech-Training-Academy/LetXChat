@@ -7,7 +7,7 @@ function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
   
-  if(location.pathname !== '/') {
+  if(location.pathname !== '/' ) {
     return null
   };
 
