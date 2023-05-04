@@ -29,6 +29,40 @@ export const fetchUserInfo = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "user/updateUserInfo",
+  async (submitValues, { rejectWithValue }) => {
+    const userToken = Cookies.get("userToken");
+
+    let config = {
+      method: "PATCH",
+      url: "https://letxchat.takoraditraining.com/api/v1/profile/edit",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      data: submitValues,
+    };
+
+    try {
+      const res = await axios.request(config);
+      console.log(res);
+
+      if (res.data.data) {
+        const SUCCESS_MESSAGE = "User details updated successfully!";
+        toast.success(SUCCESS_MESSAGE, { autoClose: 3000 });
+        return res.data.data;
+      }
+    } catch (err) {
+      const ERROR_MSG = err.message;
+      toast.error(ERROR_MSG, { autoClose: 3000 });
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+
 const getUserInfo = Cookies.get("userInfo") || null;
 
 const userSlice = createSlice({
@@ -45,6 +79,7 @@ const userSlice = createSlice({
       state.userInfo = null;
       state.error = null;
     },
+
   },
   extraReducers: (builder) => {
     builder
@@ -58,9 +93,24 @@ const userSlice = createSlice({
       .addCase(fetchUserInfo.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        Cookies.set("userInfo", JSON.stringify(payload));
+
+        console.log(payload);
+        // state.userInfo = { ...state.userInfo, payload };
+        state.userInfo = { ...state.userInfo, ...payload };
+
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
       });
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, payload } = userSlice.actions;
 export default userSlice.reducer;

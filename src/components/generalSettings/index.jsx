@@ -7,50 +7,35 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Password from "../../assets/Password.png";
 import { BASE_URL } from "../../defaultValues/DefaultValues";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { updateUser } from "../../feature/userSlice";
 
 const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
   //   Password
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+const dispatch = useDispatch()
   const { userInfo } = useSelector((state) => state.user);
 
   const user = userInfo;
 
-  const userToken = Cookies.get("userToken");
 
   //   Submit Form
   const onSubmit = async (values, actions) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    let config = {
-      method: "patch",
-      url: `${BASE_URL}/profile/edit`,
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      data: values,
-    };
+    const submitValues = {};
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        submitValues[key] = value;
+      }
+    });
 
-    axios
-      .request(config)
-      .then((res) => {
-        const SUCCESS_MESSAGE = response.data.message;
-      toast.success(SUCCESS_MESSAGE, { autoClose: 3000 });
-        return res.data;
-      })
-      .catch((err) => {
-        const ERROR_MSG = err.message;
-        toast.error(ERROR_MSG, { autoClose: 3000 });
-      });
-
+    dispatch(updateUser(submitValues))
     actions.resetForm();
   };
 
@@ -88,12 +73,12 @@ const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
       }}
       className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-[#FFFFFF] h-[520px] w-[600px] rounded-[12px] shadow-x2l p-[2rem] flex flex-col`}
     >
-      <div
+      {/* <div
         onClick={() => setOpenGeneral(false)}
         className="flex justify-end text-[#1570efe6] cursor-pointer"
       >
         Done
-      </div>
+      </div> */}
       <div className="text-[#667085] flex items-center pl-1 h-[44px] w-full border-b border-b-[#D9D9D9]">
         General
       </div>
