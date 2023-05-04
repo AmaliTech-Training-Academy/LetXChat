@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import {loading} from '../../svg/Icons'
 import {setRefresh} from "../../feature/adminSlice"
 import Cookies from "js-cookie";
 
@@ -33,7 +34,7 @@ function NewChatroom() {
 
   const addUsers = async () => {
     let usernames = [];
-    addedUsers.forEach((ele) => usernames.push(ele.fullname));
+    addedUsers.forEach((ele) => usernames.push(ele.username.slice(1)));
     const usersData = {};
     usersData.user_names = usernames;
     usersData.chat_room = name;
@@ -219,7 +220,7 @@ function NewChatroom() {
               } hover:bg-[#5292ebe5] rounded-lg text-white`}
               onClick={handleClick}
             >
-              {creating ? "Creating..." : "Create"}
+              {creating ? <>{loading}Creating...</> : "Create"}
             </button>
           </div>
         </form>

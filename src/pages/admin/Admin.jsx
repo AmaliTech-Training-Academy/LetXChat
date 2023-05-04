@@ -18,7 +18,7 @@ function Admin() {
 
   const indexOfLastUser = currentPage * usersPerpage;
   const indexOfFirstUser = indexOfLastUser - usersPerpage;
-  let currentChatrooms = chatrooms.data?.slice(indexOfFirstUser, indexOfLastUser)
+  let currentChatrooms = chatrooms?.slice(indexOfFirstUser, indexOfLastUser)
 
   // change currentPage
   const paginate = (pageNumber) => {
@@ -46,7 +46,7 @@ function Admin() {
           <Chatrooms searchInput={searchInput} currentChatrooms={currentChatrooms}/>
           {currentChatrooms?.length > 0 && <Pagination
             usersPerPage={usersPerpage}
-            totalUsers={chatrooms.data?.length}
+            totalUsers={chatrooms?.length}
             paginate={paginate}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
