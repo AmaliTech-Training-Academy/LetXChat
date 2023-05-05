@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { FiDownload } from "react-icons/fi";
 import axios from "axios";
 import { useParams } from "react-router";
 import { CHATROOMS_URL, FILE_URL } from "../../defaultValues/DefaultValues";
@@ -28,7 +27,6 @@ const MessageContent = styled(Box)({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
-  // background: '#ffffff',
   width: "48%",
   borderRadius: "10px",
   background: "#878787",
@@ -227,7 +225,7 @@ const Message = () => {
             }
 
             return (
-              <div key={index} className="text-[0.9rem]">
+              <div key={index} className="text-[0.9rem]" >
                 {el.sender !== username && (
                   <div key={el.sender}>
                     <Container component="article">
@@ -239,7 +237,7 @@ const Message = () => {
                         />
                       </MessageInfo>
                       <MessageContent>
-                        <Author>{el.sender}</Author>
+                        <Author>@{el.sender}</Author>
                         <Text>{el.text}</Text>
                         {el.image && (
                           <img
