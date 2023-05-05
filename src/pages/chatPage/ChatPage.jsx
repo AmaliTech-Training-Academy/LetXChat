@@ -34,7 +34,6 @@ const ChatPage = ({chatRoom}) => {
     <Container component="main">
       <ChatHead chatRoom={chatRoom} />
       <ChatMessage />
-      {/* <PreviewMessages /> */}
       <Input chatRoom={chatRoom} />
     </Container>
   );

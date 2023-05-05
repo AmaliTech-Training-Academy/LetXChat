@@ -1,12 +1,14 @@
 import { Box, styled } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import axios from "axios";
 import { useParams } from "react-router";
 import { CHATROOMS_URL, FILE_URL } from "../../defaultValues/DefaultValues";
 import Cookies from "js-cookie";
-import { format } from "date-fns";
+import { useState } from "react";
+import { format, formatISO } from "date-fns";
 import Pusher from "pusher-js";
 import { FaFilePdf, FaFileWord, FaFileExcel } from "react-icons/fa";
 import { AiOutlineCloudDownload } from "react-icons/ai";
@@ -25,7 +27,6 @@ const MessageContent = styled(Box)({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
-  // background: '#ffffff',
   width: "48%",
   borderRadius: "10px",
   background: "#878787",
@@ -103,7 +104,7 @@ const Message = () => {
   const { id } = useParams();
   const userToken = Cookies.get("userToken");
   const { userInfo } = useSelector((state) => state.user);
-  let username = userInfo.username;
+  let username = userInfo.username.slice(1);
 
   let config = {
     method: "get",
@@ -148,7 +149,12 @@ const Message = () => {
     });
     const channel = pusher.subscribe("chat");
     channel.bind("message", function (data) {
-      setAllMessages((allMessages) => [...allMessages, data]);
+      
+      const newMessage = {...data, 
+        time: format(new Date(data.time), 'p')
+      
+      }
+      setAllMessages((allMessages) => [...allMessages, newMessage]);
     });
   }, []);
 
@@ -185,7 +191,6 @@ const Message = () => {
             const chatVoiceNote = el.voiceNote;
             const chatFile = el.file;
 
-
             // Formatting files
 
             const maxLength = 15;
@@ -220,7 +225,7 @@ const Message = () => {
             }
 
             return (
-              <div key={index} className="text-[0.9rem]">
+              <div key={index} className="text-[0.9rem]" >
                 {el.sender !== username && (
                   <div key={el.sender}>
                     <Container component="article">
@@ -232,7 +237,7 @@ const Message = () => {
                         />
                       </MessageInfo>
                       <MessageContent>
-                        <Author>{el.sender}</Author>
+                        <Author>@{el.sender}</Author>
                         <Text>{el.text}</Text>
                         {el.image && (
                           <img

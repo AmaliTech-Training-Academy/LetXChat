@@ -73,12 +73,12 @@ const dispatch = useDispatch()
       }}
       className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-[#FFFFFF] h-[520px] w-[600px] rounded-[12px] shadow-x2l p-[2rem] flex flex-col`}
     >
-      {/* <div
+      <div
         onClick={() => setOpenGeneral(false)}
         className="flex justify-end text-[#1570efe6] cursor-pointer"
       >
         Done
-      </div> */}
+      </div>
       <div className="text-[#667085] flex items-center pl-1 h-[44px] w-full border-b border-b-[#D9D9D9]">
         General
       </div>

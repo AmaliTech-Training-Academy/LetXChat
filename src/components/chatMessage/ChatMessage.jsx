@@ -1,10 +1,11 @@
 import { Box, styled } from "@mui/material";
-import Messages from "../messages/Messages";
+import Message from "../message/Message";
 
 const Container = styled(Box)({
   height: "80vh",
   width: "100%",
   paddingInline: "15px",
+  paddingBlock: '0.5rem',
   overflowY: "scroll",
   "&::-webkit-scrollbar": {
     width: "5px",
@@ -23,7 +24,7 @@ const ChatMessage = () => {
  
 
   return <Container component="article">
-    <Messages />
+    <Message />
   </Container>;
 };
 
