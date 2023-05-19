@@ -8,8 +8,6 @@ use App\Http\Controllers\API\RequestController;
 use App\Models\User;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Resources\RegisterResource;
-use App\Models\Admin;
-use App\Models\ChatRoom;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,24 +51,12 @@ Route::prefix('v1')->group(function(){
             Route::delete('/chatroom/{room_id}/{user_id}', 'removeUser');
         });
 
-        Route::get('/users/status', function(){
-            $pending = User::whereDoesntHave('chatrooms')->count();
-            $active = User::count() - $pending;
-
-            return [
-                'users' => RegisterResource::collection(User::all()),
-                'active_users' => $active,
-                'pending_request' => $pending,
-                'total' => User::count()
-            ];
-        });
+        Route::get('/users/status', [ProfileController::class, 'status']);
 
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/admin/logout', [AdminController::class, 'logout']);
         Route::delete('/users/{userId}', [AdminController::class, 'deleteUser']);
     });
-
-
 
 });
 

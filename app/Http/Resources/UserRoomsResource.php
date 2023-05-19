@@ -15,12 +15,12 @@ class UserRoomsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-                'id' => $this->id,
-                'name' => $this->fullname,
-                'employee_id' => $this->employee_id,
-                'email' => $this->email,
-                'image' => 'https://takoraditraining.com/LetXChat/storage/app/public/'.$this->image,
-                'chatrooms' => $this->chatrooms,
+            'id' => $this->id,
+            'name' => $this->fullname,
+            'employee_id' => $this->employee_id,
+            'email' => $this->email,
+            'image' => $this->image,
+            'chatrooms' => $this->chatrooms,
         ];
     }
 }
