@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 function Cards() {
   const {allUsers, chatrooms} = useSelector(state => state.admin) 
   return (
-    <div className="w-full grid grid-cols-2 md:grid-cols-4">
+    <div className="w-full grid grid-cols-2 lg:grid-cols-4">
       <Card title="Total Users" users={allUsers?.total} image={total_users}/>
       <Card title="Active Users" users={allUsers?.active_users} image={active_users}/>
       <Card title="Pending Request" users={allUsers?.pending_request} image={pending_users}/>

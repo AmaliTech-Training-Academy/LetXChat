@@ -10,7 +10,7 @@ import {
 function Footer() {
   return (
     <>
-    <div className='w-full h-[455px] bg-[#755D57E5] px-24 flex items-center justify-center text-white'>
+    <div className='w-full h-[455px] bg-[#755D57E5] px-10 lg:px-24 flex items-center justify-center text-white'>
         <div className='w-full max-w-[1440px] flex justify-between'>
             <div>
                 <div className='font-semibold text-5xl mb-2'>Logo</div>
@@ -18,14 +18,14 @@ function Footer() {
                     <img src={logo} alt="LOGO" className='w-full h-full object-cover'/>
                 </div> */}
                 <span className=' text-xl'>Lorem ipsum dolor sit amet<br/> consectetur adipiscing </span>
-                <div className='flex mt-16 gap-8 footer-svgs'>
+                <div className='flex mt-16 lg:gap-8 footer-svgs'>
                     {instagram_icon}
                     {facebook_icon}
                     {twitter_icon}
                     {linkedin_icon}
                 </div>
             </div>
-            <div className='flex gap-32 text-2xl'>
+            <div className='flex gap-10 lg:gap-32 text-2xl'>
                 <div className='flex flex-col gap-5'>
                     <span className='font-semibold'>Contact</span>
                     <span className='opacity-60 hover:underline'>Email us</span>
