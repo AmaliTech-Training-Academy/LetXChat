@@ -3,12 +3,12 @@ import collaboration from '../../assets/collaboration-section.png'
 
 function BodyContent() {
   return (
-    <div className='w-full max-h-[1055px] px-20 py-10 flex items-center justify-center'>
+    <div className='w-full lg:max-h-[1055px] px-20 py-10 flex items-center justify-center'>
         <div className='w-full max-w-[1440px] h-full flex flex-col items-center gap-6'>
             <h1 className='font-semibold text-5xl'>Collaborative Teams</h1>
             <span className='max-w-[1269px] text-center font-semibold text-[27px]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</span>
-            <div className='w-full h-[540px] flex justify-between items-center mt-7'>
-                <div className='w-[892px] h-full'>
+            <div className='w-full lg:h-[540px] flex sm:flex-col lg:flex-row gap-10 lg:justify-between items-center mt-7'>
+                <div className='lg:w-[892px] h-full'>
                     <img className='w-full h-full' src={collaboration} alt="" />
                 </div>
                 <div className='flex flex-col gap-10 w-[377px]'>

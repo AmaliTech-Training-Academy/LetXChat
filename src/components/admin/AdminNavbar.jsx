@@ -20,7 +20,7 @@ function AdminNavbar({setSearchInput}) {
         <div className='flex-1 cursor-pointer'>
             <img src={logo} alt="Logo" />
         </div>
-        <div className='md:w-[618px] w-2/5 h-12 bg-[#D9D9D9] rounded mr-9 flex items-center'>
+        <div className='lg:w-[618px] w-2/4 h-9 lg:h-12 bg-[#D9D9D9] rounded mr-3 lg:mr-9 flex items-center'>
             <img src={search} alt="search" className='w-4 h-4 md:ml-11 ml-3'/>
             <input type="text" placeholder='search...' className='flex-1 bg-transparent md:px-5 px-2 font-medium' onInput={(e) => setSearchInput(e.target.value)}/>
         </div>
