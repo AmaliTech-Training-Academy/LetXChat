@@ -167,7 +167,8 @@ const Message = () => {
         return response.data;
       })
       .catch((error) => {
-        console.log(error.response);
+        console.error(error.response);
+        return error.response.data.message
       });
 
     messages &&

@@ -8,8 +8,9 @@ const initialState = {
   userToken: null,
   error: null,
   success: false,
-  userInfo: getUserInfo ? JSON.parse(getUserInfo) : null,
+  // userInfo: getUserInfo ? JSON.parse(getUserInfo) : null,
 };
+
 
 const authSlice = createSlice({
   name: "auth",
@@ -22,7 +23,7 @@ const authSlice = createSlice({
       state.error = null;
     },
 
-
+ 
   },
   extraReducers: (builder) => {
     builder
@@ -55,6 +56,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.success = true;
         state.userToken = payload;
+        state.isLoggedIn = true
         Cookies.set("userToken", payload);
       })
 

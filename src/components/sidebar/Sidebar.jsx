@@ -111,7 +111,7 @@ function Sidebar({ displaySidebar, setDisplaySidebar }) {
         </div>
 
         <UserCard />
-        <Search setMatchedChatrooms={setMatchedChatrooms} />
+        {/* <Search setMatchedChatrooms={setMatchedChatrooms} /> */}
 
         <Container>
           {chatrooms?.length ? (

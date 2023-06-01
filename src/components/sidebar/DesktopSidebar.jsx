@@ -14,7 +14,7 @@ const Container = styled(Box)({
   height: "100%",
   width: "100%",
   marginBlock: "auto",
-  marginTop: "1.5rem",
+  marginTop: "3rem",
   display: "flex",
   flexDirection: "column",
   gap: "16px",
@@ -106,7 +106,7 @@ function DesktopSidebar() {
         </div>
 
         <UserCard />
-        <Search setMatchedChatrooms={setMatchedChatrooms} />
+        {/* <Search setMatchedChatrooms={setMatchedChatrooms} /> */}
 
         <Container>
           {chatrooms?.length ? (
