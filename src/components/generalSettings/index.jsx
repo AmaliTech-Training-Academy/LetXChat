@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { updateUser } from "../../feature/userSlice";
 
+
 const GeneralSettings = ({ openGeneral, setOpenGeneral }) => {
   //   Password
   const [showPassword, setShowPassword] = useState(false);

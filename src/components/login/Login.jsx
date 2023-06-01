@@ -14,13 +14,11 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { loginSchema } from "../../schemas";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../feature/authActions";
 import Cookies from "js-cookie";
 import { fetchUserInfo } from "../../feature/userSlice";
-import { fetchChatRooms } from "../../feature/chatRooms";
 
 const Container = styled(Box)({
   width: "100vw",
@@ -31,12 +29,11 @@ const Container = styled(Box)({
 });
 
 const FormContainer = styled("form")({
-  width: "min(530px, 90vw)",
+  width: "min(550px, 90vw)",
   height: "602px",
   background: "rgba(255, 255, 255, 0.6)",
   boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
   borderRadius: "15px",
-  // padding: { xs: "20px", sm: "68px" },
   paddingInline: "min(68px, 20px)",
   paddingTop: "68px",
 });
@@ -140,23 +137,6 @@ const ButtonStyles = styled(Button)({
   },
 });
 
-const LoadingButtonStyles = styled(LoadingButton)({
-  textTransform: "capitalize",
-  background: "#FFFFFF",
-  border: "2px solid #53352D",
-  width: "min(20rem, 15rem)",
-  marginInline: "auto",
-  height: "3rem",
-  marginTop: "3rem",
-  borderRadius: "9px",
-  "&.MuiInput-underline::before": {
-    display: "none",
-    background: "blue",
-    height: "2rem",
-    width: "4rem",
-  },
-});
-
 const Login = () => {
   // Show Password
   const [showPassword, setShowPassword] = useState(false);
@@ -164,28 +144,22 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.user);
+  const { userToken } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   // Submit Form
   const onSubmit = async (values, actions) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     dispatch(loginUser(values));
-    setTimeout(() => {
-      actions.resetForm();
-    }, 3000);
   };
 
-  const userToken = Cookies.get("userToken");
   useEffect(() => {
     if (userToken) {
       dispatch(fetchUserInfo(userToken));
       navigate("/chat");
     }
-  }, [userToken, dispatch]);
-
-
- 
-
-
+  }, [userToken, dispatch,]);
 
   // Formik Validation
 
@@ -276,13 +250,10 @@ const Login = () => {
           </Box>
 
           <Box component="section" sx={SignUpLogin}>
-           
-              <ButtonStyles type="submit">
-                {
-                  loading === true || isSubmitting ? "Loading..." : 'Log In'
-                }
-              </ButtonStyles>
-        
+            <ButtonStyles type="submit">
+              {loading || isSubmitting ? "Loading..." : "Log In"}
+            </ButtonStyles>
+
             <p>
               Don't have an account?{" "}
               <Link

@@ -2,13 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { loginUser, registerUser } from "./authActions";
 import Cookies from "js-cookie";
 
-// Initialize userToken from Cookie
-const userToken = Cookies.get("userToken") || null;
+const getUserInfo = Cookies.get("userInfo") || null;
 const initialState = {
   loading: false,
-  userToken,
+  userToken: null,
   error: null,
   success: false,
+  userInfo: getUserInfo ? JSON.parse(getUserInfo) : null,
 };
 
 const authSlice = createSlice({
@@ -16,11 +16,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     clearToken: (state) => {
-      Cookies.remove('userToken')
-      state.loading = false
-      state.userToken = null
-      state.error = null
-    }
+      Cookies.remove("userToken");
+      state.loading = false;
+      state.userToken = null;
+      state.error = null;
+    },
+
+
   },
   extraReducers: (builder) => {
     builder
@@ -34,11 +36,12 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.success = true;
+        state.userAccount = payload;
       })
-      
+
       .addCase(registerUser.rejected, (state, { payload }) => {
         state.loading = false;
-        state.success = true;
+        state.success = false;
         state.error = payload;
       })
 
@@ -51,7 +54,8 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.success = true;
-        state.userToken = userToken;
+        state.userToken = payload;
+        Cookies.set("userToken", payload);
       })
 
       .addCase(loginUser.rejected, (state, { payload }) => {

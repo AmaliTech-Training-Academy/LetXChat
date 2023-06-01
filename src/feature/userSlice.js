@@ -47,7 +47,6 @@ export const updateUser = createAsyncThunk(
 
     try {
       const res = await axios.request(config);
-      console.log(res);
 
       if (res.data.data) {
         const SUCCESS_MESSAGE = "User details updated successfully!";
@@ -80,6 +79,8 @@ const userSlice = createSlice({
       state.error = null;
     },
 
+  
+
   },
   extraReducers: (builder) => {
     builder
@@ -101,8 +102,6 @@ const userSlice = createSlice({
         state.loading = false;
         Cookies.set("userInfo", JSON.stringify(payload));
 
-        console.log(payload);
-        // state.userInfo = { ...state.userInfo, payload };
         state.userInfo = { ...state.userInfo, ...payload };
 
       })

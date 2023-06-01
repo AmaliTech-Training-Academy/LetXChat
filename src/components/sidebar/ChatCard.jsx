@@ -5,7 +5,7 @@ function ChatCard({item}) {
   const recentMessage = item?.recent_message
 
   return (
-    <div className="relative flex items-center w-[280px] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">
+    <div className="relative flex items-center w-[100%] gap-5 h-[70px] bg-[#E6E6E6] rounded-xl">
       <div className=" w-14 h-14 rounded-full ml-[3px] cursor-pointer">
         <img src={item.image} alt="" className="w-full h-full object-cover rounded-full" />
       </div>

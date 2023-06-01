@@ -16,10 +16,10 @@ function UserCard({ settings }) {
 
   return (
     <div
-      className={`${
+      className={` w-[90%]  ${
         settings
-          ? `bg-[#ffffff] w-[346px] h-[110px] gap-4`
-          : `bg-[#EDEDED] w-[300px] h-[110px] justify-between mt-9 cursor-pointer`
+          ? `bg-[#ffffff] h-[110px] gap-4`
+          : `bg-[#EDEDED]  h-[110px] justify-between mt-9 cursor-pointer`
       } rounded-xl mx-auto flex items-center`}
     >
       <div
