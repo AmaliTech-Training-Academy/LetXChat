@@ -1,51 +1,69 @@
-import { styled } from '@mui/material';
-import { Box } from '@mui/system';
-import React from 'react';
-import SidebarLayout from '../layouts/SidebarLayout';
-import Chat from './chat/Chat';
-import { Outlet } from 'react-router';
-import { useSelector } from 'react-redux';
-import NoMessage from '../assets/no-message svg.svg'
+import React, { useState, useEffect } from "react";
+import { Outlet, useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 
-const Container = styled(Box)({
-    display: 'flex',
-    height: '100vh',
-    width: '100vw'
-})
-
-const NoMessageCont = styled(Box)({
-  width: '75vw',
-  height: '100vh',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center'
-})
+import Sidebar from "../components/sidebar/Sidebar";
+import { BiMenuAltLeft } from "react-icons/bi";
+import { AiOutlineClose } from "react-icons/ai";
+import DesktopSidebar from "../components/sidebar/DesktopSidebar";
+import { logout } from "../feature/userSlice";
+import { clearToken } from "../feature/chatSlice";
 
 const ChatComponent = () => {
-  const { allChatRooms } = useSelector((state) => state.userChatrooms);
-  // const Rooms = allChatRooms?.find(
-  //   (chatroom) => chatroom?.id === parseInt(id)
-  // );
+  const [displaySidebar, setDisplaySidebar] = useState(false);
+  const [lastActivity, setLastActivity] = useState(Date.now());
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
- 
+  // Perform user logout function if inactive after an hour
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(clearToken());
+    navigate("/login");
+  };
 
+  useEffect(() => {
+    const handleMouseOrKeyboardEvent = () => {
+      setLastActivity(Date.now());
+    };
+
+    document.addEventListener("mouseup", handleMouseOrKeyboardEvent);
+    document.addEventListener("keydown", handleMouseOrKeyboardEvent);
+
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const diff = now - lastActivity;
+
+
+      if (diff > 1000 * 60 * 60) {
+        console.log('logout');
+        handleLogout();
+      }
+    }, 1000);
+
+    return () => {
+      document.removeEventListener("mouseup", handleMouseOrKeyboardEvent);
+      document.removeEventListener("keydown", handleMouseOrKeyboardEvent);
+      clearInterval(interval);
+    };
+  }, [lastActivity]); 
 
   return (
-    <Container>
-      <SidebarLayout />
-    <div>
+    <section className=" w-screen h-screen flex">
+      <button
+        onClick={() => setDisplaySidebar(!displaySidebar)}
+        className="block lg:hidden absolute top-4 left-4 bg-black text-white p-[3px] z-[60] rounded-full"
+      >
+        {displaySidebar ? <AiOutlineClose /> : <BiMenuAltLeft />}
+      </button>
 
-      <Outlet />
-      
-      {!allChatRooms && (
-        <NoMessageCont>
-          <img style={{width: '70%',}} src={NoMessage} alt="no message" />
-        </NoMessageCont>
-      )}
-
-    </div>
-    </Container>
+      <DesktopSidebar />
+      <Sidebar displaySidebar={displaySidebar} setDisplaySidebar={setDisplaySidebar} />
+      <div className="chat-component w-full h-full">
+        <Outlet />
+      </div>
+    </section>
   );
-}
+};
 
 export default ChatComponent;
