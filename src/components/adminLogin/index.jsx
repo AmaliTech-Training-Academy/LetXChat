@@ -19,6 +19,7 @@ import axios from "axios";
 import { Navigate } from "react-router";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Container = styled(Box)({
   height: "100vh",
@@ -288,6 +289,19 @@ const AdminLogin = () => {
             )}
           </Box>
         </Box>
+        <div className="flex justify-center">
+
+        <Link
+                to="/login"
+                style={{
+                  color: "#3683F5",
+                  cursor: "pointer",
+                 
+                }}
+                >
+                Login as User
+              </Link>
+                </div>
       </FormContainer>
     </Container>
   );

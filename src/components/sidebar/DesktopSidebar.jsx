@@ -14,7 +14,7 @@ const Container = styled(Box)({
   height: "100%",
   width: "100%",
   marginBlock: "auto",
-  marginTop: "1.5rem",
+  marginTop: "3rem",
   display: "flex",
   flexDirection: "column",
   gap: "16px",
@@ -30,7 +30,7 @@ const Container = styled(Box)({
   },
 });
 
-function Sidebar({ displaySidebar, setDisplaySidebar }) {
+function DesktopSidebar() {
   const [, setMatchedChatrooms] = useState([]);
   const { allChatRooms } = useSelector((state) => state.userChatrooms);
   const { refresh } = useSelector((state) => state.admin);
@@ -72,6 +72,7 @@ function Sidebar({ displaySidebar, setDisplaySidebar }) {
 
   const chatrooms = newRooms.sort((a, b) => a.name.localeCompare(b.name));
 
+
   if (loading) {
     return (
       <div
@@ -94,15 +95,9 @@ function Sidebar({ displaySidebar, setDisplaySidebar }) {
 
   return (
     <aside
-      className={` ${
-        displaySidebar ? "w-[100vw] flex z-50" : "w-0 hidden"
-       }  backdrop-blur-md  flex-col absolute h-screen lg:hidden lg:static`}
+      className="shadow-md shadow-black bg-[#f3f3f3] hidden z-50 w-[25vw] flex-col h-screen lg:flex"
     >
-      <div
-        className={`${
-          displaySidebar ? "w-[70vw] flex z-50" : "w-0 hidden"
-        } transition bg-[#f3f3f3] shadow-black shadow-xl duration-300 ease-in-out flex-col absolute h-screen lg:w-[20vw] lg:static`}
-      >
+   
         <div
           className="mt-[1rem]  mx-auto cursor-pointer text-sm"
           onClick={handleBackHome}
@@ -118,7 +113,7 @@ function Sidebar({ displaySidebar, setDisplaySidebar }) {
             chatrooms?.map((chatroom) => {
               return (
                 <div key={chatroom?.name}>
-                  <Link to={`/chat/${chatroom?.id}`} onClick={() => setDisplaySidebar(false)}>
+                  <Link to={`/chat/${chatroom?.id}`}>
                     <ChatCard item={chatroom} />
                   </Link>
                 </div>
@@ -128,9 +123,8 @@ function Sidebar({ displaySidebar, setDisplaySidebar }) {
             <div className="text-black font-bold">No chatroom yet...</div>
           )}
         </Container>
-      </div>
     </aside>
   );
 }
 
-export default Sidebar;
+export default DesktopSidebar;

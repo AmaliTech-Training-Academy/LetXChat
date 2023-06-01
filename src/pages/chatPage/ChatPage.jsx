@@ -4,13 +4,6 @@ import ChatMessage from "../../components/chatMessage/ChatMessage";
 import Input from "../../components/input/Input";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import PreviewMessages from "../../components/previewMessages";
-
-const Container = styled(Box)({
-  height: "100vh",
-  width: '55vw',
-  flexDirection: "column",
-});
 
 const ChatPage = ({chatRoom}) => {
 
@@ -31,11 +24,11 @@ const ChatPage = ({chatRoom}) => {
   }, [navigate]);
 
   return (
-    <Container component="main">
+    <main className="w-[100vw]  lg:w-[60vw] flex flex-col">
       <ChatHead chatRoom={chatRoom} />
       <ChatMessage />
       <Input chatRoom={chatRoom} />
-    </Container>
+    </main>
   );
 };
 

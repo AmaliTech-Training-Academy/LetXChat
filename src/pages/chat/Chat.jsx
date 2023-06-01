@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 const Container = styled(Box)({
   display: "flex",
   height: "100vh",
+  background: '#FFFFFF'
 });
 
 const Chat = () => {
@@ -102,6 +103,7 @@ const Chat = () => {
   const chatRoom = allChatRooms?.find(
     (chatroom) => chatroom.id === parseInt(id)
   );
+
 
   return (
     <div>

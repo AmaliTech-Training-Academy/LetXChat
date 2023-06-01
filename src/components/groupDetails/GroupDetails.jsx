@@ -1,18 +1,6 @@
 import { Box, styled } from '@mui/material';
 import React from 'react';
-import GroupImage from '../../assets/user-image.png'
 
-const Container = styled(Box)({
-    width: '20vw',
-    height: '100vh',
-    background: 'rgba(243, 243, 243, 0.75)',
-    boxShadow: "-3px 0px 2px -1px rgba(0,0,0,0.25)",
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingTop: '36px',
-    gap: '33px'
-})
 
 const GroupName = styled('h3')({
     color: '#000000',
@@ -48,7 +36,7 @@ const Attach = styled(Box)({
 const GroupDetails = ({chatRoom}) => {
 
   return (
-    <Container component='aside'>
+    <aside className='shadow-md shadow-black w-[20vw] hidden h-screen bg-[#f3f3f3bf] flex-col items-center pt-9 gap-[33px] lg:flex'>
         <img src={chatRoom?.image} alt="Group Image" style={{height: '150px', width: '150px', borderRadius: '50%'}} />
         <GroupName>{chatRoom?.name}</GroupName>
         <Attachments>Attachments</Attachments>
@@ -57,7 +45,7 @@ const GroupDetails = ({chatRoom}) => {
             <Attach>links</Attach>
             <Attach>docs</Attach>
         </AttachmentCollection>
-    </Container>
+    </aside>
   );
 }
 

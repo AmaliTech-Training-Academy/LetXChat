@@ -4,6 +4,7 @@ import {
   Button,
   FormControl,
   FormHelperText,
+  Grid,
   IconButton,
   Input,
   InputAdornment,
@@ -31,8 +32,8 @@ const ContainerStyle = {
   background: "#FFFFFF",
   display: "flex",
   justifyContent: "center",
+  alignItems: "center",
   overflowX: "hidden",
-  padding: "5rem",
 };
 
 const FormContainer = styled("form")({
@@ -55,39 +56,29 @@ const TitleStyle = {
   marginBottom: "20px",
 };
 
-const ProfileStyle = {
-  marginInline: "auto",
-  position: "relative",
-  marginBottom: "27px",
-  height: "70px",
-  width: "70px",
-  background: `url(${ProfilePhoto})`,
-  backgroundSize: "cover",
-  borderRadius: "50%",
-};
-
 const FormStyles = {
   paddingInline: { xs: "20px", sm: "44px" },
 };
 
 const FieldsContainer = {
   display: "flex",
-  flexWrap: 'wrap',
-  gap: { xs: "20px", sm: "30px" },
+  flexDirection: "column",
+  justifyContent: "space-between",
+  gap: "10px",
 };
 
 const TextComponent = {
   display: "flex",
   flexDirection: "column",
   gap: "8px",
-  width: '48%'
+  width: "100%",
 };
 
 const EmailComponent = {
   display: "flex",
   flexDirection: "column",
   gap: "8px",
-  width: '100%'
+  width: "100%",
 };
 
 const TextFieldStyle = styled(TextField)({
@@ -193,7 +184,7 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, success } = useSelector((state) => state.auth);
+  const { loading, userAccount } = useSelector((state) => state.auth);
 
   //   Submit Form
   const onSubmit = async (values, actions) => {
@@ -202,22 +193,21 @@ const SignUp = () => {
     // transform email string to lowercase to avoid case sensitivity issues in login
     values.email = values.email.toLowerCase();
 
-
-    // actions.resetForm();
-
     dispatch(registerUser(values));
   };
-
-useEffect(() => {
-    // redirect user to confirmation modal if registration was successful
-    if (success) {
+  
+  useEffect(() => {
+    // redirect user to login page when registration if successful
+    if (userAccount) {
       navigate("/signup/signupmodal");
 
       setTimeout(() => {
         navigate("/login");
-      }, 4000);
+      }, 3000);
+
+   
     }
-  }, [navigate, success]);
+  }, [navigate, userAccount]);
 
   //   Formik Validation
   const {
@@ -228,7 +218,7 @@ useEffect(() => {
     handleChange,
     handleSubmit,
     setFieldValue,
-    isSubmitting
+    isSubmitting,
   } = useFormik({
     initialValues: {
       image: "",
@@ -242,6 +232,9 @@ useEffect(() => {
     onSubmit,
   });
 
+  console.log(values);
+
+
   return (
     <Box component="main" sx={ContainerStyle}>
       <FormContainer autoComplete="off" onSubmit={handleSubmit}>
@@ -249,26 +242,19 @@ useEffect(() => {
           Sign up
         </Box>
         <Box sx={{ width: "100%", height: "max-content", textAlign: "center" }}>
-          <Box sx={ProfileStyle}>
-          
-          {
-            imagePreview && <Avatar
-            sx={{ height: "70px", width: "70px" }}
-            src={URL.createObjectURL(imagePreview)}
-            alt="Image Upload"
-          />
-          }
-            
-            <Box
-              sx={{
-                position: "absolute",
-                right: "-12px",
-                bottom: "0",
-                background: "#FFFFFF",
-                borderRadius: "50%",
-              }}
-            >
-              <IconButton aria-label="upload picture" component="label">
+          <div className="w-[70px] h-[70px] mx-auto rounded-full relative mb-4">
+            <label aria-label="upload picture" className="cursor-pointer">
+              <Avatar sx={{ width: "70px", height: "70px" }}>
+                {imagePreview && (
+                  <Avatar
+                    sx={{ height: "70px", width: "70px" }}
+                    src={URL.createObjectURL(imagePreview)}
+                    alt="Image Upload"
+                  />
+                )}
+              </Avatar>
+
+              <div className="absolute -right-1 top-10 bg-white rounded-full p-1">
                 <input
                   hidden
                   id="image"
@@ -285,9 +271,9 @@ useEffect(() => {
                   src={CameraIcon}
                   alt="camera"
                 />
-              </IconButton>
-            </Box>
-          </Box>
+              </div>
+            </label>
+          </div>
 
           {errors.image && touched.image && (
             <Box
@@ -306,34 +292,37 @@ useEffect(() => {
 
         <Box component="section" sx={FormStyles}>
           <Box component="section" sx={FieldsContainer}>
-            <Box sx={TextComponent}>
-              <Box component="label" htmlFor="fullname">
-                Fullname*
+            <div className="flex flex-col lg:flex-row gap-4">
+              <Box sx={TextComponent}>
+                <Box component="label" htmlFor="fullname">
+                  Fullname*
+                </Box>
+                <TextFieldStyle
+                  id="fullname"
+                  placeholder="Enter your full full name"
+                  value={values.fullname}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={touched.fullname && Boolean(errors.fullname)}
+                  helperText={touched.fullname && errors.fullname}
+                />
               </Box>
-              <TextFieldStyle
-                id="fullname"
-                placeholder="Enter your full full name"
-                value={values.fullname}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={touched.fullname && Boolean(errors.fullname)}
-                helperText={touched.fullname && errors.fullname}
-              />
-            </Box>
-            <Box sx={TextComponent}>
-              <Box component="label" htmlFor="username">
-                Username*
+              <Box sx={TextComponent}>
+                <Box component="label" htmlFor="username">
+                  Username*
+                </Box>
+                <TextFieldStyle
+                  id="username"
+                  placeholder="Ekowsmith"
+                  value={values.username}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={touched.username && Boolean(errors.username)}
+                  helperText={touched.username && errors.username}
+                />
               </Box>
-              <TextFieldStyle
-                id="username"
-                placeholder="Ekowsmith"
-                value={values.username}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={touched.username && Boolean(errors.username)}
-                helperText={touched.username && errors.username}
-              />
-            </Box>
+            </div>
+
             <Box sx={EmailComponent}>
               <Box component="label" htmlFor="email">
                 Work Email*
@@ -350,71 +339,78 @@ useEffect(() => {
                 helperText={touched.email && errors.email}
               />
             </Box>
-            <Box sx={TextComponent}>
-              <Box component="label" htmlFor="password">
-                Password*
+            <div className="flex flex-col lg:flex-row gap-4 ">
+              <Box sx={TextComponent}>
+                <Box component="label" htmlFor="password">
+                  Password*
+                </Box>
+                <PasswordField variant="outlined">
+                  <OutlinedInput
+                    id="password"
+                    value={values.password}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={touched.password && Boolean(errors.password)}
+                    helperText={touched.password && errors.password}
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter password"
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="password"
+                          onClick={handleShowPassword}
+                        >
+                          {showPassword ? <BsEye /> : <BsEyeSlash />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                  <FormHelperText sx={{ color: "#d32f2f" }}>
+                    {" "}
+                    {touched.password && errors.password}
+                  </FormHelperText>
+                </PasswordField>
               </Box>
-              <PasswordField variant="outlined">
-                <OutlinedInput
-                  id="password"
-                  value={values.password}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  error={touched.password && Boolean(errors.password)}
-                  helperText={touched.password && errors.password}
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter password"
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="password"
-                        onClick={handleShowPassword}
-                      >
-                        {showPassword ? <BsEye /> : <BsEyeSlash />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-                <FormHelperText sx={{ color: "#d32f2f" }}>
-                  {" "}
-                  {touched.password && errors.password}
-                </FormHelperText>
-              </PasswordField>
-            </Box>
-            <Box sx={TextComponent}>
-              <Box component="label" htmlFor="password_confirmation">
-                Confirm Password*
+
+              <Box sx={TextComponent}>
+                <Box component="label" htmlFor="password_confirmation">
+                  Confirm Password*
+                </Box>
+                <PasswordField variant="outlined">
+                  <OutlinedInput
+                    id="password_confirmation"
+                    value={values.password_confirmation}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={
+                      touched.password_confirmation &&
+                      Boolean(errors.password_confirmation)
+                    }
+                    type={showpassword_confirmation ? "text" : "password"}
+                    placeholder="Repeat your password"
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="confirm-password"
+                          onClick={handleShowpassword_confirmation}
+                        >
+                          {showpassword_confirmation ? (
+                            <BsEye />
+                          ) : (
+                            <BsEyeSlash />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                  <FormHelperText sx={{ color: "#d32f2f" }}>
+                    {" "}
+                    {touched.password_confirmation &&
+                      errors.password_confirmation}
+                  </FormHelperText>
+                </PasswordField>
               </Box>
-              <PasswordField variant="outlined">
-                <OutlinedInput
-                  id="password_confirmation"
-                  value={values.password_confirmation}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  error={
-                    touched.password_confirmation &&
-                    Boolean(errors.password_confirmation)
-                  }
-                  type={showpassword_confirmation ? "text" : "password"}
-                  placeholder="Repeat your password"
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="confirm-password"
-                        onClick={handleShowpassword_confirmation}
-                      >
-                        {showpassword_confirmation ? <BsEye /> : <BsEyeSlash />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-                <FormHelperText sx={{ color: "#d32f2f" }}>
-                  {" "}
-                  {touched.password_confirmation &&
-                    errors.password_confirmation}
-                </FormHelperText>
-              </PasswordField>
-            </Box>
+            </div>
           </Box>
 
           <Box component="section" sx={SignUpLogin}>
