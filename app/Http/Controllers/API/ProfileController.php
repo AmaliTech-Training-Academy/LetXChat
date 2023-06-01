@@ -26,6 +26,11 @@ class ProfileController extends Controller
         ];
 
         if ($request->has('password')) {
+            if (!Hash::check($request->current_password, $user->password)) {
+                return response()->json([
+                    'message' => 'Current password is not correct'
+                ]);
+            }
             $data['password'] = Hash::make($request->password);
         }
 
@@ -46,5 +51,4 @@ class ProfileController extends Controller
             'total' => User::count()
         ];
     }
-
 }
