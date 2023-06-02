@@ -61,7 +61,6 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-
 const getUserInfo = Cookies.get("userInfo") || null;
 
 const userSlice = createSlice({
@@ -70,6 +69,7 @@ const userSlice = createSlice({
     userInfo: getUserInfo ? JSON.parse(getUserInfo) : null,
     loading: false,
     error: null,
+    displaySettings: false,
   },
   reducers: {
     logout: (state) => {
@@ -79,8 +79,10 @@ const userSlice = createSlice({
       state.error = null;
     },
 
-  
-
+    openUserSettings: (state, {payload}) => {
+      state.displaySettings = payload;
+   
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -103,7 +105,6 @@ const userSlice = createSlice({
         Cookies.set("userInfo", JSON.stringify(payload));
 
         state.userInfo = { ...state.userInfo, ...payload };
-
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
@@ -111,5 +112,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout, payload } = userSlice.actions;
+export const { logout, openUserSettings } = userSlice.actions;
 export default userSlice.reducer;

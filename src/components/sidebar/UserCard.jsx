@@ -3,16 +3,14 @@ import userProfile from "../../assets/sidebar_user.png";
 import gear from "../../assets/Gear.svg";
 import upload from "../../assets/Upload.svg";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useState } from "react";
-import UserSettings from "../userSettings";
+import { useDispatch, useSelector } from "react-redux";
+
+import { openUserSettings } from "../../feature/userSlice";
 
 function UserCard({ settings }) {
   const { userInfo } = useSelector((state) => state.user);
+const dispatch = useDispatch()
 
-  // User Settings
-  const [openSettings, setOpenSettings] = useState(false);
-  const handleOpen = () => setOpenSettings(true);
 
   return (
     <div
@@ -36,7 +34,7 @@ function UserCard({ settings }) {
         {settings && <span className="text-[#878787]">@username</span>}
       </div>
       {!settings && (
-        <div onClick={handleOpen}>
+        <div onClick={() => dispatch(openUserSettings(true))}>
           <img
             src={gear}
             alt="User Profile"
@@ -45,12 +43,8 @@ function UserCard({ settings }) {
         </div>
       )}
 
-      {/* User Settings Modal  */}
-      <UserSettings
-        openSettings={openSettings}
-        setOpenSettings={setOpenSettings}
-      />
     </div>
+   
   );
 }
 

@@ -1,9 +1,5 @@
 import React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import { styled } from "@mui/material";
+
 import CloseIcon from "../../assets/CloseIcon.png";
 import ProfilePic from "../../assets/profile-picture.png";
 import General from "../../assets/General.png";
@@ -13,7 +9,7 @@ import Logout from "../../assets/Logout.png";
 import SignUpCamera from "../../assets/SignUpCamera.png";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../feature/userSlice";
+import { logout, openUserSettings } from "../../feature/userSlice";
 import { clearToken } from "../../feature/chatSlice";
 import { useNavigate } from "react-router";
 import { RiWechat2Line,  } from "react-icons/ri";
@@ -22,52 +18,33 @@ import {  HiOutlineUser } from "react-icons/hi";
 import GeneralSettings from "../generalSettings";
 import Cookies from "js-cookie";
 
-const StyledModal = styled(Modal)({
-  "& .MuiBackdrop-root": {
-    backdropFilter: "blur(5px)",
-    backgroundColor: "rgba(52, 64, 84, 0.7)",
-  },
-});
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  height: "480px",
-  width: "478px",
-  bgcolor: "#FFFFFF",
-  borderRadius: "12px",
-  boxShadow: 24,
-  p: 4,
-  display: "flex",
-  flexDirection: "column",
-};
 
-const UserSettings = ({ openSettings, setOpenSettings }) => {
-  const handleClose = () => setOpenSettings(false);
+const UserSettings = () => {
   const [openGeneral, setOpenGeneral] = useState(false);
-  const { userInfo } = useSelector((state) => state.user);
+  const { userInfo} = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const LogoutFunc = () => {
+    dispatch(openUserSettings(false))
     dispatch(logout());
     dispatch(clearToken());
     navigate("/");
   };
 
-  const userChatId = userInfo.chat_id;
-  const fullName = userInfo.name
+
+  const userChatId = userInfo?.chat_id;
+  const fullName = userInfo?.name
 
   return (
     <div>
-      <StyledModal open={openSettings}>
-        <Box component="section" sx={style}>
+      <main className="backdrop-blur-sm h-screen relative w-screen bg-[#3b4555ad] z-10">
+        <section className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] h-[480px] w-[478px] bg-white rounded-xl shadow-lg p-3 flex flex-col">
           <div className="flex justify-end">
             <img
               className="w-[12px] h-[12px] cursor-pointer hover:scale-125 transition duration-[0.3s] ease-in-out hover:rotate-180"
-              onClick={handleClose}
+              onClick={() => dispatch(openUserSettings(false))}
               src={CloseIcon}
               alt="Close Icon"
             />
@@ -76,7 +53,7 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
             Settings
           </div>
           <div className="w-[76px] h-[76px] rounded-full mx-auto mt-[14px]">
-            <img src={userInfo.image} alt="Profile Pic" />
+            <img src={userInfo?.image} alt="Profile Pic" />
           </div>
 
           <div className="w-full h-[210px] mt-[30px] shadow-2xl shadow-[rgba(0, 0, 0, 0.25)] rounded-[12px] text-[#101828] pl-[18px] pr-[12px] pb-[13px]">
@@ -116,8 +93,8 @@ const UserSettings = ({ openSettings, setOpenSettings }) => {
               setOpenGeneral={setOpenGeneral}
             />
           )}
-        </Box>
-      </StyledModal>
+        </section>
+      </main>
     </div>
   );
 };

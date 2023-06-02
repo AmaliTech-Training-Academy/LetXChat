@@ -1,4 +1,3 @@
-import { Box, styled } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import Mic from "../../assets/Microphone.png";
 import Cam from "../../assets/camera.png";
@@ -16,69 +15,6 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
-
-const Container = styled(Box)({
-  height: "10vh",
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  paddingInline: "30px",
-  borderTop: "1px solid #D9D9D9",
-  position: "relative",
-});
-
-const EmojiContainer = styled(Box)({
-  position: "absolute",
-  bottom: "85%",
-  right: "70px",
-});
-
-const InputCon = styled("form")({
-  background: "#DCDCDC",
-  width: "100%",
-  height: "50px",
-  borderRadius: "50px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  gap: "14px",
-  paddingLeft: "10px",
-  // overflow: 'hidden'
-});
-
-const InputText = styled("textarea")({
-  height: "50px",
-  width: "66%",
-  paddingLeft: "4px",
-  background: "transparent",
-  fontStyle: "Bold",
-  color: "rgba(83, 53, 45, 0.7)",
-  resize: "none",
-  overflowY: "scroll",
-  left: "5%",
-  bottom: "0",
-  zIndex: "30",
-  paddingBlock: "10px",
-
-  "&::placeholder": {
-    color: "#FFFFFF",
-  },
-  "&::-webkit-scrollbar": {
-    width: "5px",
-    backgroundColor: "#F5F5F5",
-    // display: 'none'
-  },
-  "&::-webkit-scrollbar-thumb": {
-    borderRadius: "5px",
-    backgroundColor: "#AAA",
-  },
-});
-
-const FilesAndSend = styled("div")({
-  display: "flex",
-  gap: "14px",
-  alignItems: "center",
-});
 
 const Input = ({ chatRoom }) => {
   const [showEmoji, setShowEmoji] = useState(false);
@@ -231,11 +167,11 @@ const dispatch = useDispatch()
   
 
   return (
-    <Container component="section">
+    <section className="h-[10vh] w-full flex items-center px-[5px] sm:px-[30px] border-t border-[#D9D9D9] relative">
       {/* Show Emoji Container */}
       <div ref={emojiRef}>
         {showEmoji && (
-          <EmojiContainer>
+          <div className="absolute bottom-[85%] right-[70px]">
             <Picker
               data={data}
               emojiSize={20}
@@ -243,11 +179,11 @@ const dispatch = useDispatch()
               onEmojiSelect={addEmoji}
               maxFrequentRows={1}
             />
-          </EmojiContainer>
+          </div>
         )}
       </div>
 
-      <InputCon onSubmit={handleSubmit} method="post">
+      <form className="bg-[#DCDCDC] w-full h-[50px] rounded-[50px] flex items-center justify-between gap-[8px] sm:gap-[14px] sm:pl-[10px]" onSubmit={handleSubmit} method="post">
         <div style={{ cursor: "pointer", color: "#FFFFFF" }}>
           {recording ? (
             <BsMicMute onClick={handleStopRecording} />
@@ -256,7 +192,8 @@ const dispatch = useDispatch()
           )}
         </div>
 
-        <InputText
+        <textarea
+        className="textarea h-[50px] w-[66%] sm:pl-[4px] bg-transparent font-bold text-hoverColor resize-none overflow-y-scroll left-[5%] bottom-0 z-30 py-[10px] placeholder:text-white"
           type="text"
           placeholder="start typing..."
           value={text}
@@ -264,7 +201,7 @@ const dispatch = useDispatch()
           onKeyDown={handleKeyDown}
         />
 
-        <FilesAndSend>
+        <div className="flex gap-[14px] items-center">
           <div>
             <input
               type="file"
@@ -328,9 +265,9 @@ const dispatch = useDispatch()
               />
             )}
           </button>
-        </FilesAndSend>
-      </InputCon>
-    </Container>
+        </div>
+      </form>
+    </section>
   );
 };
 

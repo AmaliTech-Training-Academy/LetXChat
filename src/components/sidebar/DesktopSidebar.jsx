@@ -4,31 +4,12 @@ import Search from "./Search";
 import ChatCard from "./ChatCard";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Skeleton, styled } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { fetchChatRooms } from "../../feature/chatRooms";
 import { setRefresh } from "../../feature/adminSlice";
 
-const Container = styled(Box)({
-  height: "100%",
-  width: "100%",
-  marginBlock: "auto",
-  marginTop: "3rem",
-  display: "flex",
-  flexDirection: "column",
-  gap: "16px",
-  paddingInline: "10px",
-  overflowY: "scroll",
-  "&::-webkit-scrollbar": {
-    width: "5px",
-    backgroundColor: "#F5F5F5",
-  },
-  "&::-webkit-scrollbar-thumb": {
-    borderRadius: "5px",
-    backgroundColor: "#AAA",
-  },
-});
+
 
 function DesktopSidebar() {
   const [, setMatchedChatrooms] = useState([]);
@@ -73,25 +54,25 @@ function DesktopSidebar() {
   const chatrooms = newRooms.sort((a, b) => a.name.localeCompare(b.name));
 
 
-  if (loading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          width: "25vw",
-          height: "100vh",
-          position: "absolute",
-          top: "0",
-          left: "0",
-          background: "#FFFFFF",
-        }}
-      >
-        <Skeleton animation="wave" variant="rounded" height={"100vh"} />
-      </div>
-    );
-  }
+//   if (loading) {
+//     return (
+//       <div
+//         style={{
+//           display: "flex",
+//           flexDirection: "column",
+//           gap: "1rem",
+//           width: "25vw",
+//           height: "100vh",
+//           position: "absolute",
+//           top: "0",
+//           left: "0",
+//           background: "#FFFFFF",
+//         }}
+//       >
+//         <Skeleton animation="wave" variant="rounded" height={"100vh"} />
+//       </div>
+//     );
+//   }
 
   return (
     <aside
@@ -108,7 +89,7 @@ function DesktopSidebar() {
         <UserCard />
         {/* <Search setMatchedChatrooms={setMatchedChatrooms} /> */}
 
-        <Container>
+        <section className="sidebar h-full w-full my-auto mt-[3rem] flex flex-col gap-4 px-[10px] overflow-y-scroll">
           {chatrooms?.length ? (
             chatrooms?.map((chatroom) => {
               return (
@@ -122,7 +103,7 @@ function DesktopSidebar() {
           ) : (
             <div className="text-black font-bold">No chatroom yet...</div>
           )}
-        </Container>
+        </section>
     </aside>
   );
 }
