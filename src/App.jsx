@@ -1,13 +1,15 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import Router from "./routes/Router";
-import Login from "./components/login/Login";
+import SignUp from "./components/signup/SignUp";
+import { Avatar } from "./shared";
 
 function App() {
   return (
     <div className="App">
       {/* <Router /> */}
-      <Login />
+      <SignUp />
+      <Avatar/>
       <ToastContainer position="top-right" />
     </div>
   );
