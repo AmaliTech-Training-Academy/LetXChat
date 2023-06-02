@@ -1,21 +1,16 @@
-// import { Skeleton, styled } from "@mui/material";
-// import { Box } from "@mui/system";
-// import React, { useState } from "react";
-// import ChatPage from "../chatPage/ChatPage";
-// import GroupDetails from "../../components/groupDetails/GroupDetails";
-// import { useSelector, useDispatch } from "react-redux";
-// import { useParams } from "react-router";
 
-// const Container = styled(Box)({
-//   display: "flex",
-//   height: "100vh",
-//   background: '#FFFFFF'
-// });
+import React, { useState } from "react";
+import ChatPage from "../chatPage/ChatPage";
+import GroupDetails from "../../components/groupDetails/GroupDetails";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router";
 
-// const Chat = () => {
-//   const { id } = useParams();
-//   const { loading } = useSelector((state) => state.user || state.userChatrooms);
-//   const { allChatRooms } = useSelector((state) => state.userChatrooms);
+
+
+const Chat = () => {
+  const { id } = useParams();
+  const { loading } = useSelector((state) => state.user || state.userChatrooms);
+  const { allChatRooms } = useSelector((state) => state.userChatrooms);
 
 
 //   if (loading) {
@@ -100,19 +95,19 @@
 //     );
 //   }
 
-//   const chatRoom = allChatRooms?.find(
-//     (chatroom) => chatroom.id === parseInt(id)
-//   );
+  const chatRoom = allChatRooms?.find(
+    (chatroom) => chatroom.id === parseInt(id)
+  );
 
 
-//   return (
-//     <div>
-//       <Container>
-//         <ChatPage chatRoom={chatRoom} />
-//         <GroupDetails chatRoom={chatRoom} />
-//       </Container>
-//     </div>
-//   );
-// };
+  return (
+    <div>
+      <section className="flex h-screen bg-white">
+        <ChatPage chatRoom={chatRoom} />
+        <GroupDetails chatRoom={chatRoom} />
+      </section>
+    </div>
+  );
+};
 
-// export default Chat;
+export default Chat;

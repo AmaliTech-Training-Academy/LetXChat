@@ -1,55 +1,20 @@
-// import { Box } from '@mui/material'
-// import { styled } from '@mui/system'
-// import React from 'react'
-// import ConfirmImg from '../../assets/confirmation alert.svg'
+import React from "react";
+import ConfirmImg from "../../assets/confirmation alert.svg";
 
-// const Container = styled(Box)({
-//     width: '100vw',
-//     height: '100vh',
-//     background: 'rgba(52, 64, 84, 0.7)',
-//     position: 'absolute',
-//     left: '0',
-//     top: '0',
-//     zIndex: '20',
-//     backdropFilter: 'blur(8px)',
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'center'
-// })
+const RegModal = () => {
+  return (
+    <section className="w-screen h-screen bg-[#344054b3] absolute left-0 top-0 z-20 backdrop-blur flex items-center justify-center">
+      <div className="h-[150px] w-[90vw] sm:w-[471px] rounded-xl flex flex-col items-center gap-5">
+        <div className="mt-[30px]">
+          <img src={ConfirmImg} alt="confirm icon" />
+        </div>
+        <div className="text-center flex flex-col items-center mb-[50px]">
+          <p className="w-max">Account created</p>
+          <p className="w-max">Successfully</p>
+        </div>
+      </div>
+    </section>
+  );
+};
 
-// const Modal = styled(Box)({
-//     height: '150px',
-//     width: 'min(471px, 90vw)',
-//     background: '#FFFFFF',
-//     borderRadius: '12px',
-   
-//     display: 'flex',
-//     flexDirection: 'column',
-//     // justifyContent: 'center',
-//     alignItems: 'center',
-//     gap: '20px',
-// })
-
-
-
-// const RegModal = () => {
-//   return (
-//     <Container component='section'>
-//         <Modal component='section'>
-//             <Box sx={{marginTop: '30px'}}>
-//                 <img src={ConfirmImg} alt="confirm icon" />
-//             </Box>
-//             <Box sx={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '50px'}}>
-//             <Box component='p' sx={{width: 'max-content'}}>
-//             Account created
-//             </Box>
-//             <Box component='p' sx={{width: 'max-content'}}>
-//             Successfully
-//             </Box>
-//             </Box>
-//         </Modal>
-//     </Container>
-//   )
-// }
-
-// export default RegModal
+export default RegModal;
