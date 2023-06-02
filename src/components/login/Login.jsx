@@ -1,147 +1,14 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-  TextField,
-  styled,
-} from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
-import { useState } from "react";
-import { BsEyeSlash, BsEye } from "react-icons/bs";
+
 import { loginSchema } from "../../schemas";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../feature/authActions";
-import Cookies from "js-cookie";
 import { fetchUserInfo } from "../../feature/userSlice";
-
-const Container = styled(Box)({
-  width: "100vw",
-  height: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-});
-
-const FormContainer = styled("form")({
-  width: "min(550px, 90vw)",
-  height: "602px",
-  background: "rgba(255, 255, 255, 0.6)",
-  boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
-  borderRadius: "15px",
-  paddingInline: "min(68px, 20px)",
-  paddingTop: "68px",
-});
-
-const TitleStyle = {
-  fontFamily: "Inter",
-  fontWeight: "700",
-  fontSize: "22.2944px",
-  lineHeight: "27px",
-  color: "#53352D",
-  textAlign: "center",
-  textTransform: "uppercase",
-  marginBottom: "20px",
-};
-
-const FieldsContainer = {
-  display: "flex",
-  flexDirection: "column",
-  gap: { xs: "20px", sm: "30px" },
-};
-
-const TextComponent = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "8px",
-};
-
-const TextFieldStyle = styled(TextField)({
-  "& .MuiOutlinedInput-root": {
-    borderRadius: "9px",
-
-    "& fieldset": {
-      borderColor: "rgba(83, 53, 45, 0.9)",
-    },
-
-    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      border: "1px solid #1570EF",
-    },
-
-    "& ::placeholder": {
-      color: "rgba(0, 0, 0, 0.8)",
-    },
-
-    "&:hover fieldset": {
-      borderColor: "#1570EF",
-    },
-    "&.Mui-error fieldset": {
-      borderColor: "#FDA29B",
-    },
-  },
-});
-
-const PasswordField = styled(FormControl)({
-  "& .MuiOutlinedInput-root": {
-    borderRadius: "9px",
-
-    "& fieldset": {
-      borderColor: "rgba(83, 53, 45, 0.9)",
-    },
-    "& input::placeholder": {
-      color: "rgba(0, 0, 0, 0.8)",
-    },
-    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      border: "1px solid #1570EF",
-    },
-
-    "&::placeholder": {
-      color: "rgba(0, 0, 0, 0.8)",
-    },
-
-    "&:hover fieldset": {
-      borderColor: "#1570EF",
-    },
-    "&.Mui-error fieldset": {
-      borderColor: "#FDA29B",
-    },
-  },
-});
-
-const SignUpLogin = {
-  width: "100%",
-  marginInline: "auto",
-  display: "flex",
-  flexDirection: "column",
-  textAlign: "center",
-  gap: "1rem",
-  marginBottom: "2rem",
-};
-
-const ButtonStyles = styled(Button)({
-  textTransform: "capitalize",
-  background: "#53352D",
-  color: "#FFFFFF",
-  width: "min(20rem, 15rem)",
-  marginInline: "auto",
-  height: "3rem",
-  marginTop: "3rem",
-  borderRadius: "9px",
-  "&:hover": {
-    background: "rgba(83, 53, 45, 0.7)",
-  },
-});
+import { Button, InputField } from "../../shared";
 
 const Login = () => {
-  // Show Password
-  const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => setShowPassword((show) => !show);
-
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.user);
   const { userToken } = useSelector((state) => state.auth);
@@ -159,7 +26,7 @@ const Login = () => {
       dispatch(fetchUserInfo(userToken));
       navigate("/chat");
     }
-  }, [userToken, dispatch,]);
+  }, [userToken, dispatch]);
 
   // Formik Validation
 
@@ -181,104 +48,67 @@ const Login = () => {
   });
 
   return (
-    <Container component="main">
-      <FormContainer autoComplete="off" onSubmit={handleSubmit}>
-        <Box component="h2" sx={TitleStyle}>
+    <main className="h-screen w-screen flex items-center justify-center">
+      <form
+        autoComplete="off"
+        onSubmit={handleSubmit}
+        className="w-[90vw] md:w-[550px] h-max md:h-[602px] bg-primary shadow-backgroundShadow rounded-[15px] py-5 sm:py-0 px-5 flex items-center flex-col justify-center"
+      >
+        <h2 className="font-[inter] font-bold text-[22.2944px] leading-[27px] text-center text-brown uppercase mb-5">
           Log In
-        </Box>
+        </h2>
 
-        <Box component="section" sx={FieldsContainer}>
-          <Box sx={TextComponent}>
-            <Box component="label" htmlFor="email">
-              Email/ Chat ID*
-            </Box>
-            <TextFieldStyle
-              type="text"
-              id="emailID"
-              name="emailID"
-              placeholder="Enter your email or ID"
-              value={values.emailID}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={touched.emailID && Boolean(errors.emailID)}
-              helperText={touched.emailID && errors.emailID}
-            />
-          </Box>
-          <Box sx={TextComponent}>
-            <Box component="label" htmlFor="password">
-              Password*
-            </Box>
-            <PasswordField variant="outlined">
-              <OutlinedInput
-                id="password"
-                value={values.password}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={touched.password && Boolean(errors.password)}
-                helperText={touched.password && errors.password}
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter password"
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="password"
-                      onClick={handleShowPassword}
-                    >
-                      {showPassword ? <BsEye /> : <BsEyeSlash />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-              <FormHelperText sx={{ color: "#d32f2f" }}>
-                {" "}
-                {touched.password && errors.password}
-              </FormHelperText>
-              <p
-                style={{
-                  justifySelf: "flex-end",
-                  width: "max-content",
-                  position: "absolute",
-                  bottom: "-30px",
-                  right: "0",
-                  color: "#3683F5",
-                  cursor: "pointer`",
-                }}
-              >
-                Forgot password?
-              </p>
-            </PasswordField>
-          </Box>
+        <section className="flex flex-col w-full md:gap-[30px] mb-2">
+          <InputField
+            type="text"
+            label="Email/ Chat ID*"
+            id="emailID"
+            name="emailID"
+            placeholder="Enter your email or ID"
+            value={values.emailID}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            errorMessage={touched.emailID && errors.emailID}
+          />
+          <InputField
+            label="Password*"
+            id="password"
+            type="password"
+            value={values.password}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            errorMessage={touched.password && errors.password}
+            placeholder="Enter password"
+          />
 
-          <Box component="section" sx={SignUpLogin}>
-            <ButtonStyles type="submit">
-              {loading || isSubmitting ? "Loading..." : "Log In"}
-            </ButtonStyles>
+          <Button type="submit">
+            {loading || isSubmitting ? "Loading..." : "Log In"}
+          </Button>
 
-            <p>
-              Don't have an account?{" "}
-              <Link
-                to="/signup"
-                style={{ color: "#3683F5", cursor: "pointer" }}
+<div className=" flex flex-col items-center gap-3 mt-3 sm:mt-0">
+
+          <p>
+            Don't have an account?{" "}
+            <Link to="/signup" style={{ color: "#3683F5", cursor: "pointer" }}>
+              Sign Up
+            </Link>
+          </p>
+          <p>
+            Are you and Admin?{" "}
+            <Link
+              to="/admin-login"
+              style={{
+                color: "#3683F5",
+                cursor: "pointer",
+              }}
               >
-                Sign Up
-              </Link>
-            </p>
-            <p>
-              Are you and Admin?{" "}
-              <Link
-                to="/admin-login"
-                style={{
-                  color: "#3683F5",
-                  cursor: "pointer",
-                }}
-              >
-                Login as Admin
-              </Link>
-            </p>
-          </Box>
-        </Box>
-      </FormContainer>
-    </Container>
+              Login as Admin
+            </Link>
+          </p>
+              </div>
+        </section>
+      </form>
+    </main>
   );
 };
 

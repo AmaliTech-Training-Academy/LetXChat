@@ -1,4 +1,3 @@
-import { Box, styled } from "@mui/material";
 import ChatHead from "../../components/chatHead/ChatHead";
 import ChatMessage from "../../components/chatMessage/ChatMessage";
 import Input from "../../components/input/Input";
