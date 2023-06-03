@@ -80,7 +80,7 @@ function Sidebar({ displaySidebar, setDisplaySidebar }) {
     >
       <div
         className={`${
-          displaySidebar ? "w-[70vw] flex z-50" : "w-0 hidden"
+          displaySidebar ? "w-[80vw] flex z-50" : "w-0 hidden"
         } transition bg-[#f3f3f3] shadow-black shadow-xl duration-300 ease-in-out flex-col absolute h-screen lg:w-[20vw] lg:static`}
       >
         <div
