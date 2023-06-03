@@ -8,7 +8,7 @@ import { Navigate } from "react-router";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { InputField } from "../../shared";
+import { Button, InputField } from "../../shared";
 
 
 
@@ -39,7 +39,7 @@ const AdminLogin = () => {
       .catch((error) => {
         const ERROR_MESSAGE = error.response.data.message;
         toast.warn(ERROR_MESSAGE);
-        console.log(error.response);
+        console.error(error.response);
       });
   };
 
@@ -67,15 +67,14 @@ const AdminLogin = () => {
   return (
     <main className="h-screen flex items-center justify-center">
       <form
-        className="w-[90vw] sm:w-[530px] h-[602px] bg-primary shadow-backgroundShadow rounded-[15px] px-[20px] pt-[68px]"
-        autoComplete="off"
+        className="w-[90vw] sm:w-[450px] h-max bg-primary shadow-backgroundShadow rounded-[15px] px-[20px] py-8"
         onSubmit={handleSubmit}
       >
         <h2 className="font-[inter] font-bold text-[22.2944px] leading-[27px] text-center text-brown uppercase mb-5">
           Admin Log In
         </h2>
 
-        <section className="flex flex-col w-full md:gap-[30px] mb-2">
+        <section className="flex flex-col w-full gap-3 md:gap-[30px] my-2">
           <InputField
             label="Email*"
             type="text"
@@ -100,7 +99,7 @@ const AdminLogin = () => {
             errorMessage={touched.password && errors.password}
           />
 
-          <section className="w-full mx-auto flex flex-col text-center gap-[1rem] mb-[2rem]">
+          <section className="w-full mx-auto flex flex-col text-center gap-[1rem] my-[1rem]">
             <Button>{isSubmitting ? "Loading" : "Log In"}</Button>
           </section>
         </section>

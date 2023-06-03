@@ -11,14 +11,7 @@ import { Link } from "react-router-dom";
 import { Avatar, Button, InputField } from "../../shared";
 
 const SignUp = () => {
-  // Show Password
-  const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => setShowPassword((show) => !show);
 
-  const [showpassword_confirmation, setShowpassword_confirmation] =
-    useState(false);
-  const handleShowpassword_confirmation = () =>
-    setShowpassword_confirmation((show) => !show);
 
   // Upload Image
   const [imagePreview, setImagePreview] = useState(null);
@@ -79,8 +72,7 @@ const SignUp = () => {
   return (
     <main className="w-screen h-screen bg-white flex items-center justify-center overflow-x-hidden">
       <form
-        className="h-[90vh] flex-col py-5 overflow-y-scroll sm:overflow-y-visible my-[24px] w-[90vw] md:w-[85vw] lg:w-[850px] shadow-backgroundShadow rounded-[15px]"
-        autoComplete="off"
+        className="h-[90vh] md:h-max flex-col py-10 overflow-y-scroll sm:overflow-y-visible  w-[90vw] md:w-[85vw] lg:w-[750px] shadow-backgroundShadow rounded-[15px]"
         onSubmit={handleSubmit}
       >
         <h2 className="font-bold text-[22.2944px] leading-[27px] text-brown text-center uppercase  mb-5">
@@ -88,10 +80,7 @@ const SignUp = () => {
         </h2>
         <div className="w-full h-max text-center">
             <label htmlFor="image">
-          <div className="w-[70px] h-[70px] mx-auto rounded-full relative mb-4  bg-avatar bg-no-repeat bg-center bg-cover">
-            {/* <img src={AvatarImg} alt="avatar" className="w-full h-full rounded-full absolute" /> */}
-
-
+          <div className="w-[70px] h-[70px] mx-auto rounded-full relative mb-4 border bg-avatar bg-no-repeat bg-center bg-cover border-borderColor">
 
               {imagePreview && (
                   <Avatar
@@ -198,7 +187,7 @@ const SignUp = () => {
             </div>
           </section>
 
-          <section className="w-full mx-auto flex flex-col gap-[1rem] my-[2rem] text-center">
+          <section className="w-full mx-auto flex flex-col gap-[1rem] mt-[2rem] text-center">
             <Button type="submit">
               {loading || isSubmitting ? "Loading..." : "Sign Up"}
             </Button>

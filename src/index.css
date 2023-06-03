@@ -15,16 +15,16 @@
   font-size: 0.87rem;
 }
 
-.textarea ::-webkit-scrollbar,
-.sidebar ::-webkit-scrollbar,
-.chat-message ::-webkit-scrollbar {
+.textarea::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar,
+.chat-message::-webkit-scrollbar {
   width: 5px;
   background: #f5f5f5;
 }
 
-.textarea ::-webkit-thumb,
-.sidebar ::-webkit-scrollbar,
-.chat-message ::-webkit-thumb {
+.textarea::-webkit-thumb,
+.sidebar::-webkit-scrollbar,
+.chat-message::-webkit-thumb {
   border-radius: 5px;
   background: #aaa;
 }
