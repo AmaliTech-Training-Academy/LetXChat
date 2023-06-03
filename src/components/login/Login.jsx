@@ -73,6 +73,7 @@ const Login = () => {
           <InputField
             label="Password*"
             id="password"
+            name="password"
             type="password"
             value={values.password}
             onBlur={handleBlur}

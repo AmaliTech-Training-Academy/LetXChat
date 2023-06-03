@@ -40,7 +40,7 @@ const UserSettings = () => {
   return (
     <div>
       <main className="backdrop-blur-sm h-screen relative w-screen bg-[#3b4555ad] z-10">
-        <section className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] h-[480px] w-[478px] bg-white rounded-xl shadow-lg p-3 flex flex-col">
+        <section className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] h-max md:h-[480px] w-[90vw] md:w-[478px] bg-white rounded-xl shadow-lg p-3 flex flex-col">
           <div className="flex justify-end">
             <img
               className="w-[12px] h-[12px] cursor-pointer hover:scale-125 transition duration-[0.3s] ease-in-out hover:rotate-180"
