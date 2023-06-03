@@ -35,6 +35,7 @@ export const InputField = ({
           onBlur={onBlur}
           onChange={onChange}
           touched={touched}
+          autoComplete='true'
         />
         {type === "password" && (
           <div
@@ -63,7 +64,6 @@ export const Button = ({ children, type }) => {
 
 export const Avatar = ({ image, alt }) => {
 
-  console.log(image);
 
   return (
   
