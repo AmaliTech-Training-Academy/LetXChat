@@ -3,7 +3,7 @@ import { BsEyeSlash, BsEye } from "react-icons/bs";
 import CameraIcon from "../../assets/SignUpCamera.png";
 import { useFormik } from "formik";
 import { basicSchema } from "../../schemas";
-import AvatarImg from '../../assets/avatar.jpg'
+import AvatarImg from "../../assets/avatar.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../feature/authActions";
 import { useNavigate } from "react-router";
@@ -11,8 +11,6 @@ import { Link } from "react-router-dom";
 import { Avatar, Button, InputField } from "../../shared";
 
 const SignUp = () => {
-
-
   // Upload Image
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -79,16 +77,16 @@ const SignUp = () => {
           Sign up
         </h2>
         <div className="w-full h-max text-center">
-            <label htmlFor="image">
-          <div className="w-[70px] h-[70px] mx-auto rounded-full relative mb-4 border bg-avatar bg-no-repeat bg-center bg-cover border-borderColor">
-
+            <div className="w-[70px] h-[70px] mx-auto rounded-full mb-4">
+          <label htmlFor="image">
+            <div className="w-[70px] h-[70px] mx-auto rounded-full relative border bg-avatar bg-no-repeat bg-center bg-cover border-borderColor">
               {imagePreview && (
-                  <Avatar
+                <Avatar
                   width={70}
                   image={URL.createObjectURL(imagePreview)}
                   alt="Image upload"
-                  />
-                  )}
+                />
+              )}
 
               <div className="absolute -right-1 top-14 bg-white rounded-full p-1">
                 <input
@@ -108,11 +106,12 @@ const SignUp = () => {
                   alt="camera"
                 />
               </div>
-          </div>
-            </label>
+            </div>
+          </label>
+            </div>
 
           {errors.image && touched.image && (
-            <p className="text-errorMessage font-normal mt-[-1rem] mb-[1rem]">
+            <p className="text-errorMessage font-normal mt-[-0.5rem] mb-[1rem]">
               {errors.image}
             </p>
           )}
