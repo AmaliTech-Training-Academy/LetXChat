@@ -16,7 +16,7 @@ function AdminNavbar({setSearchInput}) {
   }
 
   return (
-    <div className='w-full flex justify-between items-center py-4 border-b md:px-11 relative'>
+    <div className='w-full flex justify-between items-center py-4 border-b px-5 md:px-11 relative'>
         <div className='flex-1 cursor-pointer'>
             <img src={logo} alt="Logo" />
         </div>

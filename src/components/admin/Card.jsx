@@ -13,7 +13,7 @@ function Card({title, image, users}) {
     }
   }
   return (
-    <div className='w-3/5 h-28 md:w-[300px] md:h-[113px] bg-gradient-to-r from-[#53352DE5] to-[#FDC90F] flex items-end mt-7 md:mt-14 rounded-md shadow-md cursor-pointer' onClick={handleClick}>
+    <div className='w-full h-28 lg:w-[300px] lg:h-[113px] bg-gradient-to-r from-[#53352DE5] to-[#FDC90F] flex items-end mt-7 lg:mt-14 rounded-md shadow-md cursor-pointer' onClick={handleClick}>
         <div className='w-full h-[98%] bg-white rounded-t rounded-b-md flex gap-3 pl-3 pt-[14px]'>
             <div className={`w-10 h-10 ${title === "ChatRooms" && "bg-blue-100 rounded-full flex items-center justify-center"}`}>
                 <img src={image} alt="" className={`${title === "ChatRooms" && ' w-3/5 h-3/5 object-cover'}`}/>
