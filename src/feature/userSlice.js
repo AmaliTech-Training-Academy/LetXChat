@@ -47,7 +47,6 @@ export const updateUser = createAsyncThunk(
 
     try {
       const res = await axios.request(config);
-      console.log(res);
 
       if (res.data.data) {
         const SUCCESS_MESSAGE = "User details updated successfully!";
@@ -62,7 +61,6 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-
 const getUserInfo = Cookies.get("userInfo") || null;
 
 const userSlice = createSlice({
@@ -71,6 +69,7 @@ const userSlice = createSlice({
     userInfo: getUserInfo ? JSON.parse(getUserInfo) : null,
     loading: false,
     error: null,
+    displaySettings: false,
   },
   reducers: {
     logout: (state) => {
@@ -80,6 +79,10 @@ const userSlice = createSlice({
       state.error = null;
     },
 
+    openUserSettings: (state, {payload}) => {
+      state.displaySettings = payload;
+   
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -101,10 +104,7 @@ const userSlice = createSlice({
         state.loading = false;
         Cookies.set("userInfo", JSON.stringify(payload));
 
-        console.log(payload);
-        // state.userInfo = { ...state.userInfo, payload };
         state.userInfo = { ...state.userInfo, ...payload };
-
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
@@ -112,5 +112,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout, payload } = userSlice.actions;
+export const { logout, openUserSettings } = userSlice.actions;
 export default userSlice.reducer;

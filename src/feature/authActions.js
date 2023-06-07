@@ -42,6 +42,8 @@ export const registerUser = createAsyncThunk(
         formData,
         config
       );
+
+      return res.data.data;
     } catch (error) {
       const ERROR_MESSAGE = error.response.data.message;
       toast.error(ERROR_MESSAGE, { autoClose: 3000 });
@@ -55,40 +57,34 @@ export const registerUser = createAsyncThunk(
 );
 
 export const loginUser = createAsyncThunk("auth/login", async (values) => {
+  try {
+    // Changing emailID to email and chat_id
+    if (values.emailID.includes("@")) {
+      values.email = values.emailID;
+    } else {
+      values.chat_id = values.emailID;
+    }
+    delete values.emailID;
 
 
-  // Changing emailID to email and chat_id
-  if (values.emailID.includes("@")) {
-    values.email = values.emailID;
-  } else {
-    values.chat_id = values.emailID;
+
+    let data = JSON.stringify({ ...values });
+    const config = {
+      maxBodyLength: Infinity,
+      headers: {
+        Accept: "application/vnd.api+json",
+        "Content-Type": "application/vnd.api+json",
+      },
+    };
+
+
+    const response = await axios.post(`${BASE_URL}/login`, data, config);
+    const SUCCESS_MESSAGE = response.data.message;
+    toast.success(SUCCESS_MESSAGE, { autoClose: 3000 });
+
+    return response.data.token;
+  } catch (error) {
+    const ERROR_MESSAGE = error.response.data.message;
+    toast.warn(ERROR_MESSAGE);
   }
-  delete values.emailID;
-
-  let data = JSON.stringify({ ...values });
-  let config = {
-    method: "post",
-    maxBodyLength: Infinity,
-    // url: "https://letxchat.takoraditraining.com/api/v1/login",
-    url: `${BASE_URL}/login`,
-    headers: {
-      Accept: "application/vnd.api+json",
-      "Content-Type": "application/vnd.api+json",
-    },
-    data: data,
-  };
-
-  axios
-    .request(config)
-    .then((response) => {
-      Cookies.set("userToken", response.data.token);
-      const SUCCESS_MESSAGE = response.data.message;
-      toast.success(SUCCESS_MESSAGE, { autoClose: 3000 });
-    })
-
- 
-    .catch((error) => {
-      const ERROR_MESSAGE = error.response.data.message;
-      toast.warn(ERROR_MESSAGE);
-    });
 });

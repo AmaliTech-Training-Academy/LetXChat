@@ -9,7 +9,6 @@ import GridView from "./GridView";
 
 function Chatrooms({ currentChatrooms }) {
   const { isLoading } = useSelector((state) => state.admin);
-  // console.log(currentChatrooms)  
 
   return (
     <div className="mt-11">

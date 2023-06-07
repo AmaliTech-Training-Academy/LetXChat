@@ -1,4 +1,3 @@
-import { Box, styled } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -12,84 +11,6 @@ import { format, formatISO } from "date-fns";
 import Pusher from "pusher-js";
 import { FaFilePdf, FaFileWord, FaFileExcel } from "react-icons/fa";
 import { AiOutlineCloudDownload } from "react-icons/ai";
-
-const Container = styled(Box)({
-  display: "flex",
-  gap: "10px",
-  alignItems: "center",
-  marginBottom: "1rem",
-});
-
-const MessageInfo = styled(Box)({});
-
-const MessageContent = styled(Box)({
-  maxWidth: "80%",
-  display: "flex",
-  flexDirection: "column",
-  gap: "10px",
-  width: "48%",
-  borderRadius: "10px",
-  background: "#878787",
-  position: "relative",
-  color: "#FFFFFF",
-  overflow: "hidden",
-});
-
-const Text = styled("p")({
-  whiteSpace: "break-spaces",
-  padding: "0 20px",
-  paddingBottom: "20px",
-});
-
-const Author = styled("p")({
-  color: "#252525",
-  fontSize: "14px",
-  padding: "2px 5px",
-  background: "#e2e2e2",
-});
-
-const Time = styled("p")({
-  position: "absolute",
-  right: "0.4rem",
-  bottom: "0",
-  fontSize: "0.7rem",
-});
-
-const OwnerContainer = styled(Box)({
-  display: "flex",
-  gap: "10px",
-  flexDirection: "row-reverse",
-  alignItems: "center",
-  marginBlock: ".5rem",
-});
-
-const OwnerMessageInfo = styled(Box)({});
-
-const OwnerMessageContent = styled(Box)({
-  maxWidth: "80%",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "flex-start",
-  background: "rgba(83, 53, 45, 0.7)",
-  position: "relative",
-  color: "#FFFFFF",
-  width: "46%",
-  borderRadius: "10px",
-});
-
-const OwnerTime = styled("p")({
-  position: "absolute",
-  right: "0.4rem",
-  bottom: "0",
-  fontSize: "0.7rem",
-});
-
-const OwnerText = styled("p")({
-  whiteSpace: "break-spaces",
-  padding: "20px",
-  paddingTop: "10px",
-  borderRadius: "10px",
-});
 
 const Message = () => {
   const [messages, setMessages] = useState([]);
@@ -117,11 +38,9 @@ const Message = () => {
     },
   };
 
-
   const sortedMessages = [...messages].sort(
     (a, b) => new Date(a.created_at) - new Date(b.created_at)
   );
-
 
   useEffect(() => {
     const chatMessages = sortedMessages.map(
@@ -149,15 +68,10 @@ const Message = () => {
     });
     const channel = pusher.subscribe("chat");
     channel.bind("message", function (data) {
-      
-      const newMessage = {...data, 
-        time: format(new Date(data.time), 'p')
-      
-      }
+      const newMessage = { ...data, time: format(new Date(data.time), "p") };
       setAllMessages((allMessages) => [...allMessages, newMessage]);
     });
   }, []);
-
 
   useEffect(() => {
     axios
@@ -167,7 +81,8 @@ const Message = () => {
         return response.data;
       })
       .catch((error) => {
-        console.log(error.response);
+        console.error(error.response);
+        return error.response.data.message;
       });
 
     messages &&
@@ -225,24 +140,25 @@ const Message = () => {
             }
 
             return (
-              <div key={index} className="text-[0.9rem]" >
+              <div key={index} className="text-[0.9rem]">
                 {el.sender !== username && (
                   <div key={el.sender}>
-                    <Container component="article">
-                      <MessageInfo>
+                    <article className="flex gap-[10px] items-center mb-[1rem]">
+                      <div>
                         <img
                           src={`${FILE_URL}${userImage}`}
                           style={{ width: "2.5rem", objectFit: "cover" }}
                           alt="User Image"
                         />
-                      </MessageInfo>
-                      <MessageContent>
-                        <Author>@{el.sender}</Author>
-                        <Text>{el.text}</Text>
+                      </div>
+                      <div className="max-w-[80%] flex flex-col gap-[10px] w-[48%] rounded-[10px] bg-[#878787] relative text-white overflow-hidden">
+                        <p className="text-[#252525] sm:text-[14px] px-[2px] sm:px-[5px] py-[2px] bg-[#DCDCDC]">
+                          @{el.sender}
+                        </p>
+                        <p className="break-words px-1 sm:px-5 pb-5">{el.text}</p>
                         {el.image && (
                           <img
                             src={`${FILE_URL}${chatImage}`}
-                            // src={chatImage}
                             style={{
                               marginBottom: "25px",
                               width: "98%",
@@ -298,17 +214,21 @@ const Message = () => {
                           </div>
                         )}
 
-                        <Time>{el.time}</Time>
-                      </MessageContent>
-                    </Container>
+                        <p className="absolute right-[0.4rem] bottom-0 text-[0.7rem]">
+                          {el.time}
+                        </p>
+                      </div>
+                    </article>
                   </div>
                 )}
 
                 {el.sender === username && (
                   <div key={username}>
-                    <OwnerContainer component="article">
-                      <OwnerMessageContent>
-                        <OwnerText>{el.text}</OwnerText>
+                    <article className="flex gap-[10px] flex-row-reverse items-center my-2">
+                      <div className="max-w-[80%] flex flex-col items-start bg-hoverColor relative text-white w-[46%] rounded-[10px]">
+                        <p className="break-words px-1 py-5 sm:p-5 pt-[10px] rounded-[10px]">
+                          {el.text}
+                        </p>
                         {el.image && (
                           <img
                             src={`${FILE_URL}${chatImage}`}
@@ -340,12 +260,10 @@ const Message = () => {
                           <>
                             <audio
                               controls
-                             
                               style={{ marginBottom: "1.5rem", width: "100%" }}
                               className="px-2"
                             >
                               <source src={`${FILE_URL}${chatVoiceNote}`} />
-
                             </audio>
                           </>
                         )}
@@ -364,9 +282,11 @@ const Message = () => {
                           </div>
                         )}
 
-                        <OwnerTime>{el.time}</OwnerTime>
-                      </OwnerMessageContent>
-                    </OwnerContainer>
+                        <p className="absolute right-[0.4rem] bottom-0 text-[0.7rem]">
+                          {el.time}
+                        </p>
+                      </div>
+                    </article>
                   </div>
                 )}
               </div>
