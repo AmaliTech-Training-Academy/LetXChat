@@ -25,24 +25,24 @@ function Footer() {
                     {linkedin_icon}
                 </div>
             </div>
-            <div className='flex gap-5 lg:gap-32 lg:text-2xl'>
+            <div className='flex gap-5 lg:gap-32'>
                 <div className='flex flex-col gap-2 lg:gap-5'>
-                    <span className='font-semibold'>Contact</span>
-                    <span className='opacity-60 hover:underline'>Email us</span>
-                    <span className='opacity-60 hover:underline'>Company</span>
-                    <span className='opacity-60 hover:underline'>Chat rooms</span>
-                    <span className='opacity-60 hover:underline'>How it works</span>
+                    <span className='font-semibold lg:text-2xl'>Contact</span>
+                    <span className='opacity-60 hover:underline lg:text-2xl'>Email us</span>
+                    <span className='opacity-60 hover:underline lg:text-2xl'>Company</span>
+                    <span className='opacity-60 hover:underline lg:text-2xl'>Chat rooms</span>
+                    <span className='opacity-60 hover:underline lg:text-2xl'>How it works</span>
                 </div>
                 <div className='flex flex-col gap-2 lg:gap-5'>
-                    <span className='font-semibold'>Support</span>
-                    <span className='opacity-60 hover:underline'>FAQ’s</span>
-                    <span className='opacity-60 hover:underline'>Help center</span>
-                    <span className='opacity-60 hover:underline'>Consult</span>
+                    <span className='font-semibold lg:text-2xl'>Support</span>
+                    <span className='opacity-60 hover:underline lg:text-2xl'>FAQ’s</span>
+                    <span className='opacity-60 hover:underline lg:text-2xl'>Help center</span>
+                    <span className='opacity-60 hover:underline lg:text-2xl'>Consult</span>
                 </div>
                 <div className='flex flex-col gap-2 lg:gap-5'>
-                    <span className='font-semibold'>Get in touch</span>
-                    <span className='opacity-60 hover:underline'>hello@amalitech.com</span>
-                    <span className='opacity-60 hover:underline'>+2334567876</span>
+                    <span className='font-semibold lg:text-2xl'>Get in touch</span>
+                    <span className='opacity-60 hover:underline lg:text-2xl'>hello@amalitech.com</span>
+                    <span className='opacity-60 hover:underline lg:text-2xl'>+2334567876</span>
                 </div>
             </div>
         </div>
