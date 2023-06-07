@@ -109,16 +109,16 @@ function NewChatroom() {
 
   return (
     <>
-    <Link to="/admin-dashboard" className="flex items-center gap-3 mt-8 ml-10 w-max">
+    <Link to="/admin-dashboard" className="flex items-center gap-3 md:mt-8 mt-5 md:ml-10 ml-5 w-max">
         <img src={backArraow} alt="" />
          go back
     </Link>
-    <div className="w-full h-full px-12 mt-9">
+    <div className="w-full h-full px-5 md:px-12 mt-4 md:mt-9">
       <span className=" font-bold">Create Chatroom</span>
-      <div className="flex border-2 shadow-sm rounded-lg mt-7">
-        <aside className="flex-[0.6] border-r px-8 pt-6">
+      <div className="flex border-2 shadow-sm rounded-lg mt-4 md:mt-7 flex-col md:flex-row">
+        <aside className="flex-[0.6] md:border-r px-4 pt-3 md:px-8 md:pt-6">
           <span>Chatroom Profile</span>
-          <div className="w-full h-60 bg-[#D9D9D966] rounded-lg flex items-center justify-center mt-7">
+          <div className="w-full h-40 md:h-60 bg-[#D9D9D966] rounded-lg flex items-center justify-center mt-4 md:mt-7">
             {!profileImage && (
               <label htmlFor="profile">
                 <img src={upload} alt="" className="cursor-pointer" />
@@ -132,7 +132,7 @@ function NewChatroom() {
               />
             )}
           </div>
-          <div className="text-center mt-7">
+          <div className="text-center mt-4 md:mt-7">
             <label
               htmlFor="profile"
               className="text-[#1570EFE5] cursor-pointer"
@@ -154,7 +154,7 @@ function NewChatroom() {
                   {addedUsers.length}
                 </span>
               </div>
-              <div className="h-64 overflow-y-scroll">
+              <div className=" max-h-40 md:h-64 overflow-y-scroll">
                 {addedUsers.map((item) => (
                   <UserSearch added={true} item={item} key={item.id} />
                 ))}
@@ -162,7 +162,7 @@ function NewChatroom() {
             </>
           )}
         </aside>
-        <form className="flex-[1.4] px-10 pt-8 pb-5">
+        <form className="flex-[1.4] px-4 pt-3 md:px-10 md:pt-8 pb-5">
           <label htmlFor="" className=" font-semibold">
             Chatroom Name<span className=" opacity-40">(Required)</span>
           </label>
@@ -191,7 +191,7 @@ function NewChatroom() {
             onInput={handleInput}
           />
           {matchedUsers.length > 0 && searchInput !== "" && (
-            <div className="w-full h-64 border rounded-md px-8 overflow-y-scroll pt-2">
+            <div className="w-full h-40 md:h-64 border rounded-md px-3 md:px-8 overflow-y-scroll pt-2">
               <span className=" font-semibold border-b pb-1">
                 Search Result...
               </span>

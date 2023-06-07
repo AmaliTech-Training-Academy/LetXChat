@@ -41,7 +41,7 @@ function Admin() {
   return (
     <>
     <AdminNavbar setSearchInput={setSearchInput}/>
-    <div className="md:mx-11">
+    <div className="mx-5 md:mx-11">
           <Cards />
           <Chatrooms searchInput={searchInput} currentChatrooms={currentChatrooms}/>
           {currentChatrooms?.length > 0 && <Pagination

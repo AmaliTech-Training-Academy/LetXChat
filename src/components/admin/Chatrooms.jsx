@@ -21,7 +21,7 @@ function Chatrooms({ currentChatrooms }) {
           Add Chatroom
         </Link>
       </div>
-      <div className="w-full shadow sm:hidden lg:block">
+      <div className="w-full shadow hidden lg:block">
         <ChatroomHeader />
         {currentChatrooms?.length > 0 ? currentChatrooms.map((ele) => {
           return <Chatroom key={ele.id} item={ele} />;
@@ -36,9 +36,9 @@ function Chatrooms({ currentChatrooms }) {
         </div>
         }
       </div>
-      <div className="w-full sm:grid lg:hidden gap-x-14 gap-y-8 grid-cols-2">
+      <div className="w-full grid lg:hidden gap-x-14 gap-y-8 md:grid-cols-2">
         {currentChatrooms?.length > 0 && currentChatrooms.map(chatroom => (
-          <GridView chatroom={chatroom}/>
+          <GridView key={chatroom.id} chatroom={chatroom}/>
         ))}
       </div>
     </div>
