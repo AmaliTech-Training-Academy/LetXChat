@@ -7,6 +7,7 @@ use App\Http\Requests\ProfileRequest;
 use App\Http\Resources\ProfileResource;
 use App\Http\Resources\RegisterResource;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
@@ -21,8 +22,8 @@ class ProfileController extends Controller
         $user = User::find(auth()->user()->id);
 
         $data = [
-            'fullname' => $request->fullname,
-            'email' => $request->email,
+            'fullname' => $request->old('fullname', Auth::user()->fullname),
+            'email' => $request->old('email', Auth::user()->email),
         ];
 
         if ($request->has('password')) {
