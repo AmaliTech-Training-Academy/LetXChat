@@ -20,7 +20,7 @@ class ChatRoomMembersResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'image' => $this->image ? $this->image : null,
+            'image' => $this->image ? 'https://takoraditraining.com/LetXChat/storage/app/public/' . $this->image : null,
             'members' => $this->users->map(function ($user) {
                 return [
                     'id' => $user->id,
