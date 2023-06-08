@@ -22,8 +22,8 @@ class ProfileController extends Controller
         $user = User::find(auth()->user()->id);
 
         $data = [
-            'fullname' => $request->old('fullname', Auth::user()->fullname),
-            'email' => $request->old('email', Auth::user()->email),
+            'fullname' => $request->fullname ?? $user->fullname,
+            'email' => $request->email ?? $user->email,
         ];
 
         if ($request->has('password')) {
